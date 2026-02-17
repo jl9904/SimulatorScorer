@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Season Record Scorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px}
+        textarea{width:100%;height:160px;margin-top:8px;box-sizing:border-box;max-width:100%;padding:8px;font-size:16px;resize:vertical}
+        .row{display:flex;gap:8px;align-items:center;margin-top:8px}
+        #results{margin-top:12px;padding:12px;border:1px solid #ddd;border-radius:6px;background:#fafafa}
+        .invalid{color:#b00; font-size: 0.9rem;}
+        .recordbtn{padding:8px 12px;cursor:pointer}
+        .result-entry { font-family: monospace; border-bottom: 1px solid #eee; padding: 4px 0; }
+        .result-entry:last-child { border-bottom: none; }
+
+        @media (max-width: 480px) {
+            body{margin:12px}
+            textarea{height:120px;font-size:14px}
+            .row{flex-direction:column;align-items:stretch}
+            .recordbtn{width:100%}
+        }
+    </style>
+</head>
+<body id="season-page">
+    <h1 id="season-header">SEASON RECORD SCORER</h1>
+
+    <textarea id="seasonInput" placeholder="Paste the entire season record. Each line represents one person.&#10;&#10;WIN HIGH SAFE...&#10;SAFE LOW BTM..."></textarea>
+    
+    <div class="row">
+    <button id="processModern" class="recordbtn">PROCESS MODERN</button>
+    <button id="processLegacy" class="recordbtn">PROCESS LEGACY</button>
+    <button id="copyResult" class="recordbtn">COPY RESULTS</button>
+    <button id="clearBtn" class="recordbtn">CLEAR</button>
+</div>
+
+    <div id="results" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
