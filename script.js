@@ -87,9 +87,9 @@ document.getElementById('copyResult').addEventListener('click', async () => {
     try {
         await navigator.clipboard.writeText(processedData.join('\n'));
         const btn = document.getElementById('copyResult');
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = 'Copy Results', 1500);
+        btn.textContent = 'COPIED!';
+        setTimeout(() => btn.textContent = 'COPY RESULTS', 1500);
     } catch (e) {
-        alert('Copy failed');
+        alert('COPY FAILED');
     }
 });
