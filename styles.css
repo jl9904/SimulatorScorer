@@ -117,3 +117,14 @@ button.solorecordbtn {
     filter: brightness(0.9);
     transform: translateY(-1px);
 }
+
+/* 90% Width Setup */
+        #setup-area, #tournament-display, #contestantInput { 
+            width: 90%; 
+            max-width: 1200px; /* Optional cap so it's not too wide on giant monitors */
+            margin: 0 auto; 
+            background: white;
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }

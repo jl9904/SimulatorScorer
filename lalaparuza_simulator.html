@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Lalaparuza Simulator</title>
+    <link href="styles.css" rel="stylesheet"/>
+    <style>
+        h2{
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        /* Recap Styling */
+        details { margin-top: 30px; text-align: left; background: #eee; padding: 15px; border-radius: 8px; cursor: pointer; }
+        summary { font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
+        .recap-content { line-height: 1.8; white-space: pre-wrap; font-size: 1rem; }
+        strong { color: #d63384; }
+
+        #roundResults{
+            font-size: 1.25em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>LALAPARUZA SIMULATOR</h1>
+
+    <div id="setup-area">
+        <textarea id="contestantInput" rows="15" placeholder="Enter names here..."></textarea>
+        <br>
+        <button onclick="generateTournament()">START SIMULATION</button>
+    </div>
+
+    <div id="tournament-display" style="display:none;">
+        <h2 id="roundTitle"></h2>
+        <div id="roundResults"></div>
+        
+        <div id="recap-container"></div>
+
+        <br>
+        <button id="nextStepBtn">Next Round</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

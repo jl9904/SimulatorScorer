@@ -1,3 +1,120 @@
+let tournamentSteps = [];
+let currentStepIndex = 0;
+let fullRecapHTML = ""; // Stores the entire history
+
+function generateTournament() {
+    const input = document.getElementById('contestantInput').value;
+    let contestants = input.split('\n').map(name => name.trim()).filter(name => name !== "");
+
+    if (contestants.length < 2) {
+        alert("Please enter at least 2 contestants!");
+        return;
+    }
+
+    // Reset everything
+    tournamentSteps = [];
+    currentStepIndex = 0;
+    fullRecapHTML = ""; 
+    let pool = [...contestants];
+    let roundNumber = 1;
+
+    while (pool.length > 1) {
+        let winners = [];
+        let matches = [];
+        let roundName = pool.length === 2 ? "THE FINAL SMACKDOWN" : (pool.length <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
+        
+        fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
+        pool.sort(() => Math.random() - 0.5);
+
+        // Round 1 Triple Threat
+        if (roundNumber === 1 && pool.length % 2 !== 0) {
+            const c = [pool.pop(), pool.pop(), pool.pop()];
+            const winCount = (((pool.length / 2) + 1) % 2 === 0) ? 1 : 2;
+            const shuffled = [...c].sort(() => Math.random() - 0.5);
+            const matchWinners = shuffled.slice(0, winCount);
+            
+            winners.push(...matchWinners);
+            matches.push({ type: 'triple', players: c, winners: matchWinners });
+            fullRecapHTML += `3-Way: ${c.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
+        } 
+        // Bye Logic
+        else if (pool.length % 2 !== 0) {
+            const luckyOne = pool.pop();
+            winners.push(luckyOne);
+            matches.push({ type: 'bye', player: luckyOne });
+            fullRecapHTML += `${luckyOne} had a bye.<br>`;
+        }
+
+        // Standard 1v1
+        for (let i = 0; i < pool.length; i += 2) {
+            const c1 = pool[i];
+            const c2 = pool[i + 1];
+            const winner = Math.random() < 0.5 ? c1 : c2;
+            winners.push(winner);
+            matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
+            fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
+        }
+
+        tournamentSteps.push({ name: roundName, matches: matches });
+        pool = winners;
+        roundNumber++;
+        fullRecapHTML += `<br>`;
+    }
+
+    tournamentSteps.push({ name: "WINNER", champion: pool[0] });
+
+    document.getElementById('setup-area').style.display = 'none';
+    document.getElementById('tournament-display').style.display = 'block';
+    document.getElementById('recap-container').innerHTML = ""; // Clear old recaps
+    showNextStep();
+}
+
+function showNextStep() {
+    const step = tournamentSteps[currentStepIndex];
+    const title = document.getElementById('roundTitle');
+    const display = document.getElementById('roundResults');
+    const btn = document.getElementById('nextStepBtn');
+    const recapBox = document.getElementById('recap-container');
+
+    title.innerText = step.name;
+    display.innerHTML = "";
+
+    if (step.champion) {
+        display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
+        
+        // Show the Recap Dropdown
+        recapBox.innerHTML = `
+            <details>
+                <summary>Smackdown Recap</summary>
+                <div class="recap-content">${fullRecapHTML}</div>
+            </details>
+        `;
+
+        btn.innerText = "RESTART SIMULATOR";
+        btn.onclick = () => location.reload();
+    } else {
+        step.matches.forEach(m => {
+            let div = document.createElement('div');
+            div.className = 'match-card';
+            if (m.type === '1v1') div.innerHTML = `${m.p1} vs. ${m.p2}<br><strong>${m.winner} advances!</strong>`;
+            else if (m.type === 'triple') div.innerHTML = `<strong>3-WAY:</strong> ${m.players.join(' vs. ')}<br><strong>${m.winners.join(' & ')} advance(s)!</strong>`;
+            else div.innerHTML = `<em>${m.player} has a bye and advances!</em>`;
+            display.appendChild(div);
+        });
+        
+        currentStepIndex++;
+        btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
+    }
+}
+
+// Attach listener to button
+document.addEventListener("DOMContentLoaded", () => {
+    const nextBtn = document.getElementById('nextStepBtn');
+    if (nextBtn) {
+        nextBtn.addEventListener("click", showNextStep);
+    }
+});
+
 let processedData = []; 
 let lastMode = "Modern"; // Track which mode was used for the copy header
 
@@ -93,3 +210,6 @@ document.getElementById('copyResult').addEventListener('click', async () => {
         alert('COPY FAILED');
     }
 });
+
+
+
