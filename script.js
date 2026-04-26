@@ -147,11 +147,19 @@ function getScore(ch, mode) {
 function processSeason(mode) {
     const text = document.getElementById('seasonInput').value.trim();
     const results = document.getElementById('results');
-    if(!text) { results.innerHTML = '<em>No input provided.</em>'; return; }
+    if(!text) { 
+        results.innerHTML = '<em>No input provided.</em>'; 
+        return; 
+    }
 
     lastMode = mode;
     const lines = text.split('\n');
-    let htmlOutput = `<strong>Showing ${mode} Scores:</strong><br><br>`;
+    
+    // Header for the output section
+    let htmlOutput = `
+        <h5 class="text-uppercase fw-bold mb-4">Showing ${mode} Scores:</h5>
+        <div id="results-grid">`; // Start of the unified grid
+
     processedData = []; 
 
     lines.forEach((line, index) => {
@@ -176,16 +184,23 @@ function processSeason(mode) {
         });
 
         const ppe = count > 0 ? (score / count).toFixed(2) : "0.00";
-        const ordinalPlace = getOrdinal(index + 1);
+        const ordinalPlace = getOrdinal(index + 1).toUpperCase();
         
         processedData.push(`${score}\t${ppe}`);
 
-        htmlOutput += `<div class="result-entry">
-            <strong>${ordinalPlace}</strong> | Score: ${score} | PPE: ${ppe}
-            ${invalids.length ? `<span class="invalid"> | (Invalid: ${invalids.join(',')})</span>` : ''}
-        </div>`;
+        // The row structure
+        htmlOutput += `
+            <div class="result-row">
+                <span class="col-rank">${ordinalPlace}</span>
+                <span class="divider">|</span>
+                <span class="col-score">SCORE: ${score}</span>
+                <span class="divider">|</span>
+                <span class="col-ppe">PPE: ${ppe}</span>
+                ${invalids.length ? `<span class="divider">|</span><span class="text-danger small">INVALID: ${invalids.join(',')}</span>` : ''}
+            </div>`;
     });
 
+    htmlOutput += `</div>`; // End of the grid
     results.innerHTML = htmlOutput;
 }
 
@@ -210,6 +225,83 @@ document.getElementById('copyResult').addEventListener('click', async () => {
         alert('COPY FAILED');
     }
 });
+
+// MISS C PICKER
+function castVotes() {
+    const input = document.getElementById('voterInput').value.trim();
+    const resultsContainer = document.getElementById('results');
+    
+    let contestants = input.split('\n')
+        .map(name => name.trim())
+        .filter(name => name !== "");
+
+    if (contestants.length < 2) {
+        alert("You need at least 2 people to cast votes!");
+        return;
+    }
+
+    let voteTallies = {}; 
+    let votingHistory = []; 
+    
+    // Initialize tallies
+    contestants.forEach(name => voteTallies[name.toUpperCase()] = 0);
+
+    // ANTI-TIE LOGIC: Pick one random contestant to have a 'bias' weight
+    const biasTarget = contestants[Math.floor(Math.random() * contestants.length)].toUpperCase();
+
+    // Perform Voting Logic
+    contestants.forEach(voter => {
+        const voterUpper = voter.toUpperCase();
+        let possibleTargets = contestants.filter(name => name.toUpperCase() !== voterUpper);
+        
+        let voteFor;
+        
+        // 30% chance to force the vote toward the biasTarget (if they aren't the current voter)
+        if (Math.random() < 0.30 && voterUpper !== biasTarget) {
+            voteFor = biasTarget;
+        } else {
+            // Otherwise, pick completely at random
+            voteFor = possibleTargets[Math.floor(Math.random() * possibleTargets.length)].toUpperCase();
+        }
+        
+        voteTallies[voteFor]++;
+        votingHistory.push({
+            voter: voterUpper,
+            target: voteFor
+        });
+    });
+
+    // Determine Winner(s)
+    let maxVotes = 0;
+    for (let name in voteTallies) {
+        if (voteTallies[name] > maxVotes) maxVotes = voteTallies[name];
+    }
+
+    let winners = Object.keys(voteTallies).filter(name => voteTallies[name] === maxVotes);
+
+    // Generate Output HTML
+    let htmlOutput = `
+        <div class="winner-display-card p-5 mb-5 text-center shadow-sm">
+            <h2 class="fw-black text-uppercase mb-3">👑 MISS CONGENIALITY 👑</h2>
+            <h1 class="display-winner">${winners.join(' & ')}</h1>
+            <p class="mb-0 fw-bold voting-stats">WITH ${maxVotes} VOTES!</p>
+        </div>
+        <div id="results-grid">`;
+
+    votingHistory.forEach(record => {
+        htmlOutput += `
+            <div class="result-row">
+                <span class="col-rank text-truncate">${record.voter}</span>
+                <span class="divider">|</span>
+                <span class="col-score">VOTED FOR</span>
+                <span class="divider">|</span>
+                <span class="col-ppe text-truncate">${record.target}</span>
+            </div>`;
+    });
+
+    htmlOutput += `</div>`;
+    resultsContainer.innerHTML = htmlOutput;
+}
 
 
 

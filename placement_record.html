@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLACEMENT GROUP PROCESSOR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Page-specific results styling */
+        .results { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+            margin-top: 30px; 
+            width: 100%;
+        }
+        .group-card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            border-top: 5px solid #8a2be2;
+        }
+        .group-card h2 { 
+            font-size: 1.25rem; 
+            font-weight: 800; 
+            color: #4b0082; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 10px; 
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .stat-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 500; }
+        .count { font-weight: 800; color: #8a2be2; }
+    </style>
+</head>
+<body id="processor-page">
+
+    <nav class="side-nav">
+        <div class="nav-trigger"><span>☰</span></div>
+        <div class="nav-content">
+            <h3>MENU</h3>
+            <ul class="list-unstyled">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="season_record.html">SEASON CALCULATOR</a></li>
+                <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
+                <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
+                <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="dashboard-wrapper d-flex align-items-center justify-content-center">
+            
+            <div class="dashboard-container mx-auto p-5 bg-white rounded-5 shadow-sm">
+                
+                <div class="home-hero mb-4 text-center">
+                    <h1 id="processor-header">PLACEMENT GROUP PROCESSOR</h1>
+                    <p class="subtitle text-uppercase">Names ending in (*) Robin | (') Davonne | Others Jaden</p>
+                </div>
+
+                <div class="processor-layout-container">
+                    <textarea id="inputData" placeholder="PASTE SPREADSHEET DATA HERE..."></textarea>
+                    
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <button class="recordbtn purple-btn w-100" onclick="processData()">PROCESS RECORDS</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="recordbtn gray-btn w-100" onclick="document.getElementById('inputData').value=''; document.getElementById('output').innerHTML=''">CLEAR ALL</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results" id="output"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ... (Your existing JavaScript remains exactly the same) ...
+        function processData() {
+            const text = document.getElementById('inputData').value;
+            const lines = text.split('\n').filter(line => line.trim() !== "");
+            const groups = {
+                "Jaden": { count: 0, top: 0, safe: 0, bottom: 0 },
+                "Robin": { count: 0, top: 0, safe: 0, bottom: 0 },
+                "Davonne": { count: 0, top: 0, safe: 0, bottom: 0 }
+            };
+            const topKeywords = ['WIN', 'HIGH', 'TOP 2'];
+            const bottomKeywords = ['LOW', 'BTM 2', 'BTM 3', 'ELIM'];
+
+            lines.forEach(line => {
+                const parts = line.trim().split(/\s{2,}|\t+/);
+                if (parts.length < 1) return;
+                const fullName = parts[0].trim();
+                const placements = parts.slice(1);
+                let targetGroup = "Jaden";
+                if (fullName.endsWith('*')) targetGroup = "Robin";
+                else if (fullName.endsWith("'")) targetGroup = "Davonne";
+                groups[targetGroup].count++;
+                placements.forEach(p => {
+                    const cleanP = p.trim().toUpperCase();
+                    if (topKeywords.includes(cleanP)) groups[targetGroup].top++;
+                    else if (cleanP === 'SAFE') groups[targetGroup].safe++;
+                    else if (bottomKeywords.includes(cleanP)) groups[targetGroup].bottom++;
+                });
+            });
+            renderResults(groups);
+        }
+
+        function renderResults(groups) {
+            const container = document.getElementById('output');
+            container.innerHTML = '';
+            for (const [name, stats] of Object.entries(groups)) {
+                const card = document.createElement('div');
+                card.className = 'group-card';
+                card.innerHTML = `
+                    <h2>${name}'S GROUP</h2>
+                    <div class="stat-line"><span>TOTAL NAMES:</span> <span class="count">${stats.count}</span></div>
+                    <div class="stat-line"><span>TOP PLACEMENTS:</span> <span class="count">${stats.top}</span></div>
+                    <div class="stat-line"><span>SAFE PLACEMENTS:</span> <span class="count">${stats.safe}</span></div>
+                    <div class="stat-line"><span>BOTTOM PLACEMENTS:</span> <span class="count">${stats.bottom}</span></div>
+                `;
+                container.appendChild(card);
+            }
+        }
+    </script>
+</body>
+</html>

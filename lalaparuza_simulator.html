@@ -1,44 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Lalaparuza Simulator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LALAPARUZA SIMULATOR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet"/>
     <style>
-        h2{
-            text-align: center;
-            font-size: 2.5em;
+        /* Page-specific Recap Styling */
+        details { margin-top: 30px; text-align: left; background: #f0f7ff; padding: 15px; border-radius: 12px; cursor: pointer; border: 1px solid #cce5ff; }
+        summary { font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; color: #0056b3; }
+        .recap-content { line-height: 1.8; white-space: pre-wrap; font-size: 1rem; color: #333; }
+        strong { color: #007bff; }
+        #roundResults { font-size: 1.25em; text-align: center; }
+        
+        /* Clean Input Area */
+        #contestantInput {
+            width: 100%;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+            outline: none;
         }
-
-        /* Recap Styling */
-        details { margin-top: 30px; text-align: left; background: #eee; padding: 15px; border-radius: 8px; cursor: pointer; }
-        summary { font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
-        .recap-content { line-height: 1.8; white-space: pre-wrap; font-size: 1rem; }
-        strong { color: #d63384; }
-
-        #roundResults{
-            font-size: 1.25em;
-        }
+        #contestantInput:focus { border-color: #007bff; }
     </style>
 </head>
 
-<body>
+<body id="lalaparuza-page">
+    <nav class="side-nav">
+    <div class="nav-trigger">
+        <span>☰</span> 
+    </div>
+    
+    <div class="nav-content">
+        <h3>Menu</h3>
+        <ul class="list-unstyled">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="season_record.html">SEASON CALCULATOR</a></li>
+            <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
+            <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
+            <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
+        </ul>
+    </div>
+</nav>
 
-    <h1>LALAPARUZA SIMULATOR</h1>
+    <div class="main-content">
+    <h1 id="lalaparuza-header">LALAPARUZA SIMULATOR</h1>
 
-    <div id="setup-area">
-        <textarea id="contestantInput" rows="15" placeholder="Enter names here..."></textarea>
-        <br>
-        <button onclick="generateTournament()">START SIMULATION</button>
+    <div id="setup-area" class="input-layout-container mx-auto mt-4">
+        
+        <textarea id="contestantInput" rows="12" placeholder="ENTER NAMES HERE (ONE PER LINE)..."></textarea>
+        
+        <div class="row button-grid-row mt-3">
+            <div class="col">
+                <button class="blue-btn w-100" onclick="generateTournament()">START SIMULATION</button>
+            </div>
+            <div class="col">
+                <button class="blue-btn clear-btn w-100" onclick="document.getElementById('contestantInput').value = ''">CLEAR INPUTS</button>
+            </div>
+        </div>
+        
     </div>
 
-    <div id="tournament-display" style="display:none;">
-        <h2 id="roundTitle"></h2>
-        <div id="roundResults"></div>
-        
-        <div id="recap-container"></div>
+    </div>
 
-        <br>
-        <button id="nextStepBtn">Next Round</button>
+        <div id="tournament-display" class="container mt-5" style="display:none;">
+            <h2 id="roundTitle" class="text-center fw-bold mb-4"></h2>
+            <div id="roundResults" class="p-4 bg-white rounded-4 shadow-sm"></div>
+            
+            <div id="recap-container"></div>
+
+            <div class="mt-4">
+                <button id="nextStepBtn" class="blue-btn">NEXT ROUND</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

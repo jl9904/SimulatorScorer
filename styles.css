@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+/* =========================================
+   1. GLOBAL & RESET STYLES
+   ========================================= */
 html {
     height: 100%;
     scroll-behavior: smooth;
@@ -7,124 +10,620 @@ html {
     font-size: 100%;
 }
 
-/* Global Styles */
-
 body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    /* This stack uses the best available font on whatever device the user is on */
     font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 1rem;
-    padding: 0 15px; 
     box-sizing: border-box;
+    background-color: #fcfcfc;
+    color: #333;
 }
 
-h1 {
-    font-size: clamp(1.4rem, 6vw, 3.25rem); 
-    font-weight: 900;
-    margin: 0.5em auto 0.5em;
-    display: block;
-    width: 95%;
-    max-width: 112.5em;
-    padding: 0.28em 0.5em;
-    text-align: center;
-    background: linear-gradient(130deg, rgb(255, 127, 56) 0.00%, rgb(255, 196, 108) 56.97%);
-    color: #ffffffcc;
-    border-radius: 10em; 
-    box-shadow: 0 0.0625em 0.1875em rgba(0,0,0,0.08);
-    box-sizing: border-box;
-    position: static; 
+/* The standard wrapper for all pages to avoid sidebar overlap */
+.main-content {
+    margin-left: 60px; 
+    padding: 20px;
+    width: calc(100% - 60px);
+    transition: margin-left 0.3s ease;
 }
-
-h1#solorecord {
-    /* Inherits all the scaling from above, just changes the color to Red */
-    background: linear-gradient(130deg, rgb(255, 56, 56) 0.00%, rgb(255, 108, 108) 56.97%);
-}
-
-
-
-button {
-    /* Buttons don't always inherit font-family by default, so we force it here */
-    font-family: inherit; 
-    font-size: clamp(1.2rem, 4vw, 2.1875rem);
-    font-weight: 800;
-    padding: 0.8rem 1.875rem; 
+/* --- Shared Button/Pill Components (Universal) --- */
+button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
+    font-family: inherit;
     border: none;
-    border-radius: 3.125em;
-    background: linear-gradient(180deg, rgb(255, 150, 94) 0.00%, rgb(255, 209, 140) 100.00%);
-    color: #ffffffd0;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 0.15em auto; 
-    max-width: 120em;
-    width: 85%;
-    box-sizing: border-box;
-    display: block; 
-}
-
-/* Variant button */
-button.solorecordbtn {
-    background: linear-gradient(180deg, rgb(255, 94, 129) 0%, rgb(255, 140, 140) 100%);
-}
-
-/* --- Mobile Scaling Optimizations --- */
-
-@media (max-width: 420px) {
-    html { 
-        font-size: 90%; 
-    } 
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    font-weight: 900; /* Extra bold for that clean look */
     
-    h1, h1#solorecord { 
-        width: 98%;
-        padding: 0.4em 0.2em;
-        /* Slightly tighter radius for the mobile 'pill' look */
-        border-radius: 2em;
-    }
+    /* UNIVERSAL FONT INCREASE */
+    font-size: 2rem !important; 
+    letter-spacing: 0.5px;
+}
 
-    button {
-        /* On small screens, keep them very tight */
-        padding: 0.7rem 1.25rem; 
-        margin: 0.12rem auto; 
-    }
+/* =========================================
+   2. HOVER SIDEBAR (LIGHT GRAY)
+   ========================================= */
+.side-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 60px;
+    background: #f8f9fa;
+    color: #333;
+    overflow: hidden;
+    transition: width 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    border-right: 1px solid #dee2e6;
+}
 
-    button.solorecordbtn {
-        width: 95%; /* Almost full width for better tapping on mobile */
-        padding: 0.8rem;
-        font-size: 1.2rem;
+.side-nav:hover {
+    width: 250px;
+}
+
+.nav-trigger {
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.nav-content {
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.side-nav:hover .nav-content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-content h3 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.nav-content ul { padding-left: 0; }
+
+.nav-content a {
+    display: block;
+    color: #555;
+    text-decoration: none;
+    padding: 10px 15px;
+    font-weight: 700;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.nav-content a:hover {
+    background: #e9ecef;
+}
+
+/* =========================================
+   3. SHARED COMPONENTS (PILL STYLE)
+   ========================================= */
+h1 {
+    font-weight: 900;
+    text-align: center;
+    border-radius: 10em; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-transform: uppercase;
+    margin: 20px auto;
+}
+
+button, .btn-custom {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   4. HOME PAGE (ORANGE THEME)
+   ========================================= */
+/* --- Home Page Mega-Scale Version --- */
+
+#home-page {
+    background-color: #fcfcfc;
+}
+
+/* 1. The Container Scale (Blue Line) */
+.dashboard-container {
+    width: 85% !important; /* Increased from 65% to match 1.5x feel */
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 50px; 
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06); /* Deeper shadow for larger scale */
+    padding: 60px !important; /* Extra breathing room */
+}
+
+/* 2. The Header Scale (Red Line) 
+   Setting width to 100% ensures it matches the width of the 2-button row below it.
+*/
+#home-page h1.header-scaled {
+    display: block; 
+    width: 100% !important; 
+    font-size: 3.5rem; /* 1.5x larger font */
+    padding: 0.6em 0;
+    background: linear-gradient(130deg, #ff4e00 0%, #ff8c00 100%) !important;
+    color: white;
+    box-shadow: 0 6px 20px rgba(255, 78, 0, 0.25);
+    margin: 0 auto 15px auto;
+    border-radius: 100px; /* Maintains the pill shape at larger scale */
+}
+
+/* 3. Subtitle Scaling */
+#home-page .subtitle {
+    font-weight: 800;
+    color: #666;
+    font-size: 1.2rem; /* Increased size */
+    letter-spacing: 2px;
+}
+
+/* 4. Button Text and Padding Scale */
+#home-page .orange-btn {
+    width: 100% !important;
+    font-size: 1.8rem !important; /* Significantly larger text */
+    padding: 1.6rem !important; /* Thicker buttons */
+    border-radius: 100px !important;
+    background: linear-gradient(180deg, #ff6b00 0%, #ffb347 100%) !important;
+    color: white;
+    font-weight: 900;
+}
+
+#home-page .orange-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35);
+}
+
+/* Gray Standout Button Scale */
+#home-page .feature-btn {
+    font-size: 2rem !important;
+    background: linear-gradient(180deg, #333 0%, #555 100%) !important;
+    padding: 2rem !important; /* Even more presence for the Hall of Fame */
+}
+
+/* Mobile Responsiveness for Mega-Scale */
+@media (max-width: 992px) {
+    .dashboard-container {
+        width: 95% !important;
+        padding: 30px !important;
+    }
+    #home-page h1.header-scaled {
+        font-size: 2.2rem;
+    }
+    #home-page .orange-btn {
+        font-size: 1.1rem !important;
     }
 }
 
-/* --- Season Page Overrides --- */
+/* Sidebar Accent for Home (Orange) */
+#home-page .side-nav .nav-content h3 { border-bottom: 2px solid #ff6b00; }
 
-/* Changes the Header on the Season page to match the Solo Red */
+/* =========================================
+   5. LALAPARUZA PAGE (BLUE THEME)
+   ========================================= */
+#lalaparuza-page h1 {
+    width: 65%;
+    padding: 0.5em;
+    background: linear-gradient(130deg, #007bff 0%, #00d4ff 100%) !important;
+    color: white;
+}
+
+#lalaparuza-page .input-layout-container {
+    width: 65%;
+    margin: 0 auto;
+}
+
+#lalaparuza-page textarea {
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid #dee2e6;
+}
+
+#lalaparuza-page .blue-btn {
+    width: 100%;
+    font-size: 2rem !important;
+    padding: 1rem;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #0084ff 0%, #6bc5ff 100%);
+    color: white;
+    font-weight: 800;
+}
+
+#lalaparuza-page .clear-btn {
+    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
+}
+
+#lalaparuza-page .side-nav .nav-content h3 { border-bottom: 2px solid #007bff; }
+
+/* =========================================
+   6. PROCESSOR PAGE (PURPLE THEME)
+   ========================================= */
+/* --- Placement Group Processor Purple Theme --- */
+
+#processor-page .dashboard-container {
+    width: 85% !important;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+#processor-page h1 {
+    display: block;
+    width: 100% !important;
+    padding: 0.6em 0;
+    background: linear-gradient(130deg, #8a2be2 0%, #ba55d3 100%) !important;
+    color: white;
+    border-radius: 100px;
+    font-size: 2.5rem;
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);
+}
+
+#processor-page textarea#inputData {
+    width: 100%;
+    height: 250px;
+    border-radius: 25px;
+    padding: 25px;
+    border: 2px solid #eee;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* Purple Buttons with Glow */
+#processor-page .purple-btn {
+    font-size: 2rem !important;
+    padding: 1rem 0.5rem !important;
+    background: linear-gradient(180deg, #8a2be2 0%, #9d50bb 100%) !important;
+    color: white;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+#processor-page .purple-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+}
+
+/* Reuse the gray-btn from Season/Lalaparuza */
+#processor-page .gray-btn {
+    font-size: 2rem !important;
+    padding: 1rem 0.5rem !important;
+    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
+    color: white;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+#processor-page .side-nav .nav-content h3 { border-bottom: 2px solid #8a2be2; }
+
+/* =========================================
+   7. SEASON RECORD (RED THEME)
+   ========================================= */
+/* --- Season Record Red Theme (Updated 85% Width) --- */
+
+#season-page .dashboard-container {
+    width: 90% !important; /* Increased from 65% for a cleaner, wider layout */
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 50px !important;
+}
+
 #season-page h1 {
-    background: linear-gradient(130deg, rgb(255, 56, 56) 0.00%, rgb(255, 108, 108) 56.97%);
+    display: block;
+    width: 100% !important;
+    padding: 0.6em 0;
+    background: linear-gradient(130deg, #ff3838 0%, #ff6c6c 100%) !important;
+    color: white;
+    border-radius: 100px;
+    font-size: 2.8rem; /* Scaled up to match width */
+    box-shadow: 0 4px 15px rgba(255, 56, 56, 0.2);
 }
 
-/* Changes all buttons on the Season page to match the Solo Pink/Red */
-#season-page button {
-    background: linear-gradient(180deg, rgb(255, 94, 129) 0%, rgb(255, 140, 140) 100%);
+#season-page textarea#seasonInput {
+    width: 100%;
+    height: 220px; /* Taller input for the wider layout */
+    border-radius: 25px;
+    padding: 25px;
+    border: 2px solid #eee;
+    font-size: 1.2rem;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+    margin-bottom: 10px;
 }
 
-/* Changes the result border to match the red theme */
-#season-page .result-line {
-    border-left: 5px solid rgb(255, 56, 56);
+/* Thicker Red Buttons with Pink/Red Glow on Hover */
+#season-page .red-btn {
+    width: 100% !important;
+    font-size: 2rem !important; /* Significantly larger text */
+    padding: 1rem !important; /* Thicker buttons */
+    border-radius: 100px !important;
+    background: linear-gradient(180deg, #ff5e81 0%, #ff8c8c 100%) !important;
+    color: white;
+    border-radius: 50px;
+    transition: all 0.3s ease; /* Smoother glow transition */
 }
 
-/* Keep the Hover effect consistent with the new color */
-#season-page button:hover {
-    filter: brightness(0.9);
-    transform: translateY(-1px);
+#season-page .red-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-3px);
+    /* THE GLOW: A vibrant pink-red shadow */
+    box-shadow: 0 0 20px rgba(255, 94, 129, 0.6), 0 0 40px rgba(255, 56, 56, 0.2);
 }
 
-/* 90% Width Setup */
-        #setup-area, #tournament-display, #contestantInput { 
-            width: 90%; 
-            max-width: 1200px; /* Optional cap so it's not too wide on giant monitors */
-            margin: 0 auto; 
-            background: white;
-            padding: 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+/* Gray Clear Button with subtle Glow */
+#season-page .gray-btn {
+    width: 100% !important;
+    font-size: 2rem !important; /* Significantly larger text */
+    padding: 1rem !important; /* Thicker buttons */
+    border-radius: 100px !important;
+    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
+    color: white;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+#season-page .gray-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(108, 117, 125, 0.4);
+}
+
+/* Ensure results container also matches the new width */
+#results {
+    width: 100%;
+    text-transform: uppercase;
+}
+
+#season-page .side-nav .nav-content h3 { border-bottom: 2px solid #ff6b00; }
+
+/* =========================================
+   8. RESPONSIVE UTILITIES
+   ========================================= */
+@media (max-width: 768px) {
+    .main-content { margin-left: 50px; width: calc(100% - 50px); }
+    #home-page .button-grid-container,
+    #lalaparuza-page .input-layout-container,
+    #processor-page .processor-layout-container {
+        width: 95% !important;
+    }
+}
+
+/* --- Table-like Column Alignment --- */
+#results .result-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    border-left: 6px solid #ff3838;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    font-family: 'Courier New', Courier, monospace; /* Optional: Monospace helps alignment further */
+    font-weight: 900;
+}
+
+/* --- Unified Results Table --- */
+#results-grid {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    border-left: 8px solid #f76868; /* Red theme accent */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.result-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0; /* Soft line between rows */
+    font-weight: 600; /* Matching your bold aesthetic */
+    color: #333;
+}
+
+.result-row:last-child {
+    border-bottom: none; /* Clean finish at the bottom */
+}
+
+/* Fixed column widths for perfect alignment */
+.col-rank {
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.col-score {
+    width: 160px;
+    flex-shrink: 0;
+}
+
+.col-ppe {
+    width: 140px;
+    flex-shrink: 0;
+}
+
+/* Styled Dividers */
+.divider {
+    color: #ff3838; /* Matching the red theme */
+    opacity: 0.3;
+    margin: 0 25px;
+    font-weight: 300;
+}
+
+/* Hover effect for the whole row */
+.result-row:hover {
+    background-color: #fff9f9;
+    color: #ff3838;
+}
+
+/* =========================================
+   9. MISS CONGENIALITY PAGE
+   ========================================= */
+
+/* Page-Specific Layout */
+#congeniality-page .dashboard-container {
+    width: 85% !important;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Primary Header */
+#congeniality-page h1#congeniality-header {
+    display: block;
+    width: 100% !important;
+    padding: 0.6em 0;
+    background: linear-gradient(130deg, #00d2ff 0%, #3a7bd5 100%) !important;
+    color: white;
+    border-radius: 100px;
+    font-size: 2.5rem;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+    text-align: center;
+}
+
+/* Input Styling */
+#congeniality-page textarea#voterInput {
+    width: 100%;
+    height: 250px;
+    border-radius: 25px;
+    padding: 25px;
+    border: 2px solid #eee;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
+    outline: none;
+}
+
+/* Sky Blue Action Button */
+#congeniality-page .sky-btn {
+    font-size: 2rem !important;
+    padding: 1rem 0.5rem !important;
+    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%) !important;
+    color: white;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-weight: 800;
+}
+
+#congeniality-page .sky-btn:hover {
+    filter: brightness(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+}
+
+/* Winner Display Card (Full-Width Pill) */
+#congeniality-page .winner-display-card {
+    width: 100%;
+    background: linear-gradient(130deg, #00d2ff 0%, #3a7bd5 100%);
+    border-radius: 100px; /* Matches the H1 header shape */
+    box-shadow: 0 10px 30px rgba(58, 123, 213, 0.3);
+    border: none;
+}
+
+/* Bolder Underlined Winner Header */
+#congeniality-page .winner-display-card h2 {
+    font-weight: 900 !important;
+    color: white;
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    letter-spacing: 2px;
+}
+
+/* Winner Name (High Contrast) */
+#congeniality-page .display-winner {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #e0f7ff; /* Very light sky blue for readability */
+    margin: 15px 0;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.15);
+    text-transform: uppercase;
+}
+
+#congeniality-page .voting-stats {
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Results Grid Alignment */
+#congeniality-page #results-grid {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    border-left: 8px solid #00d2ff; /* Blue accent box */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+#congeniality-page .result-row {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f8ff;
+    font-weight: 800;
+    color: #333;
+    border-left: none !important; /* Removed side name lines */
+}
+
+#congeniality-page .result-row:last-child {
+    border-bottom: none;
+}
+
+#congeniality-page .col-rank, 
+#congeniality-page .col-ppe {
+    width: 250px !important; /* Consistent column widths */
+    flex-shrink: 0;
+}
+
+#congeniality-page .col-score {
+    width: 120px !important;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: #888;
+    text-align: center;
+}
+
+#congeniality-page .divider {
+    color: #00d2ff;
+    opacity: 0.4;
+    margin: 0 25px;
+}
+
+#congeniality-page .result-row:hover {
+    background-color: #f0fbff;
+    color: #00d2ff;
+}
+
+/* Sidebar Accent */
+#congeniality-page .side-nav .nav-content h3 {
+    border-bottom: 3px solid #00d2ff !important;
+}
+/* --- Gray Clear Button with subtle Glow --- */
+#congeniality-page .gray-btn {
+    width: 100% !important;
+    font-size: 2rem !important; /* Significantly larger text */
+    padding: 1rem !important; /* Thicker buttons */
+    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
+    color: white;
+    border-radius: 100px !important; /* Unified pill shape */
+    transition: all 0.3s ease;
+    border: none;
+    font-weight: 800;
+}
+
+#congeniality-page .gray-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(108, 117, 125, 0.4);
+}

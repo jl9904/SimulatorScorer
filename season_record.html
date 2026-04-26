@@ -3,39 +3,60 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Season Record Scorer</title>
+    <title>SEASON RECORD SCORER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px}
-        textarea{width:100%;height:160px;margin-top:8px;box-sizing:border-box;max-width:100%;padding:8px;font-size:16px;resize:vertical}
-        .row{display:flex;gap:8px;align-items:center;margin-top:8px}
-        #results{margin-top:12px;padding:12px;border:1px solid #ddd;border-radius:6px;background:#fafafa}
-        .invalid{color:#b00; font-size: 0.9rem;}
-        .recordbtn{padding:8px 12px;cursor:pointer}
-        .result-entry { font-family: monospace; border-bottom: 1px solid #eee; padding: 4px 0; }
-        .result-entry:last-child { border-bottom: none; }
-
-        @media (max-width: 480px) {
-            body{margin:12px}
-            textarea{height:120px;font-size:14px}
-            .row{flex-direction:column;align-items:stretch}
-            .recordbtn{width:100%}
-        }
-    </style>
 </head>
 <body id="season-page">
-    <h1 id="season-header">SEASON RECORD SCORER</h1>
 
-    <textarea id="seasonInput" placeholder="Paste the entire season record. Each line represents one person.&#10;&#10;WIN HIGH SAFE...&#10;SAFE LOW BTM..."></textarea>
-    
-    <div class="row">
-    <button id="processModern" class="recordbtn">PROCESS MODERN</button>
-    <button id="processLegacy" class="recordbtn">PROCESS LEGACY</button>
-    <button id="copyResult" class="recordbtn">COPY RESULTS</button>
-    <button id="clearBtn" class="recordbtn">CLEAR</button>
+<nav class="side-nav">
+    <div class="nav-trigger">
+        <span>☰</span> 
+    </div>
+    <div class="nav-content">
+        <h3>MENU</h3>
+        <ul class="list-unstyled">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="season_record.html">SEASON CALCULATOR</a></li>
+            <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
+            <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
+            <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-content">
+    <div class="dashboard-wrapper d-flex align-items-center justify-content-center">
+        
+        <div class="dashboard-container mx-auto p-5 bg-white rounded-5 shadow-sm">
+            
+            <div class="home-hero mb-4 text-center">
+                <h1 id="season-header">SEASON RECORD SCORER</h1>
+            </div>
+
+            <div class="season-layout-container">
+                <textarea id="seasonInput" placeholder="Paste the entire season record below. One person per line.&#10;&#10;WIN HIGH SAFE...&#10;SAFE LOW BTM..."></textarea>
+                
+                <div class="row g-3 mt-3">
+    <div class="col-md-3 col-6">
+        <button id="processModern" class="recordbtn red-btn w-100">PROCESS MODERN</button>
+    </div>
+    <div class="col-md-3 col-6">
+        <button id="processLegacy" class="recordbtn red-btn w-100">PROCESS LEGACY</button>
+    </div>
+    <div class="col-md-3 col-6">
+        <button id="copyResult" class="recordbtn red-btn w-100">COPY</button>
+    </div>
+    <div class="col-md-3 col-6">
+        <button id="clearBtn" class="recordbtn gray-btn w-100">CLEAR</button>
+    </div>
 </div>
+            </div>
 
-    <div id="results" aria-live="polite"></div>
+            <div id="results" class="mt-4" aria-live="polite"></div>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
