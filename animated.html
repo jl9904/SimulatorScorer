@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANIMATED HALL OF FAME</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <script type="module">
+        // 1. Updated Imports to include Firestore and required tools
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            query, 
+            where, 
+            orderBy 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyByxfHK7a1AF_e7jU3rJIp-mrLfJV5C7r4",
+            authDomain: "animatedhof-350b3.firebaseapp.com",
+            projectId: "animatedhof-350b3",
+            storageBucket: "animatedhof-350b3.firebasestorage.app",
+            messagingSenderId: "171067849270",
+            appId: "1:171067849270:web:94e4e87f61477510dab697",
+            measurementId: "G-SB49NTBRRP"
+        };
+
+        // 2. Initialize
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 3. CRITICAL: Bridge the gap to script.js
+        // We attach these to 'window' so your loadHallOfFame() function can see them
+        window.db = db;
+        window.fs = { collection, getDocs, query, where, orderBy };
+
+        console.log("Firebase & Firestore Bridge Initialized");
+    </script>
+
+
+</head>
+<body id="hall-of-fame-page">
+
+    <nav class="side-nav">
+        <div class="nav-trigger"><span>☰</span></div>
+        <div class="nav-content">
+            <h3>MENU</h3>
+            <ul class="list-unstyled">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="season_record.html">SEASON CALCULATOR</a></li>
+                <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
+                <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
+                <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
+                <li><a href="animated.html">HALL OF FAME</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="dashboard-wrapper d-flex align-items-center justify-content-center">
+            
+            <div class="dashboard-container mx-auto p-5 bg-white rounded-5 shadow-sm">
+                
+                <div class="home-hero mb-4 text-center">
+                    <h1 id="fame-header">ANIMATED HALL OF FAME</h1>
+                    <p class="subtitle text-uppercase">Welcome to the Hall of Fame for the Winner's of Animated Drag Race</p>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center mb-4 px-2">
+                    <small class="text-muted fw-bold me-2">SORT BY:</small>
+                    <select class="form-select form-select-sm sort-select w-auto border-0 bg-light rounded-3 shadow-sm" id="master-sort">
+                        <option value="season-asc">Season (Asc)</option>
+                        <option value="season-desc">Season (Desc)</option>
+                        <option value="ppe-desc">Highest PPE First</option>
+                        <option value="ppe-asc">Lowest PPE First</option>
+                    </select>
+                </div>
+
+                <div class="accordion accordion-flush" id="fameAccordion">
+                    
+                    <div class="accordion-item mb-3 border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fame-div-btn" type="button" data-bs-toggle="collapse" data-bs-target="#div-all">
+                                ALL CATEGORIES
+                            </button>
+                        </h2>
+                        <div id="div-all" class="accordion-collapse collapse" data-bs-parent="#fameAccordion">
+                            <div class="accordion-body fame-list-container" id="content-all">
+                                <p class="text-muted">Loading complete records...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item mb-3 border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fame-div-btn" type="button" data-bs-toggle="collapse" data-bs-target="#div-main">
+                                MAIN SEASONS
+                            </button>
+                        </h2>
+                        <div id="div-main" class="accordion-collapse collapse" data-bs-parent="#fameAccordion">
+                            <div class="accordion-body fame-list-container" id="content-main">
+                                <p class="text-muted">Loading Main Seasons...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item mb-3 border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fame-div-btn" type="button" data-bs-toggle="collapse" data-bs-target="#div-stars">
+                                ALL STARS
+                            </button>
+                        </h2>
+                        <div id="div-stars" class="accordion-collapse collapse" data-bs-parent="#fameAccordion">
+                            <div class="accordion-body fame-list-container" id="content-all_stars">
+                                <p class="text-muted">Loading All Star records...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item mb-3 border-0">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed fame-div-btn" type="button" data-bs-toggle="collapse" data-bs-target="#div-spinoff">
+                                SPINOFFS
+                            </button>
+                        </h2>
+                        <div id="div-spinoff" class="accordion-collapse collapse" data-bs-parent="#fameAccordion">
+                            <div class="accordion-body fame-list-container" id="content-spinoff">
+                                <p class="text-muted">Loading spinoff outcomes...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

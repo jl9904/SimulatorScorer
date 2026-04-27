@@ -627,3 +627,180 @@ button, .btn-custom {
     transform: translateY(-3px);
     box-shadow: 0 0 15px rgba(108, 117, 125, 0.4);
 }
+
+/* =========================================
+   10. ANIMATED HALL OF FAME
+   ========================================= */
+
+#hall-of-fame-page .dashboard-container {
+    width: 85% !important;
+    max-width: 1400px;
+}
+
+#hall-of-fame-page h1#fame-header {
+    background: linear-gradient(130deg, #ff8c00 0%, #ffc107 100%) !important;
+    color: white;
+    border-radius: 100px;
+    padding: 0.6em 0;
+    font-size: 2.5rem;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+    text-align: center;
+}
+
+/* Accordion Button Styling */
+.fame-div-btn {
+    background: #f8f9fa !important;
+    color: #333 !important;
+    font-weight: 900 !important;
+    font-size: 1.5rem !important;
+    border-radius: 20px !important;
+    padding: 1.5rem 2rem !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 10px solid #ff8c00 !important;
+    transition: all 0.3s ease !important;
+}
+
+.fame-div-btn:not(.collapsed) {
+    background: linear-gradient(90deg, #ff8c00, #ffc107) !important;
+    color: white !important;
+    transform: scale(1.02);
+}
+
+.fame-div-btn::after {
+    filter: grayscale(1) invert(1); /* Makes arrow white when active */
+}
+
+/* Container for the hard-coded data */
+.fame-list-container {
+    background: #ffffff;
+    border: 2px solid #f8f9fa;
+    border-radius: 0 0 20px 20px;
+    padding: 2rem !important;
+}
+
+/* Sidebar Accent */
+#hall-of-fame-page .side-nav .nav-content h3 {
+    border-bottom: 3px solid #ff8c00 !important;
+}
+
+/* --- Hall of Fame Winner Rows --- */
+
+.fame-row {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #eee;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    overflow: hidden; /* Keeps image corners clean */
+    transition: transform 0.2s ease;
+}
+
+.fame-row:hover {
+    transform: scale(1.01);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* Season Column */
+.fame-season {
+    width: 60px;
+    font-weight: 900;
+    font-size: 1.2rem;
+    text-align: center;
+    background: #f8f9fa;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #eee;
+}
+
+/* Square Image Wrapper */
+.fame-img-wrap {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.fame-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures square crop */
+}
+
+/* Details Section */
+.fame-details {
+    flex-grow: 1;
+    padding: 0 20px;
+}
+
+.fame-name {
+    font-weight: 900;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Placement Badges (Small Boxes) */
+.placement-track {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.placement-track span {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    min-width: 45px;
+    text-align: center;
+    color: black;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Color Key (Matching your images) */
+.p-win  { background-color: royalblue; color: white !important; } /* Blue */
+.p-high { background-color: lightblue; } /* Light Blue */
+.p-safe { background-color: #ffffff; } /* White */
+.p-low  { background-color: lightpink; } /* Light Red/Pink */
+.p-btm  { background-color: tomato; } /* Red */
+.p-top2 { background-color: #ffff00; } /* Yellow */
+.p-elim {background-color: red; }
+
+/* PPE Column */
+.fame-ppe {
+    width: 100px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #ff8c00; /* Matching the Gold theme */
+    padding-right: 15px;
+}
+
+.fame-ppe small {
+    display: block;
+    font-size: 0.7rem;
+    color: #999;
+}
+
+/* Clean integrated sorting box */
+.sort-select {
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.4rem 2rem 0.4rem 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.sort-select:hover {
+    background-color: #e9ecef !important;
+}
+
+.sort-select:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+/* Ensure the header remains static as requested */
+#fame-header {
+    position: static; /* */
+}
