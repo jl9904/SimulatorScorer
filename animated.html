@@ -16,7 +16,9 @@
             getDocs, 
             query, 
             where, 
-            orderBy 
+            orderBy,
+            doc,
+            updateDoc 
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -29,16 +31,14 @@
             measurementId: "G-SB49NTBRRP"
         };
 
-        // 2. Initialize
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    const db = getFirestore(app);
 
-        // 3. CRITICAL: Bridge the gap to script.js
-        // We attach these to 'window' so your loadHallOfFame() function can see them
-        window.db = db;
-        window.fs = { collection, getDocs, query, where, orderBy };
-
-        console.log("Firebase & Firestore Bridge Initialized");
+    window.db = db;
+    // 2. MAKE SURE updateDoc and doc are added to the object here
+    window.fs = { collection, getDocs, query, where, orderBy, doc, updateDoc }; 
+    
+    console.log("Bridge fully built!");
     </script>
 
 

@@ -301,12 +301,20 @@ async function loadHallOfFame(targetDiv = "all", field = "season", direction = "
         let q;
 
         // For individual tabs, we keep the simple Firestore query
+        // 1. If it's NOT the "all" tab, we filter by the specific division
         if (targetDiv !== "all") {
-            q = fs.query(colRef, fs.where("division", "==", targetDiv), fs.orderBy(field, direction));
-        } else {
-            // For the 'All' tab, we pull everything sorted by the user's choice (Season/PPE)
-            // We will handle the Division grouping manually in JavaScript below
-            q = fs.query(colRef, fs.orderBy(field, direction));
+            q = fs.query(
+                colRef, 
+                fs.where("division", "array-contains", targetDiv), 
+                fs.orderBy(field, direction)
+            );
+        } 
+        // 2. If it IS the "all" tab, we just want everything sorted by the user's choice
+        else {
+            q = fs.query(
+                colRef, 
+                fs.orderBy(field, direction)
+            );
         }
 
         const snap = await fs.getDocs(q);
@@ -323,22 +331,26 @@ async function loadHallOfFame(targetDiv = "all", field = "season", direction = "
                 const divisionOrder = { "main": 1, "all_stars": 2, "spinoff": 3 };
 
                 docsArray.sort((a, b) => {
-                    // --- LOGIC: PPE IGNORES FRANCHISE ---
+                    // 1. PPE sorting still ignores divisions entirely
                     if (field === "ppe") {
-                        return direction === "asc" 
-                            ? a.ppe - b.ppe 
-                            : b.ppe - a.ppe;
+                        return direction === "asc" ? a.ppe - b.ppe : b.ppe - a.ppe;
                     }
 
-                    // --- LOGIC: SEASON KEEPS FRANCHISE GROUPED ---
-                    const priorityA = divisionOrder[a.division] || 99;
-                    const priorityB = divisionOrder[b.division] || 99;
+                    // 2. For Season sorting, find the "best" (lowest number) priority in the array
+                    const getPriority = (divArray) => {
+                        if (!Array.isArray(divArray)) return 99;
+                        const priorities = divArray.map(d => divisionOrder[d] || 99);
+                        return Math.min(...priorities); // Get the most "important" category
+                    };
+
+                    const priorityA = getPriority(a.division);
+                    const priorityB = getPriority(b.division);
 
                     if (priorityA !== priorityB) {
                         return direction === "asc" ? priorityA - priorityB : priorityB - priorityA;
                     }
 
-                    // Within the same division, sort by season number/string
+                    // 3. Within the same priority group, sort by Season
                     return direction === "asc" 
                         ? String(a.season).localeCompare(String(b.season), undefined, {numeric: true})
                         : String(b.season).localeCompare(String(a.season), undefined, {numeric: true});
@@ -356,6 +368,23 @@ async function loadHallOfFame(targetDiv = "all", field = "season", direction = "
 }
 
 const winnersToUpload = [
+    {
+        name: "Star Sapphire",
+        season: 15,
+        ppe: 6.29,
+        division: ["main"],
+        image_url: "stars.png",
+        placements: ["HIGH", "SAFE", "WIN", "SAFE", "SAFE", "SAFE", "SAFE", "SAFE", "BTM 2", "LOW", "WIN", "HIGH", "WIN", "HIGH*"]
+    },
+    {
+        name: "She-Ra",
+        season: "V1",
+        ppe: 7.00,
+        division: ["spinoff", "all_stars"],
+        image_url: "shera.png",
+        placements: ["SAFE", "SAFE", "WIN", "HIGH", "BTM 2", "WIN", "WIN"]
+    }
+
 ];
 
 // 1. Define the function (keep your current logic)
