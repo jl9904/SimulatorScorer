@@ -369,20 +369,36 @@ async function loadHallOfFame(targetDiv = "all", field = "season", direction = "
 
 const winnersToUpload = [
     {
-        name: "Star Sapphire",
-        season: 15,
-        ppe: 6.29,
-        division: ["main"],
-        image_url: "stars.png",
-        placements: ["HIGH", "SAFE", "WIN", "SAFE", "SAFE", "SAFE", "SAFE", "SAFE", "BTM 2", "LOW", "WIN", "HIGH", "WIN", "HIGH*"]
+        name: "Chica",
+        season: 7,
+        ppe: 7.18,
+        division: ["all_stars"],
+        image_url: "chicaaw.png",
+        placements: ["HIGH", "HIGH", "SAFE", "SAFE", "SAFE", "WIN", "SAFE", "HIGH", "WIN", "SAFE", "WIN"]
     },
     {
-        name: "She-Ra",
-        season: "V1",
-        ppe: 7.00,
-        division: ["spinoff", "all_stars"],
-        image_url: "shera.png",
-        placements: ["SAFE", "SAFE", "WIN", "HIGH", "BTM 2", "WIN", "WIN"]
+        name: "Jimmy Neutron",
+        season: "B4",
+        ppe: 4.82,
+        division: ["spinoff"],
+        image_url: "jimmy.png",
+        placements: ["HIGH", "SAFE", "HIGH", "LOW", "LOW", "HIGH", "BTM 2", "SAFE", "WIN", "BTM 2", "BTM 2"]
+    },
+    {
+        name: "Asami",
+        season: "16",
+        ppe: 7.07,
+        division: ["main"],
+        image_url: "asami.png",
+        placements: ["SAFE", "WIN", "HIGH", "SAFE", "SAFE", "HIGH", "SAFE", "LOW", "HIGH", "HIGH", "HIGH", "HIGH", "WIN", "HIGH",]
+    },
+    {
+        name: "Mama Coco",
+        season: "8",
+        ppe: 6.00,
+        division: ["all_stars"],
+        image_url: "mama.png",
+        placements: ["SAFE", "SAFE", "SAFE", "BTM 2", "HIGH", "SAFE", "HIGH", "WIN", "WIN", "HIGH", "BTM 2"]
     }
 
 ];
