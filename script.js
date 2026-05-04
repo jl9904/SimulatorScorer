@@ -435,3 +435,16 @@ async function bulkUpload() {
 window.addEventListener('load', () => {
      //bulkUpload(); // Uncomment this line ONLY when you are ready to push the data
 });
+
+
+// Mobile Menu Toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const trigger = document.querySelector('.nav-trigger');
+    const content = document.querySelector('.nav-content');
+
+    if (trigger && content) {
+        trigger.addEventListener('click', () => {
+            content.classList.toggle('active');
+        });
+    }
+});
