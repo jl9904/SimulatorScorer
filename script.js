@@ -48,107 +48,7 @@ if (masterSort) {
     if (copyBtn) copyBtn.addEventListener('click', copyToClipboard);
 });
 
-// /* --- LALAPARUZA SIMULATOR --- */
-// function generateTournament() {
-//     const input = document.getElementById('contestantInput').value;
-//     let contestants = input.split('\n').map(name => name.trim()).filter(name => name !== "");
-
-//     if (contestants.length < 2) {
-//         alert("Please enter at least 2 contestants!");
-//         return;
-//     }
-
-//     tournamentSteps = [];
-//     currentStepIndex = 0;
-//     fullRecapHTML = ""; 
-//     let pool = [...contestants];
-//     let roundNumber = 1;
-
-//     while (pool.length > 1) {
-//         let winners = [];
-//         let matches = [];
-//         let roundName = pool.length === 2 ? "THE FINAL SMACKDOWN" : (pool.length <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
-        
-//         fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
-//         pool.sort(() => Math.random() - 0.5);
-
-//         if (roundNumber === 1 && pool.length % 2 !== 0) {
-//             const c = [pool.pop(), pool.pop(), pool.pop()];
-//             const winCount = (((pool.length / 2) + 1) % 2 === 0) ? 1 : 2;
-//             const shuffled = [...c].sort(() => Math.random() - 0.5);
-//             const matchWinners = shuffled.slice(0, winCount);
-//             winners.push(...matchWinners);
-//             matches.push({ type: 'triple', players: c, winners: matchWinners });
-//             fullRecapHTML += `3-Way: ${c.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
-//         } 
-//         else if (pool.length % 2 !== 0) {
-//             const luckyOne = pool.pop();
-//             winners.push(luckyOne);
-//             matches.push({ type: 'bye', player: luckyOne });
-//             fullRecapHTML += `${luckyOne} had a bye.<br>`;
-//         }
-
-//         for (let i = 0; i < pool.length; i += 2) {
-//             const c1 = pool[i];
-//             const c2 = pool[i + 1];
-//             const winner = Math.random() < 0.5 ? c1 : c2;
-//             winners.push(winner);
-//             matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
-//             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
-//         }
-
-//         tournamentSteps.push({ name: roundName, matches: matches });
-//         pool = winners;
-//         roundNumber++;
-//         fullRecapHTML += `<br>`;
-//     }
-
-//     tournamentSteps.push({ name: "WINNER", champion: pool[0] });
-//     document.getElementById('setup-area').style.display = 'none';
-//     document.getElementById('tournament-display').style.display = 'block';
-//     showNextStep();
-// }
-
-// function showNextStep() {
-//     const step = tournamentSteps[currentStepIndex];
-//     const title = document.getElementById('roundTitle');
-//     const display = document.getElementById('roundResults');
-//     const btn = document.getElementById('nextStepBtn');
-//     const recapBox = document.getElementById('recap-container');
-
-//     title.innerText = step.name;
-//     display.innerHTML = "";
-
-//     if (step.champion) {
-//         display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
-//         recapBox.innerHTML = `
-//             <details>
-//                 <summary>Smackdown Recap</summary>
-//                 <div class="recap-content">${fullRecapHTML}</div>
-//             </details>`;
-//         btn.innerText = "RESTART SIMULATOR";
-//         btn.onclick = () => location.reload();
-//     } else {
-//         step.matches.forEach(m => {
-//             let div = document.createElement('div');
-//             div.className = 'match-card';
-//             if (m.type === '1v1') div.innerHTML = `${m.p1} vs. ${m.p2}<br><strong>${m.winner} advances!</strong>`;
-//             else if (m.type === 'triple') div.innerHTML = `<strong>3-WAY:</strong> ${m.players.join(' vs. ')}<br><strong>${m.winners.join(' & ')} advance(s)!</strong>`;
-//             else div.innerHTML = `<em>${m.player} has a bye and advances!</em>`;
-//             display.appendChild(div);
-//         });
-//         currentStepIndex++;
-//         btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
-//     }
-// }
-
-/* --- MORE RANDOM LALAPARUZA SIMULATOR --- */
-
-// Helper function to check if a contestant should lose to clean names
-function isMarked(name) {
-    return name.includes("'") || name.includes("~") || name.includes("*");
-}
-
+/* --- LALAPARUZA SIMULATOR --- */
 function generateTournament() {
     const input = document.getElementById('contestantInput').value;
     let contestants = input.split('\n').map(name => name.trim()).filter(name => name !== "");
@@ -161,123 +61,49 @@ function generateTournament() {
     tournamentSteps = [];
     currentStepIndex = 0;
     fullRecapHTML = ""; 
+    let pool = [...contestants];
     let roundNumber = 1;
 
-    // Split into two distinct pools at the start
-    let cleanPool = contestants.filter(name => !isMarked(name));
-    let markedPool = contestants.filter(name => isMarked(name));
-
-    // Shuffle both pools for initial randomness
-    cleanPool.sort(() => Math.random() - 0.5);
-    markedPool.sort(() => Math.random() - 0.5);
-
-    // Keep running rounds until we only have 1 total survivor left
-    while ((cleanPool.length + markedPool.length) > 1) {
-        let nextCleanPool = [];
-        let nextMarkedPool = [];
+    while (pool.length > 1) {
+        let winners = [];
         let matches = [];
-        
-        let currentTotalCount = cleanPool.length + markedPool.length;
-        let roundName = currentTotalCount === 2 ? "THE FINAL SMACKDOWN" : (currentTotalCount <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
+        let roundName = pool.length === 2 ? "THE FINAL SMACKDOWN" : (pool.length <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
         
         fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
+        pool.sort(() => Math.random() - 0.5);
 
-        // --- ROUND 1 SPECIAL TRIPLE THREAT LOGIC ---
-        // If it's the very first round and total count is odd, handle a 3-way match safely
-        if (roundNumber === 1 && currentTotalCount % 2 !== 0) {
-            let triplePlayers = [];
-            
-            // Pull from marked pool first to keep clean players separated
-            while (triplePlayers.length < 3 && markedPool.length > 0) {
-                triplePlayers.push(markedPool.pop());
-            }
-            while (triplePlayers.length < 3 && cleanPool.length > 0) {
-                triplePlayers.push(cleanPool.pop());
-            }
-
-            const remainingPairs = (cleanPool.length + markedPool.length) / 2;
-            const winCount = ((remainingPairs + 1) % 2 === 0) ? 1 : 2;
-            
-            // Winners are determined by status (clean always beats marked)
-            const sortedPlayers = [...triplePlayers].sort((a, b) => isMarked(a) - isMarked(b));
-            const matchWinners = sortedPlayers.slice(0, winCount);
-
-            // Sort winners back into their respective pools for the next round
-            matchWinners.forEach(w => {
-                if (isMarked(w)) nextMarkedPool.push(w);
-                else nextCleanPool.push(w);
-            });
-
-            matches.push({ type: 'triple', players: triplePlayers, winners: matchWinners });
-            fullRecapHTML += `3-Way: ${triplePlayers.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
-        }
-        // --- BYE LOGIC FOR SUBSEQUENT ROUNDS ---
-        else if (currentTotalCount % 2 !== 0) {
-            // Prioritize giving byes to clean players to advance them safely
-            if (cleanPool.length > 0) {
-                const luckyOne = cleanPool.pop();
-                nextCleanPool.push(luckyOne);
-                matches.push({ type: 'bye', player: luckyOne });
-                fullRecapHTML += `${luckyOne} had a bye.<br>`;
-            } else {
-                const luckyOne = markedPool.pop();
-                nextMarkedPool.push(luckyOne);
-                matches.push({ type: 'bye', player: luckyOne });
-                fullRecapHTML += `${luckyOne} had a bye.<br>`;
-            }
+        if (roundNumber === 1 && pool.length % 2 !== 0) {
+            const c = [pool.pop(), pool.pop(), pool.pop()];
+            const winCount = (((pool.length / 2) + 1) % 2 === 0) ? 1 : 2;
+            const shuffled = [...c].sort(() => Math.random() - 0.5);
+            const matchWinners = shuffled.slice(0, winCount);
+            winners.push(...matchWinners);
+            matches.push({ type: 'triple', players: c, winners: matchWinners });
+            fullRecapHTML += `3-Way: ${c.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
+        } 
+        else if (pool.length % 2 !== 0) {
+            const luckyOne = pool.pop();
+            winners.push(luckyOne);
+            matches.push({ type: 'bye', player: luckyOne });
+            fullRecapHTML += `${luckyOne} had a bye.<br>`;
         }
 
-        // --- PAIRINGS ENGINE ---
-        // Match Clean vs Marked for as long as possible
-        while (cleanPool.length > 0 && markedPool.length > 0) {
-            const c1 = cleanPool.pop();
-            const c2 = markedPool.pop();
-            
-            // Clean contestant always wins automatically
-            nextCleanPool.push(c1); 
-            matches.push({ type: '1v1', p1: c1, p2: c2, winner: c1 });
-            fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${c1}</strong><br>`;
-        }
-
-        // If we ran out of marked contestants, clean contestants finally battle each other
-        while (cleanPool.length >= 2) {
-            const c1 = cleanPool.pop();
-            const c2 = cleanPool.pop();
+        for (let i = 0; i < pool.length; i += 2) {
+            const c1 = pool[i];
+            const c2 = pool[i + 1];
             const winner = Math.random() < 0.5 ? c1 : c2;
-            
-            nextCleanPool.push(winner);
+            winners.push(winner);
             matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
         }
-
-        // If no clean contestants are left, marked contestants battle each other
-        while (markedPool.length >= 2) {
-            const c1 = markedPool.pop();
-            const c2 = markedPool.pop();
-            const winner = Math.random() < 0.5 ? c1 : c2;
-            
-            nextMarkedPool.push(winner);
-            matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
-            fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
-        }
-
-        // Push leftovers over if a single competitor remains in either pool
-        if (cleanPool.length === 1) nextCleanPool.push(cleanPool.pop());
-        if (markedPool.length === 1) nextMarkedPool.push(markedPool.pop());
 
         tournamentSteps.push({ name: roundName, matches: matches });
-        
-        // Pass the survivors onto the next round pool
-        cleanPool = nextCleanPool.sort(() => Math.random() - 0.5);
-        markedPool = nextMarkedPool.sort(() => Math.random() - 0.5);
+        pool = winners;
         roundNumber++;
         fullRecapHTML += `<br>`;
     }
 
-    // Determine absolute champion
-    const finalChampion = cleanPool.length > 0 ? cleanPool[0] : markedPool[0];
-
-    tournamentSteps.push({ name: "WINNER", champion: finalChampion });
+    tournamentSteps.push({ name: "WINNER", champion: pool[0] });
     document.getElementById('setup-area').style.display = 'none';
     document.getElementById('tournament-display').style.display = 'block';
     showNextStep();
@@ -315,6 +141,180 @@ function showNextStep() {
         btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
     }
 }
+
+// /* --- MORE RANDOM LALAPARUZA SIMULATOR --- */
+
+// // Helper function to check if a contestant should lose to clean names
+// function isMarked(name) {
+//     return name.includes("'") || name.includes("~") || name.includes("*");
+// }
+
+// function generateTournament() {
+//     const input = document.getElementById('contestantInput').value;
+//     let contestants = input.split('\n').map(name => name.trim()).filter(name => name !== "");
+
+//     if (contestants.length < 2) {
+//         alert("Please enter at least 2 contestants!");
+//         return;
+//     }
+
+//     tournamentSteps = [];
+//     currentStepIndex = 0;
+//     fullRecapHTML = ""; 
+//     let roundNumber = 1;
+
+//     // Split into two distinct pools at the start
+//     let cleanPool = contestants.filter(name => !isMarked(name));
+//     let markedPool = contestants.filter(name => isMarked(name));
+
+//     // Shuffle both pools for initial randomness
+//     cleanPool.sort(() => Math.random() - 0.5);
+//     markedPool.sort(() => Math.random() - 0.5);
+
+//     // Keep running rounds until we only have 1 total survivor left
+//     while ((cleanPool.length + markedPool.length) > 1) {
+//         let nextCleanPool = [];
+//         let nextMarkedPool = [];
+//         let matches = [];
+        
+//         let currentTotalCount = cleanPool.length + markedPool.length;
+//         let roundName = currentTotalCount === 2 ? "THE FINAL SMACKDOWN" : (currentTotalCount <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
+        
+//         fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
+
+//         // --- ROUND 1 SPECIAL TRIPLE THREAT LOGIC ---
+//         // If it's the very first round and total count is odd, handle a 3-way match safely
+//         if (roundNumber === 1 && currentTotalCount % 2 !== 0) {
+//             let triplePlayers = [];
+            
+//             // Pull from marked pool first to keep clean players separated
+//             while (triplePlayers.length < 3 && markedPool.length > 0) {
+//                 triplePlayers.push(markedPool.pop());
+//             }
+//             while (triplePlayers.length < 3 && cleanPool.length > 0) {
+//                 triplePlayers.push(cleanPool.pop());
+//             }
+
+//             const remainingPairs = (cleanPool.length + markedPool.length) / 2;
+//             const winCount = ((remainingPairs + 1) % 2 === 0) ? 1 : 2;
+            
+//             // Winners are determined by status (clean always beats marked)
+//             const sortedPlayers = [...triplePlayers].sort((a, b) => isMarked(a) - isMarked(b));
+//             const matchWinners = sortedPlayers.slice(0, winCount);
+
+//             // Sort winners back into their respective pools for the next round
+//             matchWinners.forEach(w => {
+//                 if (isMarked(w)) nextMarkedPool.push(w);
+//                 else nextCleanPool.push(w);
+//             });
+
+//             matches.push({ type: 'triple', players: triplePlayers, winners: matchWinners });
+//             fullRecapHTML += `3-Way: ${triplePlayers.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
+//         }
+//         // --- BYE LOGIC FOR SUBSEQUENT ROUNDS ---
+//         else if (currentTotalCount % 2 !== 0) {
+//             // Prioritize giving byes to clean players to advance them safely
+//             if (cleanPool.length > 0) {
+//                 const luckyOne = cleanPool.pop();
+//                 nextCleanPool.push(luckyOne);
+//                 matches.push({ type: 'bye', player: luckyOne });
+//                 fullRecapHTML += `${luckyOne} had a bye.<br>`;
+//             } else {
+//                 const luckyOne = markedPool.pop();
+//                 nextMarkedPool.push(luckyOne);
+//                 matches.push({ type: 'bye', player: luckyOne });
+//                 fullRecapHTML += `${luckyOne} had a bye.<br>`;
+//             }
+//         }
+
+//         // --- PAIRINGS ENGINE ---
+//         // Match Clean vs Marked for as long as possible
+//         while (cleanPool.length > 0 && markedPool.length > 0) {
+//             const c1 = cleanPool.pop();
+//             const c2 = markedPool.pop();
+            
+//             // Clean contestant always wins automatically
+//             nextCleanPool.push(c1); 
+//             matches.push({ type: '1v1', p1: c1, p2: c2, winner: c1 });
+//             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${c1}</strong><br>`;
+//         }
+
+//         // If we ran out of marked contestants, clean contestants finally battle each other
+//         while (cleanPool.length >= 2) {
+//             const c1 = cleanPool.pop();
+//             const c2 = cleanPool.pop();
+//             const winner = Math.random() < 0.5 ? c1 : c2;
+            
+//             nextCleanPool.push(winner);
+//             matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
+//             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
+//         }
+
+//         // If no clean contestants are left, marked contestants battle each other
+//         while (markedPool.length >= 2) {
+//             const c1 = markedPool.pop();
+//             const c2 = markedPool.pop();
+//             const winner = Math.random() < 0.5 ? c1 : c2;
+            
+//             nextMarkedPool.push(winner);
+//             matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
+//             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
+//         }
+
+//         // Push leftovers over if a single competitor remains in either pool
+//         if (cleanPool.length === 1) nextCleanPool.push(cleanPool.pop());
+//         if (markedPool.length === 1) nextMarkedPool.push(markedPool.pop());
+
+//         tournamentSteps.push({ name: roundName, matches: matches });
+        
+//         // Pass the survivors onto the next round pool
+//         cleanPool = nextCleanPool.sort(() => Math.random() - 0.5);
+//         markedPool = nextMarkedPool.sort(() => Math.random() - 0.5);
+//         roundNumber++;
+//         fullRecapHTML += `<br>`;
+//     }
+
+//     // Determine absolute champion
+//     const finalChampion = cleanPool.length > 0 ? cleanPool[0] : markedPool[0];
+
+//     tournamentSteps.push({ name: "WINNER", champion: finalChampion });
+//     document.getElementById('setup-area').style.display = 'none';
+//     document.getElementById('tournament-display').style.display = 'block';
+//     showNextStep();
+// }
+
+// function showNextStep() {
+//     const step = tournamentSteps[currentStepIndex];
+//     const title = document.getElementById('roundTitle');
+//     const display = document.getElementById('roundResults');
+//     const btn = document.getElementById('nextStepBtn');
+//     const recapBox = document.getElementById('recap-container');
+
+//     title.innerText = step.name;
+//     display.innerHTML = "";
+
+//     if (step.champion) {
+//         display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
+//         recapBox.innerHTML = `
+//             <details>
+//                 <summary>Smackdown Recap</summary>
+//                 <div class="recap-content">${fullRecapHTML}</div>
+//             </details>`;
+//         btn.innerText = "RESTART SIMULATOR";
+//         btn.onclick = () => location.reload();
+//     } else {
+//         step.matches.forEach(m => {
+//             let div = document.createElement('div');
+//             div.className = 'match-card';
+//             if (m.type === '1v1') div.innerHTML = `${m.p1} vs. ${m.p2}<br><strong>${m.winner} advances!</strong>`;
+//             else if (m.type === 'triple') div.innerHTML = `<strong>3-WAY:</strong> ${m.players.join(' vs. ')}<br><strong>${m.winners.join(' & ')} advance(s)!</strong>`;
+//             else div.innerHTML = `<em>${m.player} has a bye and advances!</em>`;
+//             display.appendChild(div);
+//         });
+//         currentStepIndex++;
+//         btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
+//     }
+// }
 
 /* --- SEASON CALCULATOR LOGIC --- */
 let processedData = []; 
@@ -543,37 +543,94 @@ async function loadHallOfFame(targetDiv = "all", field = "season", direction = "
 
 const winnersToUpload = [
     {
-        name: "Chica",
-        season: 7,
-        ppe: 7.18,
-        division: ["all_stars"],
-        image_url: "chicaaw.png",
-        placements: ["HIGH", "HIGH", "SAFE", "SAFE", "SAFE", "WIN", "SAFE", "HIGH", "WIN", "SAFE", "WIN"]
-    },
-    {
-        name: "Jimmy Neutron",
-        season: "B4",
-        ppe: 4.82,
-        division: ["spinoff"],
-        image_url: "jimmy.png",
-        placements: ["HIGH", "SAFE", "HIGH", "LOW", "LOW", "HIGH", "BTM 2", "SAFE", "WIN", "BTM 2", "BTM 2"]
-    },
-    {
-        name: "Asami",
-        season: "16",
-        ppe: 7.07,
+        name: "Rogue The Bat",
+        season: 17,
+        ppe: 7.23,
         division: ["main"],
-        image_url: "asami.png",
-        placements: ["SAFE", "WIN", "HIGH", "SAFE", "SAFE", "HIGH", "SAFE", "LOW", "HIGH", "HIGH", "HIGH", "HIGH", "WIN", "HIGH",]
+        image_url: "roguetb.png",
+        placements: ["HIGH", "WIN", "SAFE", "SAFE", "SAFE", "WIN", "HIGH", "HIGH", "BTM 2", "HIGH", "HIGH", "HIGH", "WIN"]
     },
     {
-        name: "Mama Coco",
-        season: "8",
-        ppe: 6.00,
+        name: "Mother Gothel",
+        season: "9",
+        ppe: 7.82,
         division: ["all_stars"],
-        image_url: "mama.png",
-        placements: ["SAFE", "SAFE", "SAFE", "BTM 2", "HIGH", "SAFE", "HIGH", "WIN", "WIN", "HIGH", "BTM 2"]
+        image_url: "gothel.png",
+        placements: ["SAFE", "WIN", "HIGH", "WIN", "SAFE", "WIN", "SAFE", "WIN", "SAFE", "WIN", "HIGH"]
+    },
+    {
+        name: "Kissy Missy",
+        season: "18",
+        ppe: 5.85,
+        division: ["main"],
+        image_url: "kissy.png",
+        placements: ["SAFE", "SAFE", "SAFE", "SAFE", "WIN", "LOW", "HIGH", "LOW", "HIGH", "LOW", "LOW", "HIGH", "WIN"]
+    },
+    {
+        name: "Bubbles",
+        season: "10",
+        ppe: 7.13,
+        division: ["all_stars"],
+        image_url: "bubbles.png",
+        placements: ["HIGH", "HIGH", "WIN", "SAFE", "LOW", "SAFE", "HIGH", "WIN"]
+    },
+    {
+        name: "Ursula",
+        season: "19",
+        ppe: 7.23,
+        division: ["main"],
+        image_url: "ursula.png",
+        placements: ["SAFE", "HIGH", "HIGH", "WIN", "SAFE", "SAFE", "HIGH", "HIGH", "BTM 2", "HIGH", "WIN", "HIGH", "WIN"]
+    },
+    {
+        name: "Blondie Lockes",
+        season: "20",
+        ppe: 6.33,
+        division: ["main"],
+        image_url: "blondie.png",
+        placements: ["SAFE", "WIN", "SAFE", "SAFE", "LOW", "SAFE", "SAFE", "SAFE", "SAFE", "WIN", "HIGH", "HIGH", "SAFE", "HIGH", "HIGH"]
+    },
+    {
+        name: "Thorn",
+        season: "11",
+        ppe: 8.17,
+        division: ["all_stars"],
+        image_url: "thorn.png",
+        placements: ["WIN", "SAFE", "WIN", "HIGH", "HIGH", "HIGH"]
+    },
+    {
+        name: "Aphrodite",
+        season: "21",
+        ppe: 6.17,
+        division: ["main"],
+        image_url: "aphrodite.png",
+        placements: ["SAFE", "SAFE", "HIGH", "SAFE", "SAFE", "WIN", "SAFE", "SAFE", "SAFE", "LOW", "HIGH", "WIN"]
+    },
+    {
+        name: "Chloe Price & Max Caufield",
+        season: "12",
+        ppe: 6.36,
+        division: ["all_stars"],
+        image_url: "pricefield.png",
+        placements: ["WIN", "SAFE", "WIN", "SAFE", "SAFE", "BTM 2", "SAFE", "WIN", "BTM 2", "HIGH", "WIN"]
+    },
+    {
+        name: "Share Bear",
+        season: "22",
+        ppe: 6.00,
+        division: ["main"],
+        image_url: "sharebear.png",
+        placements: ["SAFE", "SAFE", "SAFE", "SAFE", "SAFE", "WIN", "LOW", "SAFE", "HIGH", "WIN", "BTM 2", "HIGH", "HIGH"]
+    },
+    {
+        name: "Herobrine",
+        season: "N1",
+        ppe: 6.00,
+        division: ["spinoff"],
+        image_url: "herobrine.png",
+        placements: ["SAFE", "SAFE", "HIGH", "LOW", "HIGH", "SAFE", "WIN", "WIN", "WIN", "BTM 2", "BTM 3"]
     }
+
 
 ];
 
