@@ -543,95 +543,69 @@ async function loadHallOfFame(targetDiv = "all", field = "season", direction = "
 
 const winnersToUpload = [
     {
-        name: "Rogue The Bat",
-        season: 17,
-        ppe: 7.23,
-        division: ["main"],
-        image_url: "roguetb.png",
-        placements: ["HIGH", "WIN", "SAFE", "SAFE", "SAFE", "WIN", "HIGH", "HIGH", "BTM 2", "HIGH", "HIGH", "HIGH", "WIN"]
-    },
-    {
-        name: "Mother Gothel",
-        season: "9",
-        ppe: 7.82,
-        division: ["all_stars"],
-        image_url: "gothel.png",
-        placements: ["SAFE", "WIN", "HIGH", "WIN", "SAFE", "WIN", "SAFE", "WIN", "SAFE", "WIN", "HIGH"]
-    },
-    {
-        name: "Kissy Missy",
-        season: "18",
-        ppe: 5.85,
-        division: ["main"],
-        image_url: "kissy.png",
-        placements: ["SAFE", "SAFE", "SAFE", "SAFE", "WIN", "LOW", "HIGH", "LOW", "HIGH", "LOW", "LOW", "HIGH", "WIN"]
-    },
-    {
-        name: "Bubbles",
-        season: "10",
-        ppe: 7.13,
-        division: ["all_stars"],
-        image_url: "bubbles.png",
-        placements: ["HIGH", "HIGH", "WIN", "SAFE", "LOW", "SAFE", "HIGH", "WIN"]
-    },
-    {
-        name: "Ursula",
-        season: "19",
-        ppe: 7.23,
-        division: ["main"],
-        image_url: "ursula.png",
-        placements: ["SAFE", "HIGH", "HIGH", "WIN", "SAFE", "SAFE", "HIGH", "HIGH", "BTM 2", "HIGH", "WIN", "HIGH", "WIN"]
-    },
-    {
-        name: "Blondie Lockes",
-        season: "20",
-        ppe: 6.33,
-        division: ["main"],
-        image_url: "blondie.png",
-        placements: ["SAFE", "WIN", "SAFE", "SAFE", "LOW", "SAFE", "SAFE", "SAFE", "SAFE", "WIN", "HIGH", "HIGH", "SAFE", "HIGH", "HIGH"]
-    },
-    {
-        name: "Thorn",
-        season: "11",
-        ppe: 8.17,
-        division: ["all_stars"],
-        image_url: "thorn.png",
-        placements: ["WIN", "SAFE", "WIN", "HIGH", "HIGH", "HIGH"]
-    },
-    {
-        name: "Aphrodite",
-        season: "21",
-        ppe: 6.17,
-        division: ["main"],
-        image_url: "aphrodite.png",
-        placements: ["SAFE", "SAFE", "HIGH", "SAFE", "SAFE", "WIN", "SAFE", "SAFE", "SAFE", "LOW", "HIGH", "WIN"]
-    },
-    {
-        name: "Chloe Price & Max Caufield",
-        season: "12",
-        ppe: 6.36,
-        division: ["all_stars"],
-        image_url: "pricefield.png",
-        placements: ["WIN", "SAFE", "WIN", "SAFE", "SAFE", "BTM 2", "SAFE", "WIN", "BTM 2", "HIGH", "WIN"]
-    },
-    {
-        name: "Share Bear",
-        season: "22",
-        ppe: 6.00,
-        division: ["main"],
-        image_url: "sharebear.png",
-        placements: ["SAFE", "SAFE", "SAFE", "SAFE", "SAFE", "WIN", "LOW", "SAFE", "HIGH", "WIN", "BTM 2", "HIGH", "HIGH"]
-    },
-    {
-        name: "Herobrine",
-        season: "N1",
-        ppe: 6.00,
+        name: "Dark Gon",
+        season: "N2",
+        ppe: 5.40,
         division: ["spinoff"],
-        image_url: "herobrine.png",
-        placements: ["SAFE", "SAFE", "HIGH", "LOW", "HIGH", "SAFE", "WIN", "WIN", "WIN", "BTM 2", "BTM 3"]
+        image_url: "darkg.png",
+        placements: ["LOW", "SAFE", "SAFE", "BTM 2", "BTM 2", "WIN", "WIN", "WIN", "HIGH", "BTM 3"]
+    },
+    {
+        name: "Enchantress",
+        season: "N3",
+        ppe: 5.18,
+        division: ["spinoff"],
+        image_url: "enchant.png",
+        placements: ["SAFE", "BTM 2", "SAFE", "SAFE", "LOW", "HIGH", "HIGH", "HIGH", "LOW", "WIN", "BTM 3"]
+    },
+    {
+        name: "Betty Ross",
+        season: "N4",
+        ppe: 5.83,
+        division: ["spinoff"],
+        image_url: "bettyross.png",
+        placements: ["WIN", "SAFE", "SAFE", "SAFE", "LOW", "LOW", "TOP 2", "WIN", "BTM 2", "WIN", "HIGH", "BTM 3"]
+    },
+    {
+        name: "Veronica Lodge",
+        season: "AS13",
+        ppe: 7.64,
+        division: ["all_stars"],
+        image_url: "veronica.png",
+        placements: ["SAFE", "HIGH", "WIN", "SAFE", "WIN", "SAFE", "WIN", "HIGH", "SAFE", "HIGH", "WIN"]
+    },
+    {
+        name: "BlackStar",
+        season: "B5",
+        ppe: 5.33,
+        division: ["spinoff"],
+        image_url: "blackstar.png",
+        placements: ["SAFE", "LOW", "SAFE", "SAFE", "BTM 2", "HIGH", "LOW", "HIGH", "WIN"]
+    },
+    {
+        name: "Zoro",
+        season: "B6",
+        ppe: 6.29,
+        division: ["spinoff"],
+        image_url: "zoro.png",
+        placements: ["SAFE", "LOW", "WIN", "LOW", "LOW", "WIN", "WIN"]
+    },
+    {
+        name: "Aqualad",
+        season: "V2",
+        ppe: 7.00,
+        division: ["spinoff", "all_stars"],
+        image_url: "aqualadas.png",
+        placements: ["SAFE", "BTM 2", "WIN", "WIN", "LOW", "WIN", "WIN"]
+    },
+    {
+        name: "Princess Peach",
+        season: "V3",
+        ppe: 5.00,
+        division: ["spinoff", "all_stars"],
+        image_url: "princesspeach.png",
+        placements: ["SAFE", "HIGH", "SAFE", "SAFE", "SAFE", "SAFE", "WIN", "BTM 3", "BTM 2"]
     }
-
-
 ];
 
 // 1. Define the function (keep your current logic)
