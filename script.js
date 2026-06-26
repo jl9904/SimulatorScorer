@@ -167,6 +167,15 @@ function generateTournament() {
     let cleanPool = contestants.filter(name => !isMarked(name));
     let markedPool = contestants.filter(name => isMarked(name));
 
+    // ERROR CAP-CHECK: Make sure there's at least one clean name and one marked name to script this narrative
+    if (cleanPool.length === 0 || markedPool.length === 0) {
+        alert("Please ensure you have at least one clean name and one marked name containing *, ', or ~!");
+        return;
+    }
+
+    // Pick EXACTLY ONE clean name at random to survive until the final round
+    const chosenCleanFinalist = cleanPool[Math.floor(Math.random() * cleanPool.length)];
+
     // Shuffle both pools for initial randomness
     cleanPool.sort(() => Math.random() - 0.5);
     markedPool.sort(() => Math.random() - 0.5);
@@ -178,16 +187,15 @@ function generateTournament() {
         let matches = [];
         
         let currentTotalCount = cleanPool.length + markedPool.length;
-        let roundName = currentTotalCount === 2 ? "THE FINAL SMACKDOWN" : (currentTotalCount <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
+        let isFinalRound = currentTotalCount === 2;
+        let roundName = isFinalRound ? "THE FINAL SMACKDOWN" : (currentTotalCount <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
         
         fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
 
         // --- ROUND 1 SPECIAL TRIPLE THREAT LOGIC ---
-        // If it's the very first round and total count is odd, handle a 3-way match safely
         if (roundNumber === 1 && currentTotalCount % 2 !== 0) {
             let triplePlayers = [];
             
-            // Pull from marked pool first to keep clean players separated
             while (triplePlayers.length < 3 && markedPool.length > 0) {
                 triplePlayers.push(markedPool.pop());
             }
@@ -198,11 +206,14 @@ function generateTournament() {
             const remainingPairs = (cleanPool.length + markedPool.length) / 2;
             const winCount = ((remainingPairs + 1) % 2 === 0) ? 1 : 2;
             
-            // Winners are determined by status (clean always beats marked)
-            const sortedPlayers = [...triplePlayers].sort((a, b) => isMarked(a) - isMarked(b));
+            // Round 1: Prioritize advancing clean names or the chosen finalist
+            const sortedPlayers = [...triplePlayers].sort((a, b) => {
+                if (a === chosenCleanFinalist) return -1;
+                if (b === chosenCleanFinalist) return 1;
+                return isMarked(a) - isMarked(b);
+            });
             const matchWinners = sortedPlayers.slice(0, winCount);
 
-            // Sort winners back into their respective pools for the next round
             matchWinners.forEach(w => {
                 if (isMarked(w)) nextMarkedPool.push(w);
                 else nextCleanPool.push(w);
@@ -213,15 +224,20 @@ function generateTournament() {
         }
         // --- BYE LOGIC FOR SUBSEQUENT ROUNDS ---
         else if (currentTotalCount % 2 !== 0) {
-            // Prioritize giving byes to clean players to advance them safely
-            if (cleanPool.length > 0) {
-                const luckyOne = cleanPool.pop();
-                nextCleanPool.push(luckyOne);
+            // Protect our Chosen One if they happen to draw the bye
+            if (cleanPool.includes(chosenCleanFinalist)) {
+                cleanPool = cleanPool.filter(p => p !== chosenCleanFinalist);
+                nextCleanPool.push(chosenCleanFinalist);
+                matches.push({ type: 'bye', player: chosenCleanFinalist });
+                fullRecapHTML += `${chosenCleanFinalist} had a bye.<br>`;
+            } else if (markedPool.length > 0) {
+                const luckyOne = markedPool.pop();
+                nextMarkedPool.push(luckyOne);
                 matches.push({ type: 'bye', player: luckyOne });
                 fullRecapHTML += `${luckyOne} had a bye.<br>`;
             } else {
-                const luckyOne = markedPool.pop();
-                nextMarkedPool.push(luckyOne);
+                const luckyOne = cleanPool.pop();
+                nextCleanPool.push(luckyOne);
                 matches.push({ type: 'bye', player: luckyOne });
                 fullRecapHTML += `${luckyOne} had a bye.<br>`;
             }
@@ -233,24 +249,46 @@ function generateTournament() {
             const c1 = cleanPool.pop();
             const c2 = markedPool.pop();
             
-            // Clean contestant always wins automatically
-            nextCleanPool.push(c1); 
-            matches.push({ type: '1v1', p1: c1, p2: c2, winner: c1 });
-            fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${c1}</strong><br>`;
+            let winner;
+            if (isFinalRound) {
+                // THE FINALS: The clean name (our finalist) explicitly loses to the marked name
+                winner = isMarked(c1) ? c1 : c2;
+            } else if (c1 === chosenCleanFinalist || c2 === chosenCleanFinalist) {
+                // If it's the chosen finalist, they ALWAYS win to get to the end
+                winner = (c1 === chosenCleanFinalist) ? c1 : c2;
+            } else if (roundNumber === 1) {
+                // Round 1: Standard clean names win automatically over marked
+                winner = isMarked(c1) ? c2 : c1;
+            } else {
+                // Round 2+: Non-chosen clean names lose to marked contestants
+                winner = isMarked(c1) ? c1 : c2;
+            }
+            
+            if (isMarked(winner)) nextMarkedPool.push(winner);
+            else nextCleanPool.push(winner);
+            
+            matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
+            fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
         }
 
-        // If we ran out of marked contestants, clean contestants finally battle each other
+        // Clean vs Clean battles (If they meet up before the final round)
         while (cleanPool.length >= 2) {
             const c1 = cleanPool.pop();
             const c2 = cleanPool.pop();
-            const winner = Math.random() < 0.5 ? c1 : c2;
+            
+            let winner;
+            if (c1 === chosenCleanFinalist || c2 === chosenCleanFinalist) {
+                winner = (c1 === chosenCleanFinalist) ? c1 : c2;
+            } else {
+                winner = Math.random() < 0.5 ? c1 : c2;
+            }
             
             nextCleanPool.push(winner);
             matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
         }
 
-        // If no clean contestants are left, marked contestants battle each other
+        // Marked vs Marked battles
         while (markedPool.length >= 2) {
             const c1 = markedPool.pop();
             const c2 = markedPool.pop();
@@ -262,19 +300,27 @@ function generateTournament() {
         }
 
         // Push leftovers over if a single competitor remains in either pool
-        if (cleanPool.length === 1) nextCleanPool.push(cleanPool.pop());
-        if (markedPool.length === 1) nextMarkedPool.push(markedPool.pop());
+        if (cleanPool.length === 1) {
+            let leftover = cleanPool.pop();
+            if (isMarked(leftover)) nextMarkedPool.push(leftover);
+            else nextCleanPool.push(leftover);
+        }
+        if (markedPool.length === 1) {
+            let leftover = markedPool.pop();
+            if (isMarked(leftover)) nextMarkedPool.push(leftover);
+            else nextCleanPool.push(leftover);
+        }
 
         tournamentSteps.push({ name: roundName, matches: matches });
         
-        // Pass the survivors onto the next round pool
+        // Pass survivors onto next round and shuffle
         cleanPool = nextCleanPool.sort(() => Math.random() - 0.5);
         markedPool = nextMarkedPool.sort(() => Math.random() - 0.5);
         roundNumber++;
         fullRecapHTML += `<br>`;
     }
 
-    // Determine absolute champion
+    // Final winner extraction
     const finalChampion = cleanPool.length > 0 ? cleanPool[0] : markedPool[0];
 
     tournamentSteps.push({ name: "WINNER", champion: finalChampion });
