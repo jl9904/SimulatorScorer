@@ -237,6 +237,39 @@ function generateTournament() {
     showNextStep();
 }
 
+function showNextStep() {
+    const step = tournamentSteps[currentStepIndex];
+    const title = document.getElementById('roundTitle');
+    const display = document.getElementById('roundResults');
+    const btn = document.getElementById('nextStepBtn');
+    const recapBox = document.getElementById('recap-container');
+
+    title.innerText = step.name;
+    display.innerHTML = "";
+
+    if (step.champion) {
+        display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
+        recapBox.innerHTML = `
+            <details>
+                <summary>Smackdown Recap</summary>
+                <div class="recap-content">${fullRecapHTML}</div>
+            </details>`;
+        btn.innerText = "RESTART SIMULATOR";
+        btn.onclick = () => location.reload();
+    } else {
+        step.matches.forEach(m => {
+            let div = document.createElement('div');
+            div.className = 'match-card';
+            if (m.type === '1v1') div.innerHTML = `${m.p1} vs. ${m.p2}<br><strong>${m.winner} advances!</strong>`;
+            else if (m.type === 'triple') div.innerHTML = `<strong>3-WAY:</strong> ${m.players.join(' vs. ')}<br><strong>${m.winners.join(' & ')} advance(s)!</strong>`;
+            else div.innerHTML = `<em>${m.player} has a bye and advances!</em>`;
+            display.appendChild(div);
+        });
+        currentStepIndex++;
+        btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
+    }
+}
+
 /* --- SEASON CALCULATOR LOGIC --- */
 let processedData = []; 
 function getOrdinal(n) {
