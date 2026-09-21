@@ -142,133 +142,133 @@ function showNextStep() {
     }
 }
 
-/* --- MORE RANDOM LALAPARUZA SIMULATOR --- */
+// /* --- MORE RANDOM LALAPARUZA SIMULATOR --- */
 
-// Helper function: returns true if the contestant name does NOT contain ~, ', or *
-function isClearName(name) {
-    return !/[~'*]/.test(name);
-}
+// // Helper function: returns true if the contestant name does NOT contain ~, ', or *
+// function isClearName(name) {
+//     return !/[~'*]/.test(name);
+// }
 
-// Helper function: determines match winners based on clear name priority
-function resolveMatch(players, neededWinnersCount = 1) {
-    const clearPlayers = players.filter(isClearName);
-    const symbolPlayers = players.filter(p => !isClearName(p));
+// // Helper function: determines match winners based on clear name priority
+// function resolveMatch(players, neededWinnersCount = 1) {
+//     const clearPlayers = players.filter(isClearName);
+//     const symbolPlayers = players.filter(p => !isClearName(p));
 
-    let selectedWinners = [];
+//     let selectedWinners = [];
 
-    // Prioritize clear names first
-    if (clearPlayers.length > 0) {
-        const shuffledClear = [...clearPlayers].sort(() => Math.random() - 0.5);
-        selectedWinners.push(...shuffledClear.slice(0, neededWinnersCount));
-    }
+//     // Prioritize clear names first
+//     if (clearPlayers.length > 0) {
+//         const shuffledClear = [...clearPlayers].sort(() => Math.random() - 0.5);
+//         selectedWinners.push(...shuffledClear.slice(0, neededWinnersCount));
+//     }
 
-    // Fill remaining winner slots with symbol names if needed
-    if (selectedWinners.length < neededWinnersCount) {
-        const remainingNeeded = neededWinnersCount - selectedWinners.length;
-        const shuffledSymbol = [...symbolPlayers].sort(() => Math.random() - 0.5);
-        selectedWinners.push(...shuffledSymbol.slice(0, remainingNeeded));
-    }
+//     // Fill remaining winner slots with symbol names if needed
+//     if (selectedWinners.length < neededWinnersCount) {
+//         const remainingNeeded = neededWinnersCount - selectedWinners.length;
+//         const shuffledSymbol = [...symbolPlayers].sort(() => Math.random() - 0.5);
+//         selectedWinners.push(...shuffledSymbol.slice(0, remainingNeeded));
+//     }
 
-    return selectedWinners;
-}
+//     return selectedWinners;
+// }
 
-function generateTournament() {
-    const input = document.getElementById('contestantInput').value;
-    let contestants = input.split('\n').map(name => name.trim()).filter(name => name !== "");
+// function generateTournament() {
+//     const input = document.getElementById('contestantInput').value;
+//     let contestants = input.split('\n').map(name => name.trim()).filter(name => name !== "");
 
-    if (contestants.length < 2) {
-        alert("Please enter at least 2 contestants!");
-        return;
-    }
+//     if (contestants.length < 2) {
+//         alert("Please enter at least 2 contestants!");
+//         return;
+//     }
 
-    tournamentSteps = [];
-    currentStepIndex = 0;
-    fullRecapHTML = ""; 
-    let pool = [...contestants];
-    let roundNumber = 1;
+//     tournamentSteps = [];
+//     currentStepIndex = 0;
+//     fullRecapHTML = ""; 
+//     let pool = [...contestants];
+//     let roundNumber = 1;
 
-    while (pool.length > 1) {
-        let winners = [];
-        let matches = [];
-        let roundName = pool.length === 2 ? "THE FINAL SMACKDOWN" : (pool.length <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
+//     while (pool.length > 1) {
+//         let winners = [];
+//         let matches = [];
+//         let roundName = pool.length === 2 ? "THE FINAL SMACKDOWN" : (pool.length <= 4 ? "THE SEMI-FINALS" : `ROUND ${roundNumber}`);
         
-        fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
-        pool.sort(() => Math.random() - 0.5);
+//         fullRecapHTML += `<strong>--- ${roundName} ---</strong><br>`;
+//         pool.sort(() => Math.random() - 0.5);
 
-        if (roundNumber === 1 && pool.length % 2 !== 0) {
-            const c = [pool.pop(), pool.pop(), pool.pop()];
-            const winCount = (((pool.length / 2) + 1) % 2 === 0) ? 1 : 2;
+//         if (roundNumber === 1 && pool.length % 2 !== 0) {
+//             const c = [pool.pop(), pool.pop(), pool.pop()];
+//             const winCount = (((pool.length / 2) + 1) % 2 === 0) ? 1 : 2;
             
-            // Resolve 3-Way match using clear name priority
-            const matchWinners = resolveMatch(c, winCount);
+//             // Resolve 3-Way match using clear name priority
+//             const matchWinners = resolveMatch(c, winCount);
             
-            winners.push(...matchWinners);
-            matches.push({ type: 'triple', players: c, winners: matchWinners });
-            fullRecapHTML += `3-Way: ${c.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
-        } 
-        else if (pool.length % 2 !== 0) {
-            const luckyOne = pool.pop();
-            winners.push(luckyOne);
-            matches.push({ type: 'bye', player: luckyOne });
-            fullRecapHTML += `${luckyOne} had a bye.<br>`;
-        }
+//             winners.push(...matchWinners);
+//             matches.push({ type: 'triple', players: c, winners: matchWinners });
+//             fullRecapHTML += `3-Way: ${c.join(' vs ')}<br>Winners: <strong>${matchWinners.join(' & ')}</strong><br>`;
+//         } 
+//         else if (pool.length % 2 !== 0) {
+//             const luckyOne = pool.pop();
+//             winners.push(luckyOne);
+//             matches.push({ type: 'bye', player: luckyOne });
+//             fullRecapHTML += `${luckyOne} had a bye.<br>`;
+//         }
 
-        for (let i = 0; i < pool.length; i += 2) {
-            const c1 = pool[i];
-            const c2 = pool[i + 1];
+//         for (let i = 0; i < pool.length; i += 2) {
+//             const c1 = pool[i];
+//             const c2 = pool[i + 1];
             
-            // Resolve 1v1 match using clear name priority
-            const [winner] = resolveMatch([c1, c2], 1);
+//             // Resolve 1v1 match using clear name priority
+//             const [winner] = resolveMatch([c1, c2], 1);
             
-            winners.push(winner);
-            matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
-            fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
-        }
+//             winners.push(winner);
+//             matches.push({ type: '1v1', p1: c1, p2: c2, winner: winner });
+//             fullRecapHTML += `${c1} vs ${c2}<br>Winner: <strong>${winner}</strong><br>`;
+//         }
 
-        tournamentSteps.push({ name: roundName, matches: matches });
-        pool = winners;
-        roundNumber++;
-        fullRecapHTML += `<br>`;
-    }
+//         tournamentSteps.push({ name: roundName, matches: matches });
+//         pool = winners;
+//         roundNumber++;
+//         fullRecapHTML += `<br>`;
+//     }
 
-    tournamentSteps.push({ name: "WINNER", champion: pool[0] });
-    document.getElementById('setup-area').style.display = 'none';
-    document.getElementById('tournament-display').style.display = 'block';
-    showNextStep();
-}
+//     tournamentSteps.push({ name: "WINNER", champion: pool[0] });
+//     document.getElementById('setup-area').style.display = 'none';
+//     document.getElementById('tournament-display').style.display = 'block';
+//     showNextStep();
+// }
 
-function showNextStep() {
-    const step = tournamentSteps[currentStepIndex];
-    const title = document.getElementById('roundTitle');
-    const display = document.getElementById('roundResults');
-    const btn = document.getElementById('nextStepBtn');
-    const recapBox = document.getElementById('recap-container');
+// function showNextStep() {
+//     const step = tournamentSteps[currentStepIndex];
+//     const title = document.getElementById('roundTitle');
+//     const display = document.getElementById('roundResults');
+//     const btn = document.getElementById('nextStepBtn');
+//     const recapBox = document.getElementById('recap-container');
 
-    title.innerText = step.name;
-    display.innerHTML = "";
+//     title.innerText = step.name;
+//     display.innerHTML = "";
 
-    if (step.champion) {
-        display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
-        recapBox.innerHTML = `
-            <details>
-                <summary>Smackdown Recap</summary>
-                <div class="recap-content">${fullRecapHTML}</div>
-            </details>`;
-        btn.innerText = "RESTART SIMULATOR";
-        btn.onclick = () => location.reload();
-    } else {
-        step.matches.forEach(m => {
-            let div = document.createElement('div');
-            div.className = 'match-card';
-            if (m.type === '1v1') div.innerHTML = `${m.p1} vs. ${m.p2}<br><strong>${m.winner} advances!</strong>`;
-            else if (m.type === 'triple') div.innerHTML = `<strong>3-WAY:</strong> ${m.players.join(' vs. ')}<br><strong>${m.winners.join(' & ')} advance(s)!</strong>`;
-            else div.innerHTML = `<em>${m.player} has a bye and advances!</em>`;
-            display.appendChild(div);
-        });
-        currentStepIndex++;
-        btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
-    }
-}
+//     if (step.champion) {
+//         display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
+//         recapBox.innerHTML = `
+//             <details>
+//                 <summary>Smackdown Recap</summary>
+//                 <div class="recap-content">${fullRecapHTML}</div>
+//             </details>`;
+//         btn.innerText = "RESTART SIMULATOR";
+//         btn.onclick = () => location.reload();
+//     } else {
+//         step.matches.forEach(m => {
+//             let div = document.createElement('div');
+//             div.className = 'match-card';
+//             if (m.type === '1v1') div.innerHTML = `${m.p1} vs. ${m.p2}<br><strong>${m.winner} advances!</strong>`;
+//             else if (m.type === 'triple') div.innerHTML = `<strong>3-WAY:</strong> ${m.players.join(' vs. ')}<br><strong>${m.winners.join(' & ')} advance(s)!</strong>`;
+//             else div.innerHTML = `<em>${m.player} has a bye and advances!</em>`;
+//             display.appendChild(div);
+//         });
+//         currentStepIndex++;
+//         btn.innerText = currentStepIndex === tournamentSteps.length - 1 ? "THE QUEEN OF SHE DONE ALREADY DONE HAD HERSES" : "NEXT ROUND";
+//     }
+// }
 
 // /* --- MORE RANDOM LALAPARUZA SIMULATOR --- */
 
