@@ -115,9 +115,16 @@
         }
 
         function renderResults(groups) {
+            const formatter = new Intl.NumberFormat('en-US', {
+                style: 'percent',
+                minimumFractionDigits: 1, // Optional: control decimal places (e.g., 75.3%)
+                maximumFractionDigits: 2
+                }); 
             const container = document.getElementById('output');
             container.innerHTML = '';
             for (const [name, stats] of Object.entries(groups)) {
+                const topAvg = formatter.format(stats.top / (stats.top + stats.safe + stats.bottom));
+                const btmAvg = formatter.format(stats.bottom / (stats.top + stats.safe + stats.bottom));
                 const card = document.createElement('div');
                 card.className = 'group-card';
                 card.innerHTML = `
@@ -126,6 +133,9 @@
                     <div class="stat-line"><span>TOP PLACEMENTS:</span> <span class="count">${stats.top}</span></div>
                     <div class="stat-line"><span>SAFE PLACEMENTS:</span> <span class="count">${stats.safe}</span></div>
                     <div class="stat-line"><span>BOTTOM PLACEMENTS:</span> <span class="count">${stats.bottom}</span></div>
+                    <div class="stat-line"><span>=========================</span></div>
+                    <div class="stat-line"><span>TOP AVG:</span> <span class="count">${topAvg}</span></div>
+                    <div class="stat-line"><span>BTM AVG:</span> <span class="count">${btmAvg}</span></div>
                 `;
                 container.appendChild(card);
             }
