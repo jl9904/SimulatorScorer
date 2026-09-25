@@ -59,7 +59,7 @@
                 
                 <div class="home-hero mb-4 text-center">
                     <h1 id="processor-header">PLACEMENT GROUP PROCESSOR</h1>
-                    <p class="subtitle text-uppercase">Names ending in (*) Robin | (') Davonne | Others Jaden</p>
+                    <p class="subtitle text-uppercase">Names ending in (*) Robin | (') Davonne | (~) Wintour | () Jaden</p>
                 </div>
 
                 <div class="processor-layout-container">
@@ -88,7 +88,8 @@
             const groups = {
                 "Jaden": { count: 0, top: 0, safe: 0, bottom: 0 },
                 "Robin": { count: 0, top: 0, safe: 0, bottom: 0 },
-                "Davonne": { count: 0, top: 0, safe: 0, bottom: 0 }
+                "Davonne": { count: 0, top: 0, safe: 0, bottom: 0 },
+                "Wintour": { count: 0, top: 0, safe: 0, bottom: 0 }
             };
             const topKeywords = ['WIN', 'HIGH', 'TOP 2'];
             const bottomKeywords = ['LOW', 'BTM 2', 'BTM 3', 'ELIM'];
@@ -101,6 +102,7 @@
                 let targetGroup = "Jaden";
                 if (fullName.endsWith('*')) targetGroup = "Robin";
                 else if (fullName.endsWith("'")) targetGroup = "Davonne";
+                else if(fullName.endsWith("~")) targetGroup = "Wintour";
                 groups[targetGroup].count++;
                 placements.forEach(p => {
                     const cleanP = p.trim().toUpperCase();
