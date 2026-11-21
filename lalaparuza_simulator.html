@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LALAPARUZA SIMULATOR</title>
+    <link rel="icon" type="image/x-icon" href="SS.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="styles.css" rel="stylesheet"/>
     <style>
         /* Page-specific Recap Styling */
@@ -29,31 +31,54 @@
 </head>
 
 <body id="lalaparuza-page">
+
+    <header class="top-header">
+        <a href="index.html" class="logo-link">
+            <img src="SimScorer_Logo.png" alt="Sim Scorer Logo" class="header-logo">
+        </a>
+    </header>
+
     <nav class="side-nav">
-    <div class="nav-trigger">
-        <span>☰</span> 
-    </div>
-    
+    <button type="button" class="nav-trigger" aria-label="Toggle Menu" aria-expanded="false">
+        <span>☰</span>
+    </button>
     <div class="nav-content">
-        <h3>Menu</h3>
-        <ul class="list-unstyled">
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="season_record.html">SEASON CALCULATOR</a></li>
-                <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
-                <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
-                <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
-                <li><a href="animated.html">HALL OF FAME</a></li>
-            </ul>
+        <ul class="list-unstyled side-icon-list">
+            <li>
+                <a href="season_record.html" class="side-nav-link">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span class="nav-label" data-collapsed="Calculator" data-expanded="Season Calculator">Calculator</span>
+                </a>
+            </li>
+            <li>
+                <a href="miss_congeniality_picker.html" class="side-nav-link">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="nav-label" data-collapsed="Congeniality" data-expanded="Mx Congeniality">Congeniality</span>
+                </a>
+            </li>
+            <li>
+                <a href="lalaparuza_simulator.html" class="side-nav-link">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <span class="nav-label" data-collapsed="Lala Sim" data-expanded="Lalaparuza Simulator">Lala Sim</span>
+                </a>
+            </li>
+            <li>
+                <a href="animated.html" class="side-nav-link">
+                    <i class="fa-solid fa-crown"></i>
+                    <span class="nav-label" data-collapsed="Hall of Fame" data-expanded="Hall of Fame">Hall of Fame</span>
+                </a>
+            </li>
+        </ul>
     </div>
-</nav>
+    </nav>
 
     <div class="main-content">
     <h1 id="lalaparuza-header">LALAPARUZA SIMULATOR</h1>
+        <p class="subtitle text-uppercase">Good luck and DON'T PLUCK it up</p>
 
     <div id="setup-area" class="input-layout-container mx-auto mt-4">
-        
         <textarea id="contestantInput" rows="12" placeholder="ENTER NAMES HERE (ONE PER LINE)..."></textarea>
-        
+
         <div class="row button-grid-row mt-3">
             <div class="col">
                 <button class="blue-btn w-100" onclick="generateTournament()">START SIMULATION</button>
@@ -62,22 +87,18 @@
                 <button class="blue-btn clear-btn w-100" onclick="document.getElementById('contestantInput').value = ''">CLEAR INPUTS</button>
             </div>
         </div>
-        
     </div>
 
-    </div>
+    <div id="tournament-display" class="tournament-layout-container mt-4" style="display:none;">
+        <div id="roundResults" class="p-4 bg-white rounded-4 shadow-sm"></div>
 
-        <div id="tournament-display" class="container mt-5" style="display:none;">
-            <h2 id="roundTitle" class="text-center fw-bold mb-4"></h2>
-            <div id="roundResults" class="p-4 bg-white rounded-4 shadow-sm"></div>
-            
-            <div id="recap-container"></div>
+        <div id="recap-container"></div>
 
-            <div class="mt-4">
-                <button id="nextStepBtn" class="blue-btn">NEXT ROUND</button>
-            </div>
+        <div class="mt-4">
+            <button id="nextStepBtn" class="blue-btn">NEXT ROUND</button>
         </div>
     </div>
+</div>
 
     <script src="script.js"></script>
 </body>

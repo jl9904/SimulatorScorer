@@ -1,3 +1,34 @@
+
+
+/* --- SIDEBAR SCRIPT --- */
+document.addEventListener("DOMContentLoaded", () => {
+    const sideNav = document.querySelector(".side-nav");
+    const navTrigger = document.querySelector(".nav-trigger");
+    const navLabels = document.querySelectorAll(".nav-label");
+
+    if (!sideNav || !navTrigger) return;
+
+    function syncNavLabels(isExpanded) {
+        navLabels.forEach((label) => {
+            const nextText = isExpanded ? label.dataset.expanded : label.dataset.collapsed;
+            if (nextText) {
+                label.textContent = nextText;
+            }
+        });
+    }
+
+    navTrigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isExpanded = sideNav.classList.toggle("is-expanded");
+        navTrigger.setAttribute("aria-expanded", String(isExpanded));
+        syncNavLabels(isExpanded);
+    });
+});
+
+
+
+
+
 /* --- GLOBAL TOURNAMENT STATE --- */
 let tournamentSteps = [];
 let currentStepIndex = 0;
@@ -34,6 +65,9 @@ if (masterSort) {
 
     const processLegacy = document.getElementById('processLegacy');
     if (processLegacy) processLegacy.addEventListener('click', () => processSeason('Legacy'));
+
+    const processHS = document.getElementById('processHS');
+    if (processHS) processHS.addEventListener('click', () => processSeason('High Stakes'));
 
     const clearBtn = document.getElementById('clearBtn');
     if (clearBtn) {
@@ -109,25 +143,44 @@ function generateTournament() {
     showNextStep();
 }
 
+function formatHeaderRoundName(rawName) {
+    if (!rawName) return "Lalaparuza";
+    if (rawName === "WINNER") return "Lalaparuza: Winner";
+
+    const formatted = rawName
+        .toLowerCase()
+        .replace(/\b\w/g, char => char.toUpperCase());
+
+    return `Lalaparuza: ${formatted}`;
+}
+
 function showNextStep() {
     const step = tournamentSteps[currentStepIndex];
-    const title = document.getElementById('roundTitle');
+    const mainHeader = document.getElementById('lalaparuza-header');
     const display = document.getElementById('roundResults');
     const btn = document.getElementById('nextStepBtn');
     const recapBox = document.getElementById('recap-container');
 
-    title.innerText = step.name;
+    if (mainHeader) {
+        mainHeader.innerText = formatHeaderRoundName(step.name);
+    }
+
     display.innerHTML = "";
 
     if (step.champion) {
-        display.innerHTML = `<h1 style="font-size: 4rem;">🏆 ${step.champion.toUpperCase()} 🏆</h1>`;
-        recapBox.innerHTML = `
-            <details>
-                <summary>Smackdown Recap</summary>
-                <div class="recap-content">${fullRecapHTML}</div>
-            </details>`;
-        btn.innerText = "RESTART SIMULATOR";
-        btn.onclick = () => location.reload();
+    display.innerHTML = `
+        <h1 class="winner-banner">
+            <span class="trophy">🏆</span>
+            <span class="winner-name">${step.champion.toUpperCase()}</span>
+            <span class="trophy">🏆</span>
+        </h1>`;
+    recapBox.innerHTML = `
+        <details>
+            <summary>Smackdown Recap</summary>
+            <div class="recap-content">${fullRecapHTML}</div>
+        </details>`;
+    btn.innerText = "RESTART SIMULATOR";
+    btn.onclick = () => location.reload();
     } else {
         step.matches.forEach(m => {
             let div = document.createElement('div');
@@ -498,6 +551,16 @@ function getOrdinal(n) {
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
 }
 
+function normalizeSeasonMode(mode) {
+    const clean = (mode || '').trim().toLowerCase();
+    if (clean === 'modern') return 'Modern';
+    if (clean === 'legacy') return 'Legacy';
+    if (clean === 'high stakes' || clean === 'high-stakes' || clean === 'highstakes') {
+        return 'High Stakes';
+    }
+    return mode;
+}
+
 function getScore(ch, mode) {
     const char = ch.toLowerCase();
     if (mode === 'Modern') {
@@ -506,13 +569,21 @@ function getScore(ch, mode) {
             case 's': return 5;  case 'l': return 3; case 'b': return 1;
             case 'e': return 0;  default: return null;
         }
-    } else {
+    } if (mode === 'Legacy') {
         switch(char) {
             case 'w': return 5; case 'h': return 4; case 's': return 3;
             case 'l': return 2; case 'b': return 1; case 'e': return 0;
             case 't': return 4.5; default: return null;
         }
     }
+    else {
+        switch(char) {
+            case 'w': return 45; case 'h': return 20; case 's': return 10;
+            case 'l': return -20; case 'b': return -25; case 'e': return 0;
+            case 't': return 30; default: return null;
+        }
+    }
+
 }
 
 function processSeason(mode) {
@@ -520,19 +591,27 @@ function processSeason(mode) {
     const results = document.getElementById('results');
     if(!text) return;
 
+    const normalizedMode = normalizeSeasonMode(mode);
     const lines = text.split('\n');
-    let htmlOutput = `<h5 class="text-uppercase fw-bold mb-4">Showing ${mode} Scores:</h5><div id="results-grid">`;
-    processedData = []; 
+    let htmlOutput = `<h5 class="text-uppercase fw-bold mb-4">Showing ${normalizedMode} Scores:</h5><div id="results-grid">`;
+    processedData = [];
 
     lines.forEach((line, index) => {
         if(line.trim() === '' || line.toUpperCase() === 'DONE') return;
         const placements = line.trim().split(/\t| {4}/);
-        let score = 0, count = 0, invalids = [];
+        let score = normalizedMode === 'High Stakes' ? 100 : 0;
+        let count = 0;
+        let invalids = [];
 
         placements.forEach(p => {
-            const val = getScore(p.trim().charAt(0), mode);
-            if(val === null) invalids.push(p);
-            else { score += val; count++; }
+            const trimmed = p.trim();
+            if (!trimmed) return;
+            const val = getScore(trimmed.charAt(0), normalizedMode);
+            if (val === null) invalids.push(p);
+            else {
+                score += val;
+                count++;
+            }
         });
 
         const ppe = count > 0 ? (score / count).toFixed(2) : "0.00";
@@ -557,7 +636,7 @@ async function copyToClipboard() {
     setTimeout(() => btn.textContent = 'COPY RESULTS', 1500);
 }
 
-/* --- MISS CONGENIALITY PICKER --- */
+/* --- MX CONGENIALITY PICKER --- */
 function castVotes() {
     const input = document.getElementById('voterInput').value.trim();
     const resultsContainer = document.getElementById('results');
@@ -585,8 +664,8 @@ function castVotes() {
 
     let html = `
         <div class="winner-display-card p-5 mb-5 text-center shadow-sm">
-            <h2 class="fw-black text-uppercase mb-3">👑 MISS CONGENIALITY 👑</h2>
-            <h1 class="display-winner">${winners.join(' & ')}</h1>
+            <h2 class="fw-black text-uppercase mb-3">❤️ MX CONGENIALITY ❤️</h2>
+            <h3 class="display-winner">${winners.join(' & ')}</h3>
             <p class="mb-0 fw-bold voting-stats">WITH ${maxVotes} VOTES!</p>
         </div><div id="results-grid">`;
 
@@ -826,5 +905,94 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger.addEventListener('click', () => {
             content.classList.toggle('active');
         });
+    }
+});
+
+/* =========================================
+   HOME PAGE RANDOM WINNER BANNER
+   ========================================= */
+function formatWinnerSubtitle(winner) {
+    const divisions = Array.isArray(winner.division) ? winner.division : [winner.division];
+    const seasonNum = winner.season;
+
+    if (divisions.includes("all_stars")) {
+        return `ALL STARS ${seasonNum} WINNER`;
+    }
+
+    if (divisions.includes("main")) {
+        return `SEASON ${seasonNum} WINNER`;
+    }
+
+    return `SEASON ${seasonNum} WINNER`;
+}
+
+function resolveWinnerImage(imageUrl) {
+    if (!imageUrl) return "";
+    if (/^(https?:\/\/|\/|images\/)/i.test(imageUrl)) {
+        return imageUrl;
+    }
+    return `images/${imageUrl}`;
+}
+
+async function loadRandomHomeWinner() {
+    const bannerEl = document.getElementById("winner-banner");
+    const imgEl = document.getElementById("winnerBannerImg");
+    const nameEl = document.getElementById("winnerBannerName");
+    const subtitleEl = document.getElementById("winnerBannerSubtitle");
+
+    // Exit cleanly on pages that don't have the home banner
+    if (!bannerEl || !nameEl || !subtitleEl || !imgEl) return;
+
+    // Wait if Firebase bridge hasn't finished initializing yet
+    if (!window.db || !window.fs) return;
+
+    const { collection, query, where, getDocs } = window.fs;
+
+    try {
+        const q = query(
+            collection(window.db, "hall_of_fame"),
+            where("division", "array-contains-any", ["main", "all_stars"])
+        );
+
+        const snapshot = await getDocs(q);
+        const eligibleWinners = [];
+
+        snapshot.forEach((docSnap) => {
+            eligibleWinners.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        if (eligibleWinners.length === 0) {
+            nameEl.textContent = "NO WINNERS FOUND";
+            subtitleEl.textContent = "";
+            imgEl.style.display = "none";
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * eligibleWinners.length);
+        const chosen = eligibleWinners[randomIndex];
+
+        nameEl.textContent = chosen.name || "UNKNOWN WINNER";
+        subtitleEl.textContent = formatWinnerSubtitle(chosen);
+
+        const resolvedSrc = resolveWinnerImage(chosen.image_url);
+        if (resolvedSrc) {
+            imgEl.src = resolvedSrc;
+            imgEl.alt = `${chosen.name} winner portrait`;
+            imgEl.style.display = "block";
+        } else {
+            imgEl.style.display = "none";
+        }
+    } catch (err) {
+        console.error("Failed to load random winner banner:", err);
+        nameEl.textContent = "WINNER SPOTLIGHT";
+        subtitleEl.textContent = "";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (window.db && window.fs) {
+        loadRandomHomeWinner();
+    } else {
+        window.addEventListener("firebase-ready", loadRandomHomeWinner, { once: true });
     }
 });

@@ -4,37 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JADEN'S AUTO-SCORER</title>
+    <link rel="icon" type="image/x-icon" href="SS.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            query, 
+            where, 
+            orderBy,
+            doc,
+            updateDoc 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyByxfHK7a1AF_e7jU3rJIp-mrLfJV5C7r4",
+            authDomain: "animatedhof-350b3.firebaseapp.com",
+            projectId: "animatedhof-350b3",
+            storageBucket: "animatedhof-350b3.firebasestorage.app",
+            messagingSenderId: "171067849270",
+            appId: "1:171067849270:web:94e4e87f61477510dab697",
+            measurementId: "G-SB49NTBRRP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.fs = { collection, getDocs, query, where, orderBy, doc, updateDoc };
+        window.dispatchEvent(new Event("firebase-ready"));
+
+        console.log("Bridge fully built!");
+    </script>
 </head>
+
+
+
 
 <body id="home-page">
 
+    <header class="top-header">
+        <a href="index.html" class="logo-link">
+            <img src="SimScorer_Logo.png" alt="Sim Scorer Logo" class="header-logo">
+        </a>
+    </header>
     <nav class="side-nav">
-        <div class="nav-trigger">
-            <span>☰</span> 
-        </div>
-        <div class="nav-content">
-            <h3>MENU</h3>
-            <ul class="list-unstyled">
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="season_record.html">SEASON CALCULATOR</a></li>
-                <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
-                <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
-                <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
-                <li><a href="animated.html">HALL OF FAME</a></li>
-            </ul>
-        </div>
-    </nav>
+    <button type="button" class="nav-trigger" aria-label="Toggle Menu" aria-expanded="false">
+        <span>☰</span>
+    </button>
+    <div class="nav-content">
+        <ul class="list-unstyled side-icon-list">
+            <li>
+                <a href="season_record.html" class="side-nav-link">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span class="nav-label" data-collapsed="Calculator" data-expanded="Season Calculator">Calculator</span>
+                </a>
+            </li>
+            <li>
+                <a href="miss_congeniality_picker.html" class="side-nav-link">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="nav-label" data-collapsed="Congeniality" data-expanded="Mx Congeniality">Congeniality</span>
+                </a>
+            </li>
+            <li>
+                <a href="lalaparuza_simulator.html" class="side-nav-link">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <span class="nav-label" data-collapsed="Lala Sim" data-expanded="Lalaparuza Simulator">Lala Sim</span>
+                </a>
+            </li>
+            <li>
+                <a href="animated.html" class="side-nav-link">
+                    <i class="fa-solid fa-crown"></i>
+                    <span class="nav-label" data-collapsed="Hall of Fame" data-expanded="Hall of Fame">Hall of Fame</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
     <div class="main-content">
     <div class="dashboard-wrapper d-flex align-items-center justify-content-center">
         
         <div class="dashboard-container mx-auto p-5 bg-white rounded-5 shadow-sm">
             
-            <div class="home-hero mb-5 text-center">
-                <h1 class="header-scaled">JADEN'S AUTO-SCORER</h1>
-                <p class="subtitle text-uppercase">AUTOMATICALLY SCORE SIMULATOR RUNS AND OUTCOMES</p>
+            <div id="winner-banner" class="winner-banner-card mb-4" aria-live="polite">
+                <div class="winner-banner-img-wrap">
+                    <img id="winnerBannerImg" src="" alt="Random Hall of Fame Winner" class="winner-banner-img">
+                </div>
+                <div class="winner-banner-info">
+                    <div id="winnerBannerName" class="winner-banner-name">LOADING WINNER...</div>
+                    <div id="winnerBannerSubtitle" class="winner-banner-subtitle"></div>
+                </div>
             </div>
 
             <div class="button-grid-container mt-4">

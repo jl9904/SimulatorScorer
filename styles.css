@@ -42,74 +42,143 @@ button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
     letter-spacing: 0.5px;
 }
 
+/* HEADER */
+.top-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  margin-left: 45px; /* Offsets the fixed left sidebar so logo stays visually centered */
+  width: calc(100% - 45px);
+}
+
+.logo-link {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.header-logo {
+  max-height: 75px; /* Adjust this value to make the logo bigger or smaller */
+  width: auto;
+  display: block;
+}
+
+.subtitle {
+    font-weight: 800;
+    color: #666;
+    font-size: 1.2rem; /* Increased size */
+    letter-spacing: 2px;
+}
+
 /* =========================================
-   2. HOVER SIDEBAR (LIGHT GRAY)
+   2. SIDEBAR (LIGHT GRAY)
    ========================================= */
+/* Collapsed rail: always visible */
 .side-nav {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 60px;
-    background: #f8f9fa;
-    color: #333;
-    overflow: hidden;
-    transition: width 0.3s ease;
-    z-index: 1000;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-    border-right: 1px solid #dee2e6;
+    height: 100vh;
+    width: 104px;
+    background-color: #ffffff;
+    border-right: 1px solid #e6e6e6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16px;
+    z-index: 1050;
+    transition: width 0.22s ease;
 }
 
-.side-nav:hover {
-    width: 250px;
+/* Expanded rail: only when clicked */
+.side-nav.is-expanded {
+    width: 245px;
+    align-items: flex-start;
+    padding-left: 18px;
+    padding-right: 16px;
 }
 
 .nav-trigger {
-    height: 60px;
-    width: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    color: #555;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: #222222;
     cursor: pointer;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+}
+
+.nav-trigger:hover {
+    color: #ff6a00;
 }
 
 .nav-content {
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    white-space: nowrap;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    width: 100%;
 }
 
-.side-nav:hover .nav-content {
-    opacity: 1;
-    visibility: visible;
+.side-icon-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
 }
 
-.nav-content h3 {
-    font-size: 1.1rem;
-    font-weight: 900;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    text-transform: uppercase;
+.side-nav.is-expanded .side-icon-list {
+    align-items: flex-start;
 }
 
-.nav-content ul { padding-left: 0; }
-
-.nav-content a {
-    display: block;
-    color: #555;
+/* Default (collapsed): icon on top, text underneath */
+.side-nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     text-decoration: none;
-    padding: 10px 15px;
+    color: #222222;
+    font-size: 12px;
     font-weight: 700;
-    border-radius: 8px;
-    transition: all 0.2s;
+    line-height: 1.2;
+    text-align: center;
+    width: 100%;
+    padding: 6px 4px;
+    border-radius: 10px;
 }
 
-.nav-content a:hover {
-    background: #e9ecef;
+.side-nav-link i {
+    font-size: 30px; /* Bigger icons */
+    width: 34px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Expanded (clicked): text to the side of the icon */
+.side-nav.is-expanded .side-nav-link {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 14px;
+    font-size: 14px;
+    padding: 8px 10px;
+}
+
+.side-nav.is-expanded .nav-label {
+    white-space: nowrap;
+}
+
+.side-nav-link:hover {
+    color: #ff6a00;
+    background-color: #fff5ee;
+}
+
+/* Keep main content clear of the collapsed rail */
+.main-content {
+    margin-left: 104px;
 }
 
 /* =========================================
@@ -135,11 +204,6 @@ button, .btn-custom {
 /* =========================================
    4. HOME PAGE (ORANGE THEME)
    ========================================= */
-/* --- Home Page Mega-Scale Version --- */
-
-#home-page {
-    background-color: #fcfcfc;
-}
 
 /* 1. The Container Scale (Blue Line) */
 .dashboard-container {
@@ -213,21 +277,127 @@ button, .btn-custom {
 }
 
 /* Sidebar Accent for Home (Orange) */
-#home-page .side-nav .nav-content h3 { border-bottom: 2px solid #ff6b00; }
+#home-page .side-nav-link:hover {
+    color: #ff6a00;
+}
+
+/* =========================================
+   HOME PAGE RANDOM WINNER BANNER
+   ========================================= */
+#home-page .winner-banner-card {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 185px;
+    /* Matches the dark charcoal gradient of the Animated Hall of Fame button */
+    background: linear-gradient(180deg, #333 0%, #555 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+
+#home-page .winner-banner-img-wrap {
+    flex: 0 0 36%;
+    max-width: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* Fades the right edge smoothly into the banner background */
+    -webkit-mask-image: linear-gradient(to right, #000000 68%, transparent 100%);
+    mask-image: linear-gradient(to right, #000000 68%, transparent 100%);
+}
+
+#home-page .winner-banner-img {
+    width: 100%;
+    height: 100%;
+    min-height: 185px;
+    max-height: 230px;
+    object-fit: cover;
+    display: block;
+}
+
+#home-page .winner-banner-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 28px 20px 12px;
+    gap: 8px;
+}
+
+#home-page .winner-banner-name {
+    font-size: clamp(2.1rem, 3.6vw, 3.25rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+#home-page .winner-banner-subtitle {
+    font-size: clamp(1.25rem, 2.2vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    opacity: 0.95;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    #home-page .winner-banner-card {
+        flex-direction: column;
+    }
+
+    #home-page .winner-banner-img-wrap {
+        flex: none;
+        max-width: 100%;
+        width: 100%;
+        /* Fade downward on mobile stacked view */
+        -webkit-mask-image: linear-gradient(to bottom, #000000 68%, transparent 100%);
+        mask-image: linear-gradient(to bottom, #000000 68%, transparent 100%);
+    }
+
+    #home-page .winner-banner-info {
+        padding: 16px 20px 22px;
+    }
+}
 
 /* =========================================
    5. LALAPARUZA PAGE (BLUE THEME)
    ========================================= */
-#lalaparuza-page h1 {
+#lalaparuza-page .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lalaparuza-page h1,
+#lalaparuza-page #lalaparuza-header {
     width: 65%;
+    margin: 20px auto;
     padding: 0.5em;
-    background: linear-gradient(130deg, #007bff 0%, #00d4ff 100%) !important;
+    text-align: center;
+    background: radial-gradient(#7098ff, #326cff, #0048ff) !important;
     color: white;
 }
 
-#lalaparuza-page .input-layout-container {
+#lalaparuza-page .input-layout-container,
+#lalaparuza-page .tournament-layout-container {
     width: 65%;
     margin: 0 auto;
+    text-align: center;
+}
+
+#lalaparuza-page #roundResults {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
 }
 
 #lalaparuza-page textarea {
@@ -242,21 +412,48 @@ button, .btn-custom {
     font-size: 2rem !important;
     padding: 1rem;
     border-radius: 50px;
-    background: linear-gradient(180deg, #0084ff 0%, #6bc5ff 100%);
+    background: linear-gradient(180deg, #0048ff 0%, #7098ff 100%);
     color: white;
     font-weight: 800;
+}
+
+/* Winner pill expands horizontally to fit trophy + name + trophy on one line */
+#lalaparuza-page .winner-banner {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+    width: auto !important;
+    min-width: 65%;
+    max-width: 100%;
+    padding: 0.35em 1.1em !important;
+    font-size: clamp(2rem, 4vw, 4rem) !important;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+#lalaparuza-page .winner-banner .trophy,
+#lalaparuza-page .winner-banner .winner-name {
+    display: inline-block;
+    flex-shrink: 0;
 }
 
 #lalaparuza-page .clear-btn {
     background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
 }
 
-#lalaparuza-page .side-nav .nav-content h3 { border-bottom: 2px solid #007bff; }
+#lalaparuza-page .side-nav-link:hover {
+    color: #0048ff;
+}
+
+#lalaparuza-page .nav-trigger:hover {
+    color: #0048ff;
+}
 
 /* =========================================
-   6. PROCESSOR PAGE (PURPLE THEME)
+   6. PROCESSOR PAGE (SEA GREEN THEME)
    ========================================= */
-/* --- Placement Group Processor Purple Theme --- */
+/* --- Placement Group Processor Sea Green Theme --- */
 
 #processor-page .dashboard-container {
     width: 85% !important;
@@ -268,11 +465,11 @@ button, .btn-custom {
     display: block;
     width: 100% !important;
     padding: 0.6em 0;
-    background: linear-gradient(130deg, #8a2be2 0%, #ba55d3 100%) !important;
+    background: linear-gradient(130deg, #169c84 0%, #2ec4a6 100%) !important;
     color: white;
     border-radius: 100px;
     font-size: 2.5rem;
-    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);
+    box-shadow: 0 4px 15px rgba(22, 156, 132, 0.22);
 }
 
 #processor-page textarea#inputData {
@@ -286,11 +483,11 @@ button, .btn-custom {
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
 }
 
-/* Purple Buttons with Glow */
+/* Sea Green Buttons with Glow */
 #processor-page .purple-btn {
     font-size: 2rem !important;
     padding: 1rem 0.5rem !important;
-    background: linear-gradient(180deg, #8a2be2 0%, #9d50bb 100%) !important;
+    background: linear-gradient(180deg, #169c84 0%, #24b498 100%) !important;
     color: white;
     border-radius: 50px;
     transition: all 0.3s ease;
@@ -299,7 +496,7 @@ button, .btn-custom {
 #processor-page .purple-btn:hover {
     filter: brightness(1.1);
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+    box-shadow: 0 0 20px rgba(22, 156, 132, 0.5);
 }
 
 /* Reuse the gray-btn from Season/Lalaparuza */
@@ -312,12 +509,18 @@ button, .btn-custom {
     transition: all 0.3s ease;
 }
 
-#processor-page .side-nav .nav-content h3 { border-bottom: 2px solid #8a2be2; }
+#processor-page .side-nav-link:hover {
+    color: #169c84;
+}
+
+#processor-page .nav-trigger:hover{
+    color: #169c84;
+}
 
 /* =========================================
-   7. SEASON RECORD (RED THEME)
+   7. SEASON RECORD (PURPLE THEME)
    ========================================= */
-/* --- Season Record Red Theme (Updated 85% Width) --- */
+/* --- Season Record Purple Theme (Updated 85% Width) --- */
 
 #season-page .dashboard-container {
     width: 90% !important; /* Increased from 65% for a cleaner, wider layout */
@@ -330,11 +533,11 @@ button, .btn-custom {
     display: block;
     width: 100% !important;
     padding: 0.6em 0;
-    background: linear-gradient(130deg, #ff3838 0%, #ff6c6c 100%) !important;
+    background: linear-gradient(130deg, #8a2be2 0%, #ba55d3 100%) !important;
     color: white;
     border-radius: 100px;
     font-size: 2.8rem; /* Scaled up to match width */
-    box-shadow: 0 4px 15px rgba(255, 56, 56, 0.2);
+    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);
 }
 
 #season-page textarea#seasonInput {
@@ -348,23 +551,23 @@ button, .btn-custom {
     margin-bottom: 10px;
 }
 
-/* Thicker Red Buttons with Pink/Red Glow on Hover */
+/* Thicker Purple Buttons with Violet/Purple Glow on Hover */
 #season-page .red-btn {
     width: 100% !important;
     font-size: 2rem !important; /* Significantly larger text */
     padding: 1rem !important; /* Thicker buttons */
     border-radius: 100px !important;
-    background: linear-gradient(180deg, #ff5e81 0%, #ff8c8c 100%) !important;
+    background: linear-gradient(180deg, #8a2be2 0%, #9d50bb 100%) !important;
     color: white;
     border-radius: 50px;
     transition: all 0.3s ease; /* Smoother glow transition */
 }
 
 #season-page .red-btn:hover {
-    filter: brightness(1.05);
+    filter: brightness(1.1);
     transform: translateY(-3px);
-    /* THE GLOW: A vibrant pink-red shadow */
-    box-shadow: 0 0 20px rgba(255, 94, 129, 0.6), 0 0 40px rgba(255, 56, 56, 0.2);
+    /* THE GLOW: A vibrant purple shadow */
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5), 0 0 40px rgba(186, 85, 211, 0.25);
 }
 
 /* Gray Clear Button with subtle Glow */
@@ -385,13 +588,75 @@ button, .btn-custom {
     box-shadow: 0 0 15px rgba(108, 117, 125, 0.4);
 }
 
+/* Equal-height columns and stacked COPY / CLEAR pair */
+#season-page .season-action-row {
+    align-items: stretch;
+}
+
+#season-page .season-main-btn {
+    width: 100% !important;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#season-page .stacked-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Override the universal 2rem button font-size inside the stacked pair */
+#season-page .stacked-btn-group .stacked-btn {
+    flex: 1 1 0;
+    width: 100% !important;
+    min-height: 0;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.1;
+    border-radius: 50px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Keep COPY's purple hover glow and CLEAR's gray hover glow */
+#season-page .stacked-copy-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 0 14px rgba(138, 43, 226, 0.45);
+}
+
+#season-page .stacked-clear-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 0 12px rgba(108, 117, 125, 0.4);
+}
+
+#season-page #results-grid {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    border-left: 8px solid #8a2be2; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
 /* Ensure results container also matches the new width */
 #results {
     width: 100%;
     text-transform: uppercase;
 }
 
-#season-page .side-nav .nav-content h3 { border-bottom: 2px solid #ff6b00; }
+#season-page .side-nav-link:hover {
+    color: #8a2be2;
+}
+
+#season-page .nav-trigger:hover{
+    color: #8a2be2;
+}
 
 /* =========================================
    8. RESPONSIVE UTILITIES
@@ -422,7 +687,7 @@ button, .btn-custom {
     background: #ffffff;
     border-radius: 20px;
     padding: 20px;
-    border-left: 8px solid #f76868; /* Red theme accent */
+    border-left: 8px solid #e7d2d2; /* Red theme accent */
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
@@ -485,7 +750,7 @@ button, .btn-custom {
     display: block;
     width: 100% !important;
     padding: 0.6em 0;
-    background: linear-gradient(130deg, #00d2ff 0%, #3a7bd5 100%) !important;
+    background: linear-gradient(130deg, #ff5e44 0%, #ff2400 100%) !important;
     color: white;
     border-radius: 100px;
     font-size: 2.5rem;
@@ -506,11 +771,11 @@ button, .btn-custom {
     outline: none;
 }
 
-/* Sky Blue Action Button */
+/* Action Button */
 #congeniality-page .sky-btn {
     font-size: 2rem !important;
     padding: 1rem 0.5rem !important;
-    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%) !important;
+    background: linear-gradient(180deg, #ff2400 0%, #ff5e44 100%) !important;
     color: white;
     border-radius: 50px;
     transition: all 0.3s ease;
@@ -520,13 +785,13 @@ button, .btn-custom {
 #congeniality-page .sky-btn:hover {
     filter: brightness(1.05);
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+    box-shadow: 0 0 20px #ff5e44;
 }
 
 /* Winner Display Card (Full-Width Pill) */
 #congeniality-page .winner-display-card {
     width: 100%;
-    background: linear-gradient(130deg, #00d2ff 0%, #3a7bd5 100%);
+    background: linear-gradient(130deg, #ff5e44 0%, #ff2400 100%);
     border-radius: 100px; /* Matches the H1 header shape */
     box-shadow: 0 10px 30px rgba(58, 123, 213, 0.3);
     border: none;
@@ -545,7 +810,7 @@ button, .btn-custom {
 #congeniality-page .display-winner {
     font-size: 3.5rem;
     font-weight: 900;
-    color: #e0f7ff; /* Very light sky blue for readability */
+    color: #fffbff; /* Very light sky blue for readability */
     margin: 15px 0;
     text-shadow: 0 2px 15px rgba(0,0,0,0.15);
     text-transform: uppercase;
@@ -562,7 +827,7 @@ button, .btn-custom {
     background: #ffffff;
     border-radius: 20px;
     padding: 20px;
-    border-left: 8px solid #00d2ff; /* Blue accent box */
+    border-left: 8px solid #ff2400; /* Blue accent box */
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
@@ -595,19 +860,23 @@ button, .btn-custom {
 }
 
 #congeniality-page .divider {
-    color: #00d2ff;
+    color: #ff2400;
     opacity: 0.4;
     margin: 0 25px;
 }
 
 #congeniality-page .result-row:hover {
     background-color: #f0fbff;
-    color: #00d2ff;
+    color: #ff2400;
 }
 
 /* Sidebar Accent */
-#congeniality-page .side-nav .nav-content h3 {
-    border-bottom: 3px solid #00d2ff !important;
+#congeniality-page .side-nav-link:hover{
+    color: #ff2400;
+}
+
+#congeniality-page .nav-trigger:hover{
+    color: #ff2400;
 }
 /* --- Gray Clear Button with subtle Glow --- */
 #congeniality-page .gray-btn {

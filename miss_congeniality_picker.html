@@ -4,24 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MISS CONGENIALITY PICKER</title>
+    <link rel="icon" type="image/x-icon" href="SS.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body id="congeniality-page">
 
+    <header class="top-header">
+        <a href="index.html" class="logo-link">
+            <img src="SimScorer_Logo.png" alt="Sim Scorer Logo" class="header-logo">
+        </a>
+    </header>
+
     <nav class="side-nav">
-        <div class="nav-trigger">
-            <span>☰</span> 
-        </div>
+        <button type="button" class="nav-trigger" aria-label="Toggle Menu" aria-expanded="false">
+            <span>☰</span>
+        </button>
         <div class="nav-content">
-            <h3>MENU</h3>
-            <ul class="list-unstyled">
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="season_record.html">SEASON CALCULATOR</a></li>
-                <li><a href="placement_record.html">PLACEMENT RECORD</a></li>
-                <li><a href="miss_congeniality_picker.html">MISS C SELECT</a></li>
-                <li><a href="lalaparuza_simulator.html">LALAPARUZA</a></li>
-                <li><a href="animated.html">HALL OF FAME</a></li>
+            <ul class="list-unstyled side-icon-list">
+                <li>
+                    <a href="season_record.html" class="side-nav-link">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span class="nav-label" data-collapsed="Calculator" data-expanded="Season Calculator">Calculator</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="miss_congeniality_picker.html" class="side-nav-link">
+                        <i class="fa-regular fa-heart"></i>
+                        <span class="nav-label" data-collapsed="Congeniality" data-expanded="Mx Congeniality">Congeniality</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="lalaparuza_simulator.html" class="side-nav-link">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span class="nav-label" data-collapsed="Lala Sim" data-expanded="Lalaparuza Simulator">Lala Sim</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="animated.html" class="side-nav-link">
+                        <i class="fa-solid fa-crown"></i>
+                        <span class="nav-label" data-collapsed="Hall of Fame" data-expanded="Hall of Fame">Hall of Fame</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -32,8 +57,8 @@
             <div class="dashboard-container mx-auto p-5 bg-white rounded-5 shadow-sm">
                 
                 <div class="home-hero mb-4 text-center">
-                    <h1 id="congeniality-header">MISS CONGENIALITY PICKER</h1>
-                    <p class="subtitle text-uppercase">Enter the cast names to begin the voting process</p>
+                    <h1 id="congeniality-header">MX CONGENIALITY PICKER</h1>
+                    <p class="subtitle text-uppercase">INPUT THE CAST NAMES TO START THE VOTE FOR CONGENIALITY</p>
                 </div>
 
                 <div class="picker-layout-container">
