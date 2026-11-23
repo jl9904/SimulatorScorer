@@ -1,0 +1,848 @@
+@charset "UTF-8";
+
+/* =========================================
+   CONTESTANT IMPORTER (#importer-page)
+   ========================================= */
+#importer-page .dashboard-container {
+    width: 85% !important;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+#importer-page h1 {
+    display: block;
+    width: 100% !important;
+    padding: 0.6em 0;
+    background: linear-gradient(135deg, #d49b00 0%, #f5c518 100%) !important;
+    color: #1a1a1a;
+    border-radius: 100px;
+    font-size: 2.5rem;
+    box-shadow: 0 4px 15px rgba(212, 155, 0, 0.25);
+}
+
+#importer-page .importer-input {
+    border-radius: 50px;
+    padding: 14px 22px;
+    border: 2px solid #e5e5e5;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+#importer-page textarea#seasonSheetInput {
+    width: 100%;
+    border-radius: 25px;
+    padding: 22px;
+    border: 2px solid #e5e5e5;
+    font-size: 1rem;
+    font-family: monospace;
+}
+
+#importer-page .gold-btn {
+    width: 100% !important;
+    font-size: 2rem !important;
+    padding: 1rem !important;
+    border-radius: 50px !important;
+    background: linear-gradient(180deg, #e0a800 0%, #f5c518 100%) !important;
+    color: #1a1a1a;
+    transition: all 0.25s ease;
+}
+
+#importer-page .gold-btn:hover {
+    filter: brightness(1.06);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(245, 197, 24, 0.55);
+}
+
+#importer-page .side-nav-link:hover,
+#importer-page .nav-trigger:hover {
+    color: #d49b00;
+}
+
+/* Importer Review Modal Rows */
+.review-contestant-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.review-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 18px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 14px;
+}
+
+.review-row-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-row-title {
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: #111;
+}
+
+.review-row-meta {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.review-row-checks {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.review-check-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.review-check-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* =========================================
+   CONTESTANT RECORDS PAGE (#records-page)
+   ========================================= */
+#records-page .records-wrapper {
+    width: 95%;
+    max-width: 1550px;
+    margin: 10px auto 50px;
+    padding: 0 12px;
+}
+
+/* Toolbar */
+#records-page .records-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+#records-page .universe-title {
+    font-size: clamp(2.3rem, 2.2vw, 2rem);
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #111111;
+    white-space: nowrap;
+}
+
+#records-page .search-pill-box {
+    flex: 1 1 320px;
+    max-width: 560px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 22px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #f3f4f6 0%, #d8dce2 100%);
+    border: 1px solid #c5cbd3;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+#records-page .search-icon {
+    color: #222222;
+    font-size: 1.15rem;
+}
+
+#records-page .search-pill-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #111111;
+    font-weight: 900;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    outline: none;
+}
+
+#records-page .search-pill-input::placeholder {
+    color: #333333;
+    opacity: 0.85;
+}
+
+#records-page .toolbar-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#records-page .filters-pill-btn {
+    padding: 8px 30px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #4f4f4f 0%, #383838 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    white-space: nowrap;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+#records-page .filters-pill-btn:hover {
+    filter: brightness(1.08);
+    transform: translateY(-2px);
+}
+
+#records-page .mobile-sort-pill-btn,
+#records-page .mobile-sort-bar {
+    display: none;
+}
+
+/* Checklist Filter Panel */
+#records-page .records-filter-panel {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+#records-page .filter-groups-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(170px, 1fr));
+    gap: 20px;
+}
+
+#records-page .filter-group-title {
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #111111;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #e2e6ea;
+}
+
+#records-page .filter-check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #222222;
+    cursor: pointer;
+    user-select: none;
+}
+
+#records-page .filter-check-item input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: #383838;
+    cursor: pointer;
+}
+
+#records-page .filter-panel-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #e9ecef;
+}
+
+#records-page .clear-filters-btn {
+    padding: 6px 18px;
+    border: none;
+    border-radius: 999px;
+    background: #383838;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#records-page .clear-filters-btn:hover {
+    background: #222222;
+}
+
+/* Column Headers & Row Grid */
+#records-page .records-header-row,
+#records-page .contestant-record-row {
+    display: grid;
+    grid-template-columns: 105px 105px minmax(150px, 1.1fr) minmax(300px, 3.5fr) 88px 96px;
+    align-items: center;
+    gap: 12px;
+}
+
+#records-page .records-header-row {
+    padding: 0 24px 10px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #111111;
+}
+
+#records-page .records-header-row .col-season,
+#records-page .records-header-row .col-rank,
+#records-page .records-header-row .col-points,
+#records-page .records-header-row .col-ppe {
+    text-align: center;
+}
+
+#records-page .records-header-row .col-placements {
+    text-align: left;
+}
+
+/* Clickable Sortable Column Headers */
+#records-page .sortable-col {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 8px;
+    padding: 4px 6px;
+    transition: background-color 0.15s ease;
+}
+
+#records-page .records-header-row .col-name.sortable-col {
+    justify-content: flex-start;
+}
+
+#records-page .sortable-col:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+#records-page .sortable-col.active-sort {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+#records-page .sort-indicator {
+    font-size: 0.8rem;
+    line-height: 1;
+    opacity: 0.85;
+}
+
+/* Rows List & Pill Shape */
+#records-page .records-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#records-page .contestant-record-row {
+    padding: 13px 24px;
+    border-radius: 999px;
+    background-color: #eceeef;
+    color: #111111;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Special Row Colors */
+#records-page .contestant-record-row.row-default {
+    background-color: #ececec;
+}
+
+#records-page .contestant-record-row.row-gold {
+    background: linear-gradient(90deg, #ffc445 0%, #da980b 100%);
+}
+
+#records-page .contestant-record-row.row-silver {
+    background: linear-gradient(90deg, #b1b8c2 0%, #c4cbd4 100%);
+}
+
+#records-page .contestant-record-row.row-bronze {
+    background: linear-gradient(90deg, #ffb171 15%, #c6834e 100%);
+}
+
+#records-page .contestant-record-row.row-pink {
+    background: linear-gradient(90deg, #ff71a3 0%, #ffb1cc 100%);
+}
+
+#records-page .contestant-record-row.row-rose-gold {
+    background: linear-gradient(90deg, #ffc549 25%, #ff8cbc 100%);
+}
+
+#records-page .contestant-record-row.row-pink-gray {
+    background: linear-gradient(90deg, #e0d8db 25%, #ff64a5 100%);
+}
+
+#records-page .contestant-record-row.row-green-blue {
+    background: linear-gradient(90deg, #a8ffba 25%, #64ceff 100%);
+}
+
+/* Row Cells */
+#records-page .rec-season {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#records-page .season-type-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.12);
+    font-size: 0.95rem;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+#records-page .rec-rank,
+#records-page .rec-points,
+#records-page .rec-ppe {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#records-page .rec-rank {
+    font-size: 1.25rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+#records-page .rec-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    word-break: break-word;
+}
+
+#records-page .rec-points,
+#records-page .rec-ppe {
+    font-size: 1.3rem;
+    font-weight: 900;
+    justify-self: center;
+}
+
+/* Placements Left-Aligned & Single-Line Friendly */
+#records-page .rec-placements {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+}
+
+#records-page .rec-placements::-webkit-scrollbar {
+    display: none;
+}
+
+#records-page .placement-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 6px;
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    border-radius: 3px;
+    line-height: 1;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+#records-page .placement-win { background-color: royalblue; color: #ffffff; }
+#records-page .placement-top2 { background-color: #ffff00; color: #111111; }
+#records-page .placement-high { background-color: lightblue; color: #111111; }
+#records-page .placement-safe { background-color: #ffffff; color: #111111; border: 1px solid #d5d9de; }
+#records-page .placement-low { background-color: lightpink; color: #111111; }
+#records-page .placement-btm { background-color: tomato; color: #111111; }
+#records-page .placement-elim { background-color: red; color: #111111; }
+#records-page .placement-run { background-color: #d3ffb5; color: #111111; }
+#records-page .placement-rtrn{ background-color: #ffd966; color: #111111 }
+#records-page .placement-quit { background-color: #db7093; color: #111111; }
+#records-page .placement-disq,
+#records-page .placement-default { background-color: darkred; color: #ffffff; }
+
+#records-page .placement-gold-win {
+    background: gold;
+    color: #111111;
+    border: 1px solid #b58300;
+}
+
+#records-page .placement-silver-elim {
+    background: silver;
+    color: #111111;
+    border: 1px solid #8f99a6;
+}
+
+#records-page .placement-bronze-elim {
+    background: #b45f06;
+    color: #111111;
+    border: 1px solid #965b2c;
+}
+
+#records-page .records-empty-state {
+    text-align: center;
+    padding: 36px 16px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #555555;
+}
+
+#records-page .side-nav-link:hover,
+#records-page .nav-trigger:hover {
+    color: #f59f00;
+}
+/* =========================================
+   RECORDS PAGINATION BAR
+   ========================================= */
+#records-page .records-pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 22px;
+    margin-bottom: 16px;
+    padding: 12px 24px;
+    background: #ffffff;
+    border: 1px solid #e2e6ea;
+    border-radius: 999px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+#records-page .records-page-info {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #333333;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#records-page .records-pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#records-page .records-per-page-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 900;
+    color: #111111;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+#records-page .records-per-page-select {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+    color: #111111;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#records-page .records-page-btn {
+    padding: 8px 18px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #4f4f4f 0%, #383838 100%) !important;
+    color: #ffffff !important;
+    font-size: 0.9rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14);
+}
+
+#records-page .records-page-btn:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+#records-page .records-page-btn:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#records-page .records-page-indicator {
+    min-width: 56px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #111111;
+    white-space: nowrap;
+}
+
+/* Tablet / Mobile */
+@media (max-width: 992px) {
+    #records-page .records-wrapper {
+        width: 100%;
+        max-width: 100%;
+        margin: 4px auto 32px;
+        padding: 0 10px;
+    }
+
+    #records-page .records-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    #records-page .universe-title {
+        font-size: 1.5rem;
+        text-align: center;
+        white-space: normal;
+    }
+
+    #records-page .search-pill-box {
+        max-width: 100%;
+        flex: none;
+        padding: 8px 16px;
+    }
+
+    #records-page .search-pill-input,
+    #records-page .filters-pill-btn {
+        font-size: 1rem;
+    }
+
+    #records-page .filters-pill-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    #records-page .records-header-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        padding: 0 6px 8px;
+        font-size: 0.8rem;
+    }
+
+    #records-page .records-header-row .col-rank,
+    #records-page .records-header-row .col-placements {
+        display: none;
+    }
+
+    #records-page .sortable-col {
+        padding: 4px 2px;
+        justify-content: center !important;
+    }
+}
+
+
+/* =========================================
+   MOBILE ADJUSTY THING
+   ========================================= */
+
+@media (max-width: 768px) {
+    #records-page .records-wrapper {
+        width: 100% !important;
+        margin: 4px auto 32px !important;
+        padding: 0 10px !important;
+        overflow-x: hidden;
+    }
+
+    #records-page .records-toolbar {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    #records-page .universe-title {
+        font-size: 1.45rem;
+    }
+
+    #records-page .search-pill-input,
+    #records-page .filters-pill-btn,
+    #records-page .mobile-sort-pill-btn {
+        font-size: 1rem !important;
+    }
+
+    #records-page .toolbar-actions-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        width: 100%;
+    }
+
+    #records-page .filters-pill-btn {
+        padding: 8px 16px !important;
+    }
+
+    #records-page .mobile-sort-pill-btn {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #4f4f4f 0%, #383838 100%);
+        color: #ffffff;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+        cursor: pointer;
+    }
+
+    #records-page .mobile-sort-bar {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 16px;
+        padding: 8px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    #records-page .mobile-sort-chips {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+    }
+
+    #records-page .mobile-sort-key-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 6px 10px !important;
+        margin: 0 !important;
+        border-radius: 999px !important;
+        border: 1px solid #ced4da !important;
+        background: #ffffff !important;
+        color: #111111 !important;
+        font-size: 0.78rem !important;
+        line-height: 1.1 !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.2px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    #records-page .mobile-sort-key-btn.active {
+        background: #383838 !important;
+        color: #ffffff !important;
+        border-color: #383838 !important;
+    }
+
+    #records-page .mobile-key-arrow {
+        font-size: 0.72rem;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    #records-page .records-filter-panel {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        padding: 16px;
+        border-radius: 22px;
+    }
+
+    #records-page .filter-groups-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px;
+    }
+
+    #records-page .clear-filters-btn {
+        width: 100%;
+        padding: 10px 18px;
+    }
+
+    #records-page .records-header-row {
+        display: none !important;
+    }
+
+    #records-page .contestant-record-row {
+        grid-template-columns: 1fr auto;
+        gap: 6px 12px;
+        border-radius: 22px;
+        padding: 14px 18px;
+    }
+
+    #records-page .rec-season,
+    #records-page .rec-rank,
+    #records-page .rec-points,
+    #records-page .rec-ppe {
+        font-size: 1.05rem !important;
+        font-weight: 900 !important;
+    }
+
+    #records-page .rec-season,
+    #records-page .rec-points {
+        justify-content: flex-start;
+        justify-self: start;
+        text-align: left;
+    }
+
+    #records-page .rec-rank,
+    #records-page .rec-ppe {
+        justify-content: flex-end;
+        justify-self: end;
+        text-align: right;
+    }
+
+    #records-page .rec-name {
+        grid-column: 1 / -1;
+        font-size: 1.35rem !important;
+        font-weight: 900 !important;
+        line-height: 1.15;
+        margin: 2px 0;
+        text-align: left;
+    }
+
+    #records-page .rec-placements {
+        grid-column: 1 / -1;
+        flex-wrap: wrap;
+        overflow-x: visible;
+        gap: 4px;
+        margin: 2px 0;
+    }
+    #records-page .records-pagination-bar {
+        flex-direction: column;
+        align-items: center;
+        border-radius: 20px;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    #records-page .records-pagination-controls {
+        justify-content: center;
+    }
+}

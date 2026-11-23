@@ -1,0 +1,159 @@
+@charset "UTF-8";
+
+/* =========================================
+   HOME PAGE (#home-page)
+   ========================================= */
+.dashboard-container {
+    width: 85% !important;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 50px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    padding: 60px !important;
+}
+
+#home-page h1.header-scaled {
+    display: block;
+    width: 100% !important;
+    font-size: 3.5rem;
+    padding: 0.6em 0;
+    background: linear-gradient(130deg, #ff4e00 0%, #ff8c00 100%) !important;
+    color: white;
+    box-shadow: 0 6px 20px rgba(255, 78, 0, 0.25);
+    margin: 0 auto 15px auto;
+    border-radius: 100px;
+}
+
+#home-page .subtitle {
+    font-weight: 800;
+    color: #666;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+#home-page .orange-btn {
+    width: 100% !important;
+    font-size: 1.8rem !important;
+    padding: 1.6rem !important;
+    border-radius: 100px !important;
+    background: linear-gradient(180deg, #ff6b00 0%, #ffb347 100%) !important;
+    color: white;
+    font-weight: 900;
+}
+
+#home-page .orange-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35);
+}
+
+#home-page .feature-btn {
+    font-size: 1.8rem !important;
+    background: linear-gradient(180deg, #333 0%, #555 100%) !important;
+    padding: 1.6rem !important;
+}
+
+#home-page .side-nav-link:hover {
+    color: #ff6a00;
+}
+
+/* Random Winner Banner */
+#home-page .winner-banner-card {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 185px;
+    background: linear-gradient(180deg, #333 0%, #555 100%);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+}
+
+#home-page .winner-banner-img-wrap {
+    flex: 0 0 36%;
+    max-width: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, #000000 68%, transparent 100%);
+    mask-image: linear-gradient(to right, #000000 68%, transparent 100%);
+}
+
+#home-page .winner-banner-img {
+    width: 100%;
+    height: 100%;
+    min-height: 185px;
+    max-height: 230px;
+    object-fit: cover;
+    display: block;
+}
+
+#home-page .winner-banner-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 28px 20px 12px;
+    gap: 8px;
+}
+
+#home-page .winner-banner-name {
+    font-size: clamp(2.1rem, 3.6vw, 3.25rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+#home-page .winner-banner-subtitle {
+    font-size: clamp(1.25rem, 2.2vw, 2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #ffffff;
+    opacity: 0.95;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 992px) {
+    .dashboard-container {
+        width: 95% !important;
+        padding: 30px !important;
+    }
+
+    #home-page h1.header-scaled {
+        font-size: 2.2rem;
+    }
+
+    #home-page .orange-btn {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    #home-page .button-grid-container {
+        width: 95% !important;
+    }
+
+    #home-page .winner-banner-card {
+        flex-direction: column;
+    }
+
+    #home-page .winner-banner-img-wrap {
+        flex: none;
+        max-width: 100%;
+        width: 100%;
+        -webkit-mask-image: linear-gradient(to bottom, #000000 68%, transparent 100%);
+        mask-image: linear-gradient(to bottom, #000000 68%, transparent 100%);
+    }
+
+    #home-page .winner-banner-info {
+        padding: 16px 20px 22px;
+    }
+}

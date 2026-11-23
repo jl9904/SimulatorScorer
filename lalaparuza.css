@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+/* =========================================
+   LALAPARUZA PAGE (#lalaparuza-page)
+   ========================================= */
+#lalaparuza-page .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lalaparuza-page h1,
+#lalaparuza-page #lalaparuza-header {
+    width: 65%;
+    margin: 20px auto;
+    padding: 0.5em;
+    text-align: center;
+    background: radial-gradient(#7098ff, #326cff, #0048ff) !important;
+    color: white;
+}
+
+#lalaparuza-page .input-layout-container,
+#lalaparuza-page .tournament-layout-container {
+    width: 65%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#lalaparuza-page #roundResults {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#lalaparuza-page textarea {
+    width: 100%;
+    border-radius: 20px;
+    padding: 20px;
+    border: 2px solid #dee2e6;
+}
+
+#lalaparuza-page .blue-btn {
+    width: 100%;
+    font-size: 2rem !important;
+    padding: 1rem;
+    border-radius: 50px;
+    background: linear-gradient(180deg, #0048ff 0%, #7098ff 100%);
+    color: white;
+    font-weight: 800;
+}
+
+#lalaparuza-page .winner-banner {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35em;
+    width: auto !important;
+    min-width: 65%;
+    max-width: 100%;
+    padding: 0.35em 1.1em !important;
+    font-size: clamp(2rem, 4vw, 4rem) !important;
+    line-height: 1.15;
+    white-space: nowrap;
+}
+
+#lalaparuza-page .winner-banner .trophy,
+#lalaparuza-page .winner-banner .winner-name {
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+#lalaparuza-page .clear-btn {
+    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
+}
+
+#lalaparuza-page .side-nav-link:hover,
+#lalaparuza-page .nav-trigger:hover {
+    color: #0048ff;
+}
+
+@media (max-width: 768px) {
+    #lalaparuza-page .input-layout-container,
+    #lalaparuza-page .tournament-layout-container,
+    #lalaparuza-page h1,
+    #lalaparuza-page #lalaparuza-header {
+        width: 95% !important;
+    }
+}

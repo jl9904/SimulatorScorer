@@ -18,63 +18,87 @@ body {
     font-size: 1rem;
     box-sizing: border-box;
     background-color: #fcfcfc;
-    color: #333;
+    color: #333333;
 }
 
-/* The standard wrapper for all pages to avoid sidebar overlap */
 .main-content {
-    margin-left: 60px; 
+    margin-left: 104px;
     padding: 20px;
-    width: calc(100% - 60px);
-    transition: margin-left 0.3s ease;
+    width: calc(100% - 104px);
+    max-width: 100vw;
+    overflow-x: hidden;
+    transition: margin-left 0.22s ease, width 0.22s ease;
 }
-/* --- Shared Button/Pill Components (Universal) --- */
-button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
+
+.subtitle {
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 800;
+    color: #666666;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   2. SHARED PILL & BUTTON COMPONENTS
+   ========================================= */
+h1 {
+    font-weight: 900;
+    text-align: center;
+    border-radius: 10em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-transform: uppercase;
+    margin: 20px auto;
+}
+
+button,
+.btn-custom,
+.recordbtn,
+.orange-btn,
+.blue-btn,
+.purple-btn {
     font-family: inherit;
     border: none;
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: uppercase;
-    font-weight: 900; /* Extra bold for that clean look */
-    
-    /* UNIVERSAL FONT INCREASE */
-    font-size: 2rem !important; 
+    font-weight: 900;
+    font-size: 2rem !important;
     letter-spacing: 0.5px;
 }
 
-/* HEADER */
+/* =========================================
+   3. HEADER
+   ========================================= */
 .top-header {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px 0;
-  margin-left: 45px; /* Offsets the fixed left sidebar so logo stays visually centered */
-  width: calc(100% - 45px);
+    width: 100%;
+    max-width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px 4px;
+    overflow: hidden;
 }
 
-.logo-link {
-  display: inline-block;
-  cursor: pointer;
+.top-header .logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
 }
 
-.header-logo {
-  max-height: 75px; /* Adjust this value to make the logo bigger or smaller */
-  width: auto;
-  display: block;
-}
-
-.subtitle {
-    font-weight: 800;
-    color: #666;
-    font-size: 1.2rem; /* Increased size */
-    letter-spacing: 2px;
+.top-header .header-logo {
+    display: block;
+    max-width: 100%;
+    width: auto;
+    max-height: 85px;
+    height: auto;
+    object-fit: contain;
 }
 
 /* =========================================
-   2. SIDEBAR (LIGHT GRAY)
+   4. SIDEBAR (LIGHT GRAY)
    ========================================= */
-/* Collapsed rail: always visible */
 .side-nav {
     position: fixed;
     top: 0;
@@ -91,7 +115,6 @@ button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
     transition: width 0.22s ease;
 }
 
-/* Expanded rail: only when clicked */
 .side-nav.is-expanded {
     width: 245px;
     align-items: flex-start;
@@ -132,7 +155,6 @@ button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
     align-items: flex-start;
 }
 
-/* Default (collapsed): icon on top, text underneath */
 .side-nav-link {
     display: flex;
     flex-direction: column;
@@ -151,13 +173,12 @@ button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
 }
 
 .side-nav-link i {
-    font-size: 30px; /* Bigger icons */
+    font-size: 30px;
     width: 34px;
     text-align: center;
     flex-shrink: 0;
 }
 
-/* Expanded (clicked): text to the side of the icon */
 .side-nav.is-expanded .side-nav-link {
     flex-direction: row;
     justify-content: flex-start;
@@ -176,973 +197,78 @@ button, .btn-custom, .recordbtn, .orange-btn, .blue-btn, .purple-btn {
     background-color: #fff5ee;
 }
 
-/* Keep main content clear of the collapsed rail */
-.main-content {
-    margin-left: 104px;
-}
-
 /* =========================================
-   3. SHARED COMPONENTS (PILL STYLE)
+   5. UNIVERSAL MOBILE OVERRIDES (<= 768px)
    ========================================= */
-h1 {
-    font-weight: 900;
-    text-align: center;
-    border-radius: 10em; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    text-transform: uppercase;
-    margin: 20px auto;
-}
-
-button, .btn-custom {
-    font-family: inherit;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-}
-
-/* =========================================
-   4. HOME PAGE (ORANGE THEME)
-   ========================================= */
-
-/* 1. The Container Scale (Blue Line) */
-.dashboard-container {
-    width: 85% !important; /* Increased from 65% to match 1.5x feel */
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 50px; 
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06); /* Deeper shadow for larger scale */
-    padding: 60px !important; /* Extra breathing room */
-}
-
-/* 2. The Header Scale (Red Line) 
-   Setting width to 100% ensures it matches the width of the 2-button row below it.
-*/
-#home-page h1.header-scaled {
-    display: block; 
-    width: 100% !important; 
-    font-size: 3.5rem; /* 1.5x larger font */
-    padding: 0.6em 0;
-    background: linear-gradient(130deg, #ff4e00 0%, #ff8c00 100%) !important;
-    color: white;
-    box-shadow: 0 6px 20px rgba(255, 78, 0, 0.25);
-    margin: 0 auto 15px auto;
-    border-radius: 100px; /* Maintains the pill shape at larger scale */
-}
-
-/* 3. Subtitle Scaling */
-#home-page .subtitle {
-    font-weight: 800;
-    color: #666;
-    font-size: 1.2rem; /* Increased size */
-    letter-spacing: 2px;
-}
-
-/* 4. Button Text and Padding Scale */
-#home-page .orange-btn {
-    width: 100% !important;
-    font-size: 1.8rem !important; /* Significantly larger text */
-    padding: 1.6rem !important; /* Thicker buttons */
-    border-radius: 100px !important;
-    background: linear-gradient(180deg, #ff6b00 0%, #ffb347 100%) !important;
-    color: white;
-    font-weight: 900;
-}
-
-#home-page .orange-btn:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(255, 107, 0, 0.35);
-}
-
-/* Gray Standout Button Scale */
-#home-page .feature-btn {
-    font-size: 2rem !important;
-    background: linear-gradient(180deg, #333 0%, #555 100%) !important;
-    padding: 2rem !important; /* Even more presence for the Hall of Fame */
-}
-
-/* Mobile Responsiveness for Mega-Scale */
-@media (max-width: 992px) {
-    .dashboard-container {
-        width: 95% !important;
-        padding: 30px !important;
-    }
-    #home-page h1.header-scaled {
-        font-size: 2.2rem;
-    }
-    #home-page .orange-btn {
-        font-size: 1.1rem !important;
-    }
-}
-
-/* Sidebar Accent for Home (Orange) */
-#home-page .side-nav-link:hover {
-    color: #ff6a00;
-}
-
-/* =========================================
-   HOME PAGE RANDOM WINNER BANNER
-   ========================================= */
-#home-page .winner-banner-card {
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    min-height: 185px;
-    /* Matches the dark charcoal gradient of the Animated Hall of Fame button */
-    background: linear-gradient(180deg, #333 0%, #555 100%);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-}
-
-#home-page .winner-banner-img-wrap {
-    flex: 0 0 36%;
-    max-width: 360px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    /* Fades the right edge smoothly into the banner background */
-    -webkit-mask-image: linear-gradient(to right, #000000 68%, transparent 100%);
-    mask-image: linear-gradient(to right, #000000 68%, transparent 100%);
-}
-
-#home-page .winner-banner-img {
-    width: 100%;
-    height: 100%;
-    min-height: 185px;
-    max-height: 230px;
-    object-fit: cover;
-    display: block;
-}
-
-#home-page .winner-banner-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px 28px 20px 12px;
-    gap: 8px;
-}
-
-#home-page .winner-banner-name {
-    font-size: clamp(2.1rem, 3.6vw, 3.25rem);
-    font-weight: 900;
-    line-height: 1.08;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: #ffffff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-
-#home-page .winner-banner-subtitle {
-    font-size: clamp(1.25rem, 2.2vw, 2rem);
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: #ffffff;
-    opacity: 0.95;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
 @media (max-width: 768px) {
-    #home-page .winner-banner-card {
-        flex-direction: column;
-    }
-
-    #home-page .winner-banner-img-wrap {
-        flex: none;
-        max-width: 100%;
+    html,
+    body {
         width: 100%;
-        /* Fade downward on mobile stacked view */
-        -webkit-mask-image: linear-gradient(to bottom, #000000 68%, transparent 100%);
-        mask-image: linear-gradient(to bottom, #000000 68%, transparent 100%);
+        max-width: 100vw;
+        overflow-x: hidden;
+        height: auto !important;
+        min-height: 0 !important;
     }
 
-    #home-page .winner-banner-info {
-        padding: 16px 20px 22px;
-    }
-}
-
-/* =========================================
-   5. LALAPARUZA PAGE (BLUE THEME)
-   ========================================= */
-#lalaparuza-page .main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#lalaparuza-page h1,
-#lalaparuza-page #lalaparuza-header {
-    width: 65%;
-    margin: 20px auto;
-    padding: 0.5em;
-    text-align: center;
-    background: radial-gradient(#7098ff, #326cff, #0048ff) !important;
-    color: white;
-}
-
-#lalaparuza-page .input-layout-container,
-#lalaparuza-page .tournament-layout-container {
-    width: 65%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-#lalaparuza-page #roundResults {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-#lalaparuza-page textarea {
-    width: 100%;
-    border-radius: 20px;
-    padding: 20px;
-    border: 2px solid #dee2e6;
-}
-
-#lalaparuza-page .blue-btn {
-    width: 100%;
-    font-size: 2rem !important;
-    padding: 1rem;
-    border-radius: 50px;
-    background: linear-gradient(180deg, #0048ff 0%, #7098ff 100%);
-    color: white;
-    font-weight: 800;
-}
-
-/* Winner pill expands horizontally to fit trophy + name + trophy on one line */
-#lalaparuza-page .winner-banner {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35em;
-    width: auto !important;
-    min-width: 65%;
-    max-width: 100%;
-    padding: 0.35em 1.1em !important;
-    font-size: clamp(2rem, 4vw, 4rem) !important;
-    line-height: 1.15;
-    white-space: nowrap;
-}
-
-#lalaparuza-page .winner-banner .trophy,
-#lalaparuza-page .winner-banner .winner-name {
-    display: inline-block;
-    flex-shrink: 0;
-}
-
-#lalaparuza-page .clear-btn {
-    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
-}
-
-#lalaparuza-page .side-nav-link:hover {
-    color: #0048ff;
-}
-
-#lalaparuza-page .nav-trigger:hover {
-    color: #0048ff;
-}
-
-/* =========================================
-   6. PROCESSOR PAGE (SEA GREEN THEME)
-   ========================================= */
-/* --- Placement Group Processor Sea Green Theme --- */
-
-#processor-page .dashboard-container {
-    width: 85% !important;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-#processor-page h1 {
-    display: block;
-    width: 100% !important;
-    padding: 0.6em 0;
-    background: linear-gradient(130deg, #169c84 0%, #2ec4a6 100%) !important;
-    color: white;
-    border-radius: 100px;
-    font-size: 2.5rem;
-    box-shadow: 0 4px 15px rgba(22, 156, 132, 0.22);
-}
-
-#processor-page textarea#inputData {
-    width: 100%;
-    height: 250px;
-    border-radius: 25px;
-    padding: 25px;
-    border: 2px solid #eee;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-}
-
-/* Sea Green Buttons with Glow */
-#processor-page .purple-btn {
-    font-size: 2rem !important;
-    padding: 1rem 0.5rem !important;
-    background: linear-gradient(180deg, #169c84 0%, #24b498 100%) !important;
-    color: white;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-}
-
-#processor-page .purple-btn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(22, 156, 132, 0.5);
-}
-
-/* Reuse the gray-btn from Season/Lalaparuza */
-#processor-page .gray-btn {
-    font-size: 2rem !important;
-    padding: 1rem 0.5rem !important;
-    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
-    color: white;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-}
-
-#processor-page .side-nav-link:hover {
-    color: #169c84;
-}
-
-#processor-page .nav-trigger:hover{
-    color: #169c84;
-}
-
-/* =========================================
-   7. SEASON RECORD (PURPLE THEME)
-   ========================================= */
-/* --- Season Record Purple Theme (Updated 85% Width) --- */
-
-#season-page .dashboard-container {
-    width: 90% !important; /* Increased from 65% for a cleaner, wider layout */
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 50px !important;
-}
-
-#season-page h1 {
-    display: block;
-    width: 100% !important;
-    padding: 0.6em 0;
-    background: linear-gradient(130deg, #8a2be2 0%, #ba55d3 100%) !important;
-    color: white;
-    border-radius: 100px;
-    font-size: 2.8rem; /* Scaled up to match width */
-    box-shadow: 0 4px 15px rgba(138, 43, 226, 0.2);
-}
-
-#season-page textarea#seasonInput {
-    width: 100%;
-    height: 220px; /* Taller input for the wider layout */
-    border-radius: 25px;
-    padding: 25px;
-    border: 2px solid #eee;
-    font-size: 1.2rem;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-    margin-bottom: 10px;
-}
-
-/* Thicker Purple Buttons with Violet/Purple Glow on Hover */
-#season-page .red-btn {
-    width: 100% !important;
-    font-size: 2rem !important; /* Significantly larger text */
-    padding: 1rem !important; /* Thicker buttons */
-    border-radius: 100px !important;
-    background: linear-gradient(180deg, #8a2be2 0%, #9d50bb 100%) !important;
-    color: white;
-    border-radius: 50px;
-    transition: all 0.3s ease; /* Smoother glow transition */
-}
-
-#season-page .red-btn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-3px);
-    /* THE GLOW: A vibrant purple shadow */
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5), 0 0 40px rgba(186, 85, 211, 0.25);
-}
-
-/* Gray Clear Button with subtle Glow */
-#season-page .gray-btn {
-    width: 100% !important;
-    font-size: 2rem !important; /* Significantly larger text */
-    padding: 1rem !important; /* Thicker buttons */
-    border-radius: 100px !important;
-    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
-    color: white;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-}
-
-#season-page .gray-btn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-3px);
-    box-shadow: 0 0 15px rgba(108, 117, 125, 0.4);
-}
-
-/* Equal-height columns and stacked COPY / CLEAR pair */
-#season-page .season-action-row {
-    align-items: stretch;
-}
-
-#season-page .season-main-btn {
-    width: 100% !important;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#season-page .stacked-btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-    height: 100%;
-}
-
-/* Override the universal 2rem button font-size inside the stacked pair */
-#season-page .stacked-btn-group .stacked-btn {
-    flex: 1 1 0;
-    width: 100% !important;
-    min-height: 0;
-    padding: 0.25rem 0.75rem !important;
-    font-size: 1rem !important;
-    line-height: 1.1;
-    border-radius: 50px !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Keep COPY's purple hover glow and CLEAR's gray hover glow */
-#season-page .stacked-copy-btn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: 0 0 14px rgba(138, 43, 226, 0.45);
-}
-
-#season-page .stacked-clear-btn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: 0 0 12px rgba(108, 117, 125, 0.4);
-}
-
-#season-page #results-grid {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    border-left: 8px solid #8a2be2; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-/* Ensure results container also matches the new width */
-#results {
-    width: 100%;
-    text-transform: uppercase;
-}
-
-#season-page .side-nav-link:hover {
-    color: #8a2be2;
-}
-
-#season-page .nav-trigger:hover{
-    color: #8a2be2;
-}
-
-/* =========================================
-   8. RESPONSIVE UTILITIES
-   ========================================= */
-@media (max-width: 768px) {
-    .main-content { margin-left: 50px; width: calc(100% - 50px); }
-    #home-page .button-grid-container,
-    #lalaparuza-page .input-layout-container,
-    #processor-page .processor-layout-container {
-        width: 95% !important;
-    }
-}
-
-/* --- Table-like Column Alignment --- */
-#results .result-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    border-left: 6px solid #ff3838;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    display: flex;
-    font-family: 'Courier New', Courier, monospace; /* Optional: Monospace helps alignment further */
-    font-weight: 900;
-}
-
-/* --- Unified Results Table --- */
-#results-grid {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    border-left: 8px solid #e7d2d2; /* Red theme accent */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.result-row {
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0; /* Soft line between rows */
-    font-weight: 600; /* Matching your bold aesthetic */
-    color: #333;
-}
-
-.result-row:last-child {
-    border-bottom: none; /* Clean finish at the bottom */
-}
-
-/* Fixed column widths for perfect alignment */
-.col-rank {
-    width: 80px;
-    flex-shrink: 0;
-}
-
-.col-score {
-    width: 160px;
-    flex-shrink: 0;
-}
-
-.col-ppe {
-    width: 140px;
-    flex-shrink: 0;
-}
-
-/* Styled Dividers */
-.divider {
-    color: #ff3838; /* Matching the red theme */
-    opacity: 0.3;
-    margin: 0 25px;
-    font-weight: 300;
-}
-
-/* Hover effect for the whole row */
-.result-row:hover {
-    background-color: #fff9f9;
-    color: #ff3838;
-}
-
-/* =========================================
-   9. MISS CONGENIALITY PAGE
-   ========================================= */
-
-/* Page-Specific Layout */
-#congeniality-page .dashboard-container {
-    width: 85% !important;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* Primary Header */
-#congeniality-page h1#congeniality-header {
-    display: block;
-    width: 100% !important;
-    padding: 0.6em 0;
-    background: linear-gradient(130deg, #ff5e44 0%, #ff2400 100%) !important;
-    color: white;
-    border-radius: 100px;
-    font-size: 2.5rem;
-    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
-    text-align: center;
-}
-
-/* Input Styling */
-#congeniality-page textarea#voterInput {
-    width: 100%;
-    height: 250px;
-    border-radius: 25px;
-    padding: 25px;
-    border: 2px solid #eee;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);
-    outline: none;
-}
-
-/* Action Button */
-#congeniality-page .sky-btn {
-    font-size: 2rem !important;
-    padding: 1rem 0.5rem !important;
-    background: linear-gradient(180deg, #ff2400 0%, #ff5e44 100%) !important;
-    color: white;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    font-weight: 800;
-}
-
-#congeniality-page .sky-btn:hover {
-    filter: brightness(1.05);
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px #ff5e44;
-}
-
-/* Winner Display Card (Full-Width Pill) */
-#congeniality-page .winner-display-card {
-    width: 100%;
-    background: linear-gradient(130deg, #ff5e44 0%, #ff2400 100%);
-    border-radius: 100px; /* Matches the H1 header shape */
-    box-shadow: 0 10px 30px rgba(58, 123, 213, 0.3);
-    border: none;
-}
-
-/* Bolder Underlined Winner Header */
-#congeniality-page .winner-display-card h2 {
-    font-weight: 900 !important;
-    color: white;
-    text-decoration: underline;
-    text-underline-offset: 8px;
-    letter-spacing: 2px;
-}
-
-/* Winner Name (High Contrast) */
-#congeniality-page .display-winner {
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: #fffbff; /* Very light sky blue for readability */
-    margin: 15px 0;
-    text-shadow: 0 2px 15px rgba(0,0,0,0.15);
-    text-transform: uppercase;
-}
-
-#congeniality-page .voting-stats {
-    color: rgba(255, 255, 255, 0.85);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-/* Results Grid Alignment */
-#congeniality-page #results-grid {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    border-left: 8px solid #ff2400; /* Blue accent box */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-#congeniality-page .result-row {
-    display: flex;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #f0f8ff;
-    font-weight: 800;
-    color: #333;
-    border-left: none !important; /* Removed side name lines */
-}
-
-#congeniality-page .result-row:last-child {
-    border-bottom: none;
-}
-
-#congeniality-page .col-rank, 
-#congeniality-page .col-ppe {
-    width: 250px !important; /* Consistent column widths */
-    flex-shrink: 0;
-}
-
-#congeniality-page .col-score {
-    width: 120px !important;
-    font-weight: 400;
-    font-size: 0.85rem;
-    color: #888;
-    text-align: center;
-}
-
-#congeniality-page .divider {
-    color: #ff2400;
-    opacity: 0.4;
-    margin: 0 25px;
-}
-
-#congeniality-page .result-row:hover {
-    background-color: #f0fbff;
-    color: #ff2400;
-}
-
-/* Sidebar Accent */
-#congeniality-page .side-nav-link:hover{
-    color: #ff2400;
-}
-
-#congeniality-page .nav-trigger:hover{
-    color: #ff2400;
-}
-/* --- Gray Clear Button with subtle Glow --- */
-#congeniality-page .gray-btn {
-    width: 100% !important;
-    font-size: 2rem !important; /* Significantly larger text */
-    padding: 1rem !important; /* Thicker buttons */
-    background: linear-gradient(180deg, #6c757d 0%, #adb5bd 100%) !important;
-    color: white;
-    border-radius: 100px !important; /* Unified pill shape */
-    transition: all 0.3s ease;
-    border: none;
-    font-weight: 800;
-}
-
-#congeniality-page .gray-btn:hover {
-    filter: brightness(1.1);
-    transform: translateY(-3px);
-    box-shadow: 0 0 15px rgba(108, 117, 125, 0.4);
-}
-
-/* =========================================
-   10. ANIMATED HALL OF FAME
-   ========================================= */
-
-#hall-of-fame-page .dashboard-container {
-    width: 85% !important;
-    max-width: 1400px;
-}
-
-#hall-of-fame-page h1#fame-header {
-    background: linear-gradient(130deg, #ff8c00 0%, #ffc107 100%) !important;
-    color: white;
-    border-radius: 100px;
-    padding: 0.6em 0;
-    font-size: 2.5rem;
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
-    text-align: center;
-}
-
-/* Accordion Button Styling */
-.fame-div-btn {
-    background: #f8f9fa !important;
-    color: #333 !important;
-    font-weight: 900 !important;
-    font-size: 1.5rem !important;
-    border-radius: 20px !important;
-    padding: 1.5rem 2rem !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border-left: 10px solid #ff8c00 !important;
-    transition: all 0.3s ease !important;
-}
-
-.fame-div-btn:not(.collapsed) {
-    background: linear-gradient(90deg, #ff8c00, #ffc107) !important;
-    color: white !important;
-    transform: scale(1.02);
-}
-
-.fame-div-btn::after {
-    filter: grayscale(1) invert(1); /* Makes arrow white when active */
-}
-
-/* Container for the hard-coded data */
-.fame-list-container {
-    background: #ffffff;
-    border: 2px solid #f8f9fa;
-    border-radius: 0 0 20px 20px;
-    padding: 2rem !important;
-}
-
-/* Sidebar Accent */
-#hall-of-fame-page .side-nav .nav-content h3 {
-    border-bottom: 3px solid #ff8c00 !important;
-}
-
-/* --- Hall of Fame Winner Rows --- */
-
-.fame-row {
-    display: flex;
-    align-items: center;
-    background: #ffffff;
-    border: 1px solid #eee;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    overflow: hidden; /* Keeps image corners clean */
-    transition: transform 0.2s ease;
-}
-
-.fame-row:hover {
-    transform: scale(1.01);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-/* Season Column */
-.fame-season {
-    width: 60px;
-    font-weight: 900;
-    font-size: 1.2rem;
-    text-align: center;
-    background: #f8f9fa;
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-right: 1px solid #eee;
-}
-
-/* Square Image Wrapper */
-.fame-img-wrap {
-    width: 100px;
-    height: 100px;
-    flex-shrink: 0;
-}
-
-.fame-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures square crop */
-}
-
-/* Details Section */
-.fame-details {
-    flex-grow: 1;
-    padding: 0 20px;
-}
-
-.fame-name {
-    font-weight: 900;
-    font-size: 1.4rem;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-/* Placement Badges (Small Boxes) */
-.placement-track {
-    display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-}
-
-.placement-track span {
-    font-size: 0.7rem;
-    font-weight: 800;
-    padding: 4px 8px;
-    min-width: 45px;
-    text-align: center;
-    color: black;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-/* Color Key (Matching your images) */
-.p-win  { background-color: royalblue; color: white !important; } /* Blue */
-.p-high { background-color: lightblue; } /* Light Blue */
-.p-safe { background-color: #ffffff; } /* White */
-.p-low  { background-color: lightpink; } /* Light Red/Pink */
-.p-btm  { background-color: tomato; } /* Red */
-.p-top2 { background-color: #ffff00; } /* Yellow */
-.p-elim {background-color: red; }
-
-/* PPE Column */
-.fame-ppe {
-    width: 100px;
-    text-align: center;
-    font-weight: 900;
-    font-size: 1.5rem;
-    color: #ff8c00; /* Matching the Gold theme */
-    padding-right: 15px;
-}
-
-.fame-ppe small {
-    display: block;
-    font-size: 0.7rem;
-    color: #999;
-}
-
-/* Clean integrated sorting box */
-.sort-select {
-    cursor: pointer;
-    font-size: 0.85rem;
-    padding: 0.4rem 2rem 0.4rem 1rem;
-    transition: background-color 0.2s ease;
-}
-
-.sort-select:hover {
-    background-color: #e9ecef !important;
-}
-
-.sort-select:focus {
-    box-shadow: none;
-    border-color: transparent;
-}
-
-/* Ensure the header remains static as requested */
-#fame-header {
-    position: static; /* */
-}
-
-@media screen and (max-width: 768px) {
     body#hall-of-fame-page {
-        display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
-    .side-nav {
-        position: relative !important;
+    .subtitle {
+        font-size: 0.95rem;
+        letter-spacing: 1.2px;
+    }
+
+    .side-nav,
+    .nav-trigger,
+    .nav-content,
+    .mobile-menu-btn,
+    .hamburger-btn {
+        display: none !important;
+    }
+
+    .top-header {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 auto 4px !important;
+        padding: 8px 12px 2px !important;
+    }
+
+    .top-header .header-logo {
+        max-height: 52px !important;
+        max-width: 90% !important;
+    }
+
+    .main-content,
+    .page-wrapper,
+    .content-wrapper,
+    .dashboard-wrapper,
+    .home-wrapper {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        padding-top: 4px !important;
         width: 100% !important;
         max-width: 100% !important;
-        left: 0 !important;
-        padding: 0 !important; 
-        background-color: #fff; 
-    }
-
-    /* Stack the menu items */
-    .nav-content ul {
-        display: flex;
-        flex-direction: column;
-        padding: 10px !important;
-    }
-
-    .nav-content li {
-        margin-bottom: 5px;
-    }
-
-    .main-content {
-        margin-left: 0 !important; 
-        width: 100% !important;
-        padding: 0 !important;
-    }
-
-    .dashboard-wrapper {
-        display: block !important;
-        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        flex: 0 0 auto !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
     }
 
     .dashboard-container {
         width: 100% !important;
         max-width: 100% !important;
-        border-radius: 0 !important;
-        padding: 20px 10px !important;
-    }
-
-    .fame-list-container {
-        padding: 10px 5px !important;
-    }
-
-    .fame-row {
-        flex-direction: column !important;
-        text-align: center;
-    }
-
-    .nav-content {
-        display: none; 
-        padding: 20px;
-        background: #fff;
-    }
-
-    .nav-content.active {
-        display: block !important;
-    }
-
-    .nav-trigger {
-        display: flex !important;
-        width: 100% !important;
-        padding: 15px 20px !important;
-        background: #fff;
-        cursor: pointer;
-        border-bottom: 1px solid #eee;
-        box-sizing: border-box;
+        height: auto !important;
+        min-height: 0 !important;
+        margin-top: 0 !important;
+        padding: 16px !important;
+        border-radius: 24px !important;
     }
 }

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTESTANT RECORDS | SIM SCORER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="records.css">
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            query, 
+            where, 
+            orderBy,
+            doc,
+            updateDoc 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyByxfHK7a1AF_e7jU3rJIp-mrLfJV5C7r4",
+            authDomain: "animatedhof-350b3.firebaseapp.com",
+            projectId: "animatedhof-350b3",
+            storageBucket: "animatedhof-350b3.firebasestorage.app",
+            messagingSenderId: "171067849270",
+            appId: "1:171067849270:web:94e4e87f61477510dab697",
+            measurementId: "G-SB49NTBRRP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.fs = { collection, getDocs, query, where, orderBy, doc, updateDoc };
+        window.dispatchEvent(new Event("firebase-ready"));
+    </script>
+</head>
+<body id="records-page">
+
+    <header class="top-header">
+        <a href="index.html" class="logo-link">
+            <img src="SimScorer_Logo.png" alt="Sim Scorer Logo" class="header-logo">
+        </a>
+    </header>
+
+    <nav class="side-nav">
+        <button type="button" class="nav-trigger" aria-label="Toggle Menu" aria-expanded="false">
+            <span>☰</span>
+        </button>
+        <div class="nav-content">
+            <ul class="list-unstyled side-icon-list">
+                <li>
+                    <a href="season_record.html" class="side-nav-link">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span class="nav-label" data-collapsed="Calculator" data-expanded="Season Calculator">Calculator</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="miss_congeniality_picker.html" class="side-nav-link">
+                        <i class="fa-regular fa-heart"></i>
+                        <span class="nav-label" data-collapsed="Congeniality" data-expanded="Mx Congeniality">Congeniality</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="lalaparuza_simulator.html" class="side-nav-link">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span class="nav-label" data-collapsed="Lala Sim" data-expanded="Lalaparuza Simulator">Lala Sim</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="animated.html" class="side-nav-link">
+                        <i class="fa-solid fa-crown"></i>
+                        <span class="nav-label" data-collapsed="Hall of Fame" data-expanded="Hall of Fame">Hall of Fame</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="records-wrapper">
+            <!-- MAIN TOOLBAR -->
+            <div class="records-toolbar">
+                <div class="universe-title">ANIMATED UNIVERSE</div>
+
+                <div class="search-pill-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="recordsSearchInput" class="search-pill-input" placeholder="SEARCH" aria-label="Search contestants">
+                </div>
+
+                <div class="toolbar-actions-group">
+                    <button type="button" id="recordsFilterBtn" class="filters-pill-btn">
+                        FILTERS
+                    </button>
+                    <button type="button" id="mobileSortToggleBtn" class="mobile-sort-pill-btn">
+                        <i class="fa-solid fa-arrow-up-down"></i>
+                        <span>SORT</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MOIBLE EXCLUSIVE SORT (Hidden on iPad/Desktop) -->
+            <div id="mobileSortBar" class="mobile-sort-bar" style="display: none;">
+                <div class="mobile-sort-chips">
+                    <button type="button" class="mobile-sort-key-btn active" data-sort-key="season">
+                        SEASON <span class="mobile-key-arrow">▲</span>
+                    </button>
+                    <button type="button" class="mobile-sort-key-btn" data-sort-key="name">
+                        NAME <span class="mobile-key-arrow">⇅</span>
+                    </button>
+                    <button type="button" class="mobile-sort-key-btn" data-sort-key="points">
+                        POINTS <span class="mobile-key-arrow">⇅</span>
+                    </button>
+                    <button type="button" class="mobile-sort-key-btn" data-sort-key="ppe">
+                        PPE <span class="mobile-key-arrow">⇅</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Checklist Filter Panel -->
+            <div id="recordsFilterPanel" class="records-filter-panel" style="display: none;">
+                <div class="filter-groups-grid">
+                    <!-- Season Type -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Season Type</div>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="Girlies"> <span>Girlies</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="All Stars"> <span>All Stars</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="Bros"> <span>Bros</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="Bros All Stars"> <span>Bros All Stars</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="Girlies vs. Bros"> <span>Girlies vs. Bros</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="Second Chance"> <span>Second Chance</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="seasonType" value="Specials"> <span>Specials</span></label>
+                    </div>
+
+                    <!-- Rank -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Rank</div>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="rank" value="Winner"> <span>Winner</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="rank" value="Runner Up's"> <span>Runner Up's</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="rank" value="Finalists"> <span>Finalists</span></label>
+                    </div>
+
+                    <!-- Titles -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Titles</div>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="title" value="Winner"> <span>Winner</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="title" value="Miss Congeniality"> <span>Mx Congeniality</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="title" value="QOSDADHH"> <span>QOSDADHH</span></label>
+                    </div>
+
+                    <!-- Teams -->
+                    <div class="filter-group">
+                        <div class="filter-group-title">Teams</div>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="team" value="Jaden"> <span>Jaden</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="team" value="Davonne"> <span>Davonne</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="team" value="Robin"> <span>Robin</span></label>
+                        <label class="filter-check-item"><input type="checkbox" class="record-filter-cb" data-group="team" value="Wintour"> <span>Wintour</span></label>
+                    </div>
+                </div>
+
+                <div class="filter-panel-actions">
+                    <button type="button" id="clearRecordsFiltersBtn" class="clear-filters-btn">CLEAR FILTERS</button>
+                </div>
+            </div>
+
+            <!-- Consolidated Column Headers -->
+            <div class="records-header-row">
+                <div class="col-season sortable-col" data-sort-key="season" role="button" tabindex="0">
+                    <span>SEASON</span><span class="sort-indicator"></span>
+                </div>
+                <div class="col-rank">RANK</div>
+                <div class="col-name sortable-col" data-sort-key="name" role="button" tabindex="0">
+                    <span>NAME</span><span class="sort-indicator"></span>
+                </div>
+                <div class="col-placements">PLACEMENTS</div>
+                <div class="col-points sortable-col" data-sort-key="points" role="button" tabindex="0">
+                    <span>POINTS</span><span class="sort-indicator"></span>
+                </div>
+                <div class="col-ppe sortable-col" data-sort-key="ppe" role="button" tabindex="0">
+                    <span>PPE</span><span class="sort-indicator"></span>
+                </div>
+            </div>
+
+            <!-- Contestant Rows -->
+            <div id="recordsListContainer" class="records-list-container" aria-live="polite">
+                <div class="records-empty-state">Loading contestants...</div>
+            </div>
+            <!-- Pagination Bar -->
+            <div id="recordsPaginationBar" class="records-pagination-bar" style="display: none;">
+                <div class="records-page-info" id="recordsPageInfo">Showing 1–50 of 0</div>
+
+                <div class="records-pagination-controls">
+                    <label class="records-per-page-label" for="recordsPageSizeSelect">
+                        <span>PER PAGE:</span>
+                        <select id="recordsPageSizeSelect" class="records-per-page-select" aria-label="Records per page">
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                        </select>
+                    </label>
+
+                    <button type="button" id="recordsPrevPageBtn" class="records-page-btn" aria-label="Previous page">
+                        ‹ PREV
+                    </button>
+                    <span id="recordsPageIndicator" class="records-page-indicator">1 / 1</span>
+                    <button type="button" id="recordsNextPageBtn" class="records-page-btn" aria-label="Next page">
+                        NEXT ›
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

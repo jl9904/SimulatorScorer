@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTESTANT IMPORTER | SIM SCORER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="records.css">
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            query, 
+            where, 
+            orderBy,
+            doc,
+            updateDoc,
+            writeBatch
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyByxfHK7a1AF_e7jU3rJIp-mrLfJV5C7r4",
+            authDomain: "animatedhof-350b3.firebaseapp.com",
+            projectId: "animatedhof-350b3",
+            storageBucket: "animatedhof-350b3.firebasestorage.app",
+            messagingSenderId: "171067849270",
+            appId: "1:171067849270:web:94e4e87f61477510dab697",
+            measurementId: "G-SB49NTBRRP"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.fs = { collection, getDocs, query, where, orderBy, doc, updateDoc, writeBatch };
+        window.dispatchEvent(new Event("firebase-ready"));
+    </script>
+</head>
+<body id="importer-page">
+
+    <header class="top-header">
+        <a href="index.html" class="logo-link">
+            <img src="SimScorer_Logo.png" alt="Sim Scorer Logo" class="header-logo">
+        </a>
+    </header>
+
+    <nav class="side-nav">
+        <button type="button" class="nav-trigger" aria-label="Toggle Menu" aria-expanded="false">
+            <span>☰</span>
+        </button>
+        <div class="nav-content">
+            <ul class="list-unstyled side-icon-list">
+                <li>
+                    <a href="season_record.html" class="side-nav-link">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span class="nav-label" data-collapsed="Calculator" data-expanded="Season Calculator">Calculator</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="miss_congeniality_picker.html" class="side-nav-link">
+                        <i class="fa-regular fa-heart"></i>
+                        <span class="nav-label" data-collapsed="Congeniality" data-expanded="Mx Congeniality">Congeniality</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="lalaparuza_simulator.html" class="side-nav-link">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span class="nav-label" data-collapsed="Lala Sim" data-expanded="Lalaparuza Simulator">Lala Sim</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="animated.html" class="side-nav-link">
+                        <i class="fa-solid fa-crown"></i>
+                        <span class="nav-label" data-collapsed="Hall of Fame" data-expanded="Hall of Fame">Hall of Fame</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="dashboard-wrapper d-flex align-items-center justify-content-center">
+            <div class="dashboard-container mx-auto p-5 bg-white rounded-5 shadow-sm">
+
+                <div class="home-hero mb-4 text-center">
+                    <h1 id="importer-header">SEASON DATA IMPORTER</h1>
+                    <p class="subtitle text-uppercase">Import Contestant Records to Animated Hall of Fame</p>
+                </div>
+
+                <!-- Step 1: Season Type & Season Number -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="seasonTypeInput" class="form-label fw-bold text-uppercase">Season Type</label>
+                        <input type="text" id="seasonTypeInput" class="form-control importer-input" placeholder="e.g. Girlies, All Stars, Bros, Bros All Stars, etc.">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="seasonNumberInput" class="form-label fw-bold text-uppercase">Season Number</label>
+                        <input type="number" id="seasonNumberInput" class="form-control importer-input" placeholder="e.g. 1">
+                    </div>
+                </div>
+
+                <!-- Step 2: Season Sheet -->
+                <div class="mb-4">
+                    <label for="seasonSheetInput" class="form-label fw-bold text-uppercase">Season Sheet</label>
+                    <textarea id="seasonSheetInput" rows="12" placeholder="Paste full season spreadsheet rows here..."></textarea>
+                </div>
+
+                <!-- ADD Button -->
+                <div class="text-center">
+                    <button type="button" id="openImportReviewBtn" class="gold-btn w-100">ADD</button>
+                </div>
+
+                <div id="importStatusAlert" class="mt-4 text-center fw-bold" aria-live="polite"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Miss C & Finalist Checkboxes -->
+    <div class="modal fade" id="contestantReviewModal" tabindex="-1" aria-labelledby="contestantReviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h4 class="modal-title fw-black text-uppercase" id="contestantReviewModalLabel">Verify Miss C, Finalists, & QOSDADHH</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">Check the boxes on the right for <strong>Miss C</strong>, <strong>Finalist</strong>, and <strong> QOSDADHH</strong> (unchecked = No).</p>
+                    <div id="reviewContestantList" class="review-contestant-list"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" id="confirmFlagsBtn" class="btn btn-dark rounded-pill px-4 fw-bold">CONFIRM</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Prompt -->
+    <div class="modal fade" id="passwordPromptModal" tabindex="-1" aria-labelledby="passwordPromptModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h4 class="modal-title fw-black text-uppercase" id="passwordPromptModalLabel">Admin Verification</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="adminPasswordInput" class="form-label fw-bold">Enter Password to Upload to Firestore:</label>
+                    <input type="password" id="adminPasswordInput" class="form-control form-control-lg rounded-pill" placeholder="Password...">
+                    <div id="passwordErrorMsg" class="text-danger fw-bold small mt-2" style="display:none;">Incorrect password. Try again.</div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 fw-bold" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" id="submitImportPasswordBtn" class="btn btn-success rounded-pill px-4 fw-bold">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
