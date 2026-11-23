@@ -1224,7 +1224,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const entered = passwordInput.value;
         const errorMsg = document.getElementById("passwordErrorMsg");
 
-        if (entered !== "Ab") {
+        if (entered !== "Addthesebitches") {
             if (errorMsg) errorMsg.style.display = "block";
             return;
         }
