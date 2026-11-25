@@ -1062,7 +1062,7 @@ function parseSeasonSheet(rawSheet, seasonType, seasonNumber) {
         // replaces the finale WIN/ELIM column—append it so finale badges render on Records
         if (isAllStarsRow) {
             const lastPlacement = placements[placements.length - 1];
-            if (rank === "1st" && lastPlacement !== "WIN") {
+            if (rank === "1st") {
                 placements.push("WIN");
             } else if ((rank === "2nd" || rank === "3rd") && lastPlacement !== "ELIM") {
                 placements.push("ELIM");
