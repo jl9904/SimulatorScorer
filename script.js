@@ -1295,6 +1295,8 @@ const SEASON_TYPE_SORT_ORDER = [
     "Bros All Stars",
     "Girlies vs. Bros",
     "Second Chance",
+    "Vs. The World",
+    "Abyss",
     "Specials"
 ];
 
@@ -1305,7 +1307,12 @@ function normalizeSeasonTypeLabel(seasonType) {
     if (clean === "all stars" || clean === "allstars" || clean === "as") return "All Stars";
     if (clean === "bros all stars" || clean === "brosallstars" || clean === "bas") return "Bros All Stars";
     if (clean === "girlies vs bros" || clean === "girlies vs. bros" || clean === "gvb") return "Girlies vs. Bros";
+    if (clean === "producer all stars" || clean === "producer as" || clean === "pas") return "Producer All Stars";
+    if (clean === "r" || clean === "royale") return "Royale";
+    if (clean === "vs. the world" || clean === "vtw" || clean === "vs the world") return "Vs. The World";
+    if (clean === "abyss" || clean === "a") return "Abyss";
     if (clean === "second chance" || clean === "sc") return "Second Chance";
+
     if (clean === "specials" || clean === "special" || clean === "spinoff" || clean === "spin off") return "Specials";
     return String(seasonType || "").trim();
 }
@@ -1326,6 +1333,10 @@ function formatSeasonTypeCode(seasonType) {
     if (normalized === "bros all stars") return "BAS";
     if (normalized === "girlies vs. bros") return "GVB";
     if (normalized === "second chance") return "SC";
+    if (normalized === "producer all stars") return "PAS";
+    if (normalized === "vs. the world") return "V";
+    if (normalized === "abyss") return "A";
+    if(normalized === "royale") return "R";
     if (normalized === "specials") return "SP";
     return normalized ? normalized.charAt(0).toUpperCase() : "G";
 }
