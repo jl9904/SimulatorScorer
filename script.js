@@ -937,7 +937,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let parsedContestantsBuffer = [];
 
 const VALID_PLACEMENTS = new Set([
-    "WIN", "TOP 2", "HIGH", "SAFE", "LOW", "BTM 2", "BTM 3", "BTM 4", "ELIM", "EXT", "RUN", "QUIT", "DISQ", "ADV", "WIN + ELIM", "TOP 2 + ELIM", "HIGH + ELIM", "SAFE + ELIM", "LOW + ELIM", "BTM + ELIM", "SWAP + ELIM", "RTRN", "WIN + QUIT"
+    "WIN", "TOP 2", "HIGH", "SAFE", "LOW", "BTM 2", "BTM 3", "BTM 4", "ELIM", "EXT", "RUN", "QUIT", "DISQ", "ADV", "WIN + ELIM", "TOP 2 + ELIM", "HIGH + ELIM", "SAFE + ELIM", "LOW + ELIM", "BTM 2 + ELIM", "SWAP + ELIM", "RTRN", "WIN + QUIT", "WIN + BTM 2"
 ]);
 
 function extractNameAndTeam(rawNameCell) {
@@ -1053,11 +1053,21 @@ function parseSeasonSheet(rawSheet, seasonType, seasonNumber) {
             }
         });
 
-        // Pre-detect finalists (e.g. had RUN in placements)
         // Pre-detect finalists: placements with RUN or ranks 1st–3rd
-            if (placements.includes("RUN") || isTopThreeFinalistRank(rank)) {
-                detectedFinalist = true;
+        if (placements.includes("RUN") || isTopThreeFinalistRank(rank)) {
+            detectedFinalist = true;
+        }
+
+        // For All Stars sheets, the rank column ("Winner", "Runner-Up", "3rd Place", etc.)
+        // replaces the finale WIN/ELIM column—append it so finale badges render on Records
+        if (isAllStarsRow) {
+            const lastPlacement = placements[placements.length - 1];
+            if (rank === "1st" && lastPlacement !== "WIN") {
+                placements.push("WIN");
+            } else if ((rank === "2nd" || rank === "3rd") && lastPlacement !== "ELIM") {
+                placements.push("ELIM");
             }
+        }
 
         parsedRows.push({
             season_type: seasonType,
