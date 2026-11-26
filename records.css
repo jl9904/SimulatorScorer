@@ -846,3 +846,75 @@
         justify-content: center;
     }
 }
+
+/* =========================================
+   HALL OF FAME IMPORTER VISIBILITY FIX
+   ========================================= */
+#hofWinnerImporterSection {
+    overflow: visible;
+    background-color: #ffffff;
+    color: #111111;
+}
+
+#hofWinnerImporterSection .card-body {
+    overflow: visible;
+    color: #111111;
+}
+
+#hofWinnerImporterSection .form-label,
+#hofWinnerImporterSection .form-check-label {
+    color: #111111 !important;
+    font-weight: 700;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#hofWinnerImporterSection .form-control,
+#hofWinnerImporterSection textarea {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border: 1px solid #ced4da !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#hofWinnerImporterSection .form-check-input {
+    opacity: 1 !important;
+    visibility: visible !important;
+    cursor: pointer;
+}
+
+#hofWinnerImporterSection #saveHofWinnerBtn {
+    font-size: 0.95rem !important;
+    padding: 10px 22px !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* =========================================
+   HALL OF FAME IMPORTER SIDEBAR & LAYOUT FIX
+   ========================================= */
+@media (min-width: 769px) {
+    #hofWinnerImporterSection {
+        margin-left: 110px;
+        margin-right: 24px;
+        width: auto;
+        max-width: calc(100% - 134px);
+    }
+}
+
+#hofWinnerImporterSection,
+#hofWinnerImporterSection .card-body,
+#hofWinnerImporterSection .row,
+#hofWinnerImporterSection [class*="col-"] {
+    overflow: visible !important;
+    min-width: 0;
+}
+
+#hofWinnerImporterSection .form-check-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 18px;
+}

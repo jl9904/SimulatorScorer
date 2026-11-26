@@ -1163,94 +1163,139 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmFlagsBtn = document.getElementById("confirmFlagsBtn");
     const submitPasswordBtn = document.getElementById("submitImportPasswordBtn");
     const passwordInput = document.getElementById("adminPasswordInput");
+    const saveHofWinnerBtn = document.getElementById("saveHofWinnerBtn");
 
-    if (!openReviewBtn) return;
+    // --- Contestant Sheet Importer ---
+    if (openReviewBtn) {
+        const reviewModal = new bootstrap.Modal(document.getElementById("contestantReviewModal"));
+        const passwordModal = new bootstrap.Modal(document.getElementById("passwordPromptModal"));
 
-    const reviewModal = new bootstrap.Modal(document.getElementById("contestantReviewModal"));
-    const passwordModal = new bootstrap.Modal(document.getElementById("passwordPromptModal"));
+        // Step 1: Parse inputs & open checkbox review modal
+        openReviewBtn.addEventListener("click", () => {
+            const seasonType = document.getElementById("seasonTypeInput").value.trim();
+            const seasonNumberRaw = document.getElementById("seasonNumberInput").value.trim();
+            const rawSheet = document.getElementById("seasonSheetInput").value.trim();
 
-    // Step 1: Parse inputs & open checkbox review modal
-    openReviewBtn.addEventListener("click", () => {
-        const seasonType = document.getElementById("seasonTypeInput").value.trim();
-        const seasonNumberRaw = document.getElementById("seasonNumberInput").value.trim();
-        const rawSheet = document.getElementById("seasonSheetInput").value.trim();
-
-        if (!seasonType || !seasonNumberRaw || !rawSheet) {
-            alert("Please fill out Season Type, Season Number, and Season Sheet before clicking ADD.");
-            return;
-        }
-
-        const seasonNumber = Number(seasonNumberRaw);
-        if (isNaN(seasonNumber)) {
-            alert("Season Number must be a valid number.");
-            return;
-        }
-
-        parsedContestantsBuffer = parseSeasonSheet(rawSheet, seasonType, seasonNumber);
-
-        if (parsedContestantsBuffer.length === 0) {
-            alert("No valid contestant rows could be parsed from the Season Sheet.");
-            return;
-        }
-
-        renderContestantReviewList(parsedContestantsBuffer);
-        reviewModal.show();
-    });
-
-    // Step 2: Save checkbox states & open password modal
-    confirmFlagsBtn.addEventListener("click", () => {
-        document.querySelectorAll(".miss-c-checkbox").forEach((cb) => {
-            const idx = Number(cb.dataset.index);
-            if (parsedContestantsBuffer[idx]) {
-                parsedContestantsBuffer[idx].miss_c = cb.checked;
+            if (!seasonType || !seasonNumberRaw || !rawSheet) {
+                alert("Please fill out Season Type, Season Number, and Season Sheet before clicking ADD.");
+                return;
             }
+
+            const seasonNumber = Number(seasonNumberRaw);
+            if (isNaN(seasonNumber)) {
+                alert("Season Number must be a valid number.");
+                return;
+            }
+
+            parsedContestantsBuffer = parseSeasonSheet(rawSheet, seasonType, seasonNumber);
+
+            if (parsedContestantsBuffer.length === 0) {
+                alert("No valid contestant rows could be parsed from the Season Sheet.");
+                return;
+            }
+
+            renderContestantReviewList(parsedContestantsBuffer);
+            reviewModal.show();
         });
 
-        document.querySelectorAll(".finalist-checkbox").forEach((cb) => {
-            const idx = Number(cb.dataset.index);
-            if (parsedContestantsBuffer[idx]) {
-                parsedContestantsBuffer[idx].finalist = cb.checked;
-            }
+        // Step 2: Save checkbox states & open password modal
+        confirmFlagsBtn.addEventListener("click", () => {
+            document.querySelectorAll(".miss-c-checkbox").forEach((cb) => {
+                const idx = Number(cb.dataset.index);
+                if (parsedContestantsBuffer[idx]) {
+                    parsedContestantsBuffer[idx].miss_c = cb.checked;
+                }
+            });
+
+            document.querySelectorAll(".finalist-checkbox").forEach((cb) => {
+                const idx = Number(cb.dataset.index);
+                if (parsedContestantsBuffer[idx]) {
+                    parsedContestantsBuffer[idx].finalist = cb.checked;
+                }
+            });
+
+            document.querySelectorAll(".lala-winner-checkbox").forEach((cb) => {
+                const idx = Number(cb.dataset.index);
+                if (parsedContestantsBuffer[idx]) {
+                    parsedContestantsBuffer[idx].lala_winner = cb.checked;
+                }
+            });
+
+            reviewModal.hide();
+
+            const errorMsg = document.getElementById("passwordErrorMsg");
+            if (errorMsg) errorMsg.style.display = "none";
+            if (passwordInput) passwordInput.value = "";
+
+            passwordModal.show();
         });
 
-        document.querySelectorAll(".lala-winner-checkbox").forEach((cb) => {
-            const idx = Number(cb.dataset.index);
-            if (parsedContestantsBuffer[idx]) {
-                parsedContestantsBuffer[idx].lala_winner = cb.checked;
+        // Step 3: Verify password & write to Firestore
+        function handlePasswordSubmit() {
+            const entered = passwordInput.value;
+            const errorMsg = document.getElementById("passwordErrorMsg");
+
+            if (entered !== "Addthesebitches") {
+                if (errorMsg) errorMsg.style.display = "block";
+                return;
             }
-        });
 
-        reviewModal.hide();
-
-        const errorMsg = document.getElementById("passwordErrorMsg");
-        if (errorMsg) errorMsg.style.display = "none";
-        if (passwordInput) passwordInput.value = "";
-
-        passwordModal.show();
-    });
-
-    // Step 3: Verify password & write to Firestore
-    function handlePasswordSubmit() {
-        const entered = passwordInput.value;
-        const errorMsg = document.getElementById("passwordErrorMsg");
-
-        if (entered !== "Addthesebitches") {
-            if (errorMsg) errorMsg.style.display = "block";
-            return;
+            if (errorMsg) errorMsg.style.display = "none";
+            passwordModal.hide();
+            saveContestantsToFirestore(parsedContestantsBuffer);
         }
 
-        if (errorMsg) errorMsg.style.display = "none";
-        passwordModal.hide();
-        saveContestantsToFirestore(parsedContestantsBuffer);
+        submitPasswordBtn.addEventListener("click", handlePasswordSubmit);
+
+        if (passwordInput) {
+            passwordInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    handlePasswordSubmit();
+                }
+            });
+        }
     }
 
-    submitPasswordBtn.addEventListener("click", handlePasswordSubmit);
+    // --- Hall of Fame Winner Importer ---
+    if (saveHofWinnerBtn) {
+        saveHofWinnerBtn.addEventListener("click", async () => {
+            const seasonRaw = document.getElementById("hofSeasonInput").value.trim();
+            const ppeRaw = document.getElementById("hofPpeInput").value.trim();
+            const imageUrl = document.getElementById("hofImageInput").value.trim();
+            const rawRow = document.getElementById("hofWinnerSheetInput").value.trim();
+            const division = Array.from(document.querySelectorAll(".hof-division-cb:checked")).map((cb) => cb.value);
 
-    if (passwordInput) {
-        passwordInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                handlePasswordSubmit();
+            const hofDoc = buildHallOfFameDoc({
+                rawRow,
+                season: seasonRaw,
+                ppe: ppeRaw,
+                imageUrl,
+                division
+            });
+
+            if (
+                !hofDoc ||
+                !hofDoc.name ||
+                seasonRaw === "" ||
+                !Number.isInteger(hofDoc.season) ||
+                ppeRaw === "" ||
+                Number.isNaN(hofDoc.ppe) ||
+                hofDoc.division.length === 0
+            ) {
+                alert("Please check your winner row, season number, PPE, and division selection.");
+                return;
+            }
+
+            const ok = await uploadRecordsBatch([hofDoc], "hall_of_fame", "hofImportStatusAlert");
+            if (ok) {
+                document.getElementById("hofWinnerSheetInput").value = "";
+                document.getElementById("hofSeasonInput").value = "";
+                document.getElementById("hofPpeInput").value = "";
+                document.getElementById("hofImageInput").value = "";
+                document.querySelectorAll(".hof-division-cb").forEach((cb) => {
+                    cb.checked = false;
+                });
             }
         });
     }
@@ -1921,3 +1966,75 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
+async function uploadRecordsBatch(records, collectionName, statusElementId = "importStatusAlert") {
+    const statusEl = document.getElementById(statusElementId);
+    if (!window.db || !window.fs || !window.fs.writeBatch) {
+        alert("Firebase is not ready yet. Please refresh and try again.");
+        return;
+    }
+
+    const { collection, doc, writeBatch } = window.fs;
+
+    try {
+        if (statusEl) {
+            statusEl.style.display = "block";
+            statusEl.className = "mt-3 text-center fw-bold text-primary";
+            statusEl.textContent = `Uploading ${records.length} record(s) to ${collectionName}...`;
+        }
+
+        const batch = writeBatch(window.db);
+        const colRef = collection(window.db, collectionName);
+
+        records.forEach((item) => {
+            const newDocRef = doc(colRef);
+            batch.set(newDocRef, item);
+        });
+
+        await batch.commit();
+
+        if (statusEl) {
+            statusEl.style.display = "block";
+            statusEl.className = "mt-3 text-center fw-bold text-success";
+            statusEl.textContent = `Success! Added ${records.length} record(s) to ${collectionName}.`;
+        }
+    } catch (err) {
+        console.error(`Error writing ${collectionName} batch:`, err);
+        if (statusEl) {
+            statusEl.style.display = "block";
+            statusEl.className = "mt-3 text-center fw-bold text-danger";
+            statusEl.textContent = `Failed to upload to ${collectionName}. Check the console for details.`;
+        }
+    }
+}
+
+function buildHallOfFameDoc({ rawRow, season, ppe, imageUrl, division }) {
+    const line = String(rawRow || "")
+        .split("\n")
+        .map((l) => l.trim())
+        .find((l) => l.length > 0);
+
+    if (!line) return null;
+
+    const rawCells = line.includes("\t")
+        ? line.split("\t")
+        : line.trim().split(/ {2,}/);
+
+    const nonEmptyCells = rawCells.map((c) => c.trim()).filter((c) => c !== "");
+    if (nonEmptyCells.length < 2) return null;
+
+    const { cleanName } = extractNameAndTeam(nonEmptyCells[0]);
+    const placements = nonEmptyCells
+        .slice(1)
+        .map((cell) => cell.toUpperCase())
+        .filter((upper) => !["GUEST", "MISS C", "QOSDADHH"].includes(upper) && VALID_PLACEMENTS.has(upper));
+
+    return {
+        division: Array.isArray(division) ? division : [],
+        image_url: String(imageUrl || "").trim(),
+        name: cleanName,
+        placements,
+        ppe: Number(ppe),
+        season: Math.trunc(Number(season))
+    };
+}
